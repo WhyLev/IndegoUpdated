@@ -1,2 +1,9 @@
 .idea/
 __pycache__/
+build/
+*.egg-info/
+.coverage
+.pytest_cache/
+*.pyc
+*.pyo
+dist/

@@ -1,9 +1,0 @@
-aiohttp
-pytz
-requests
-
-[testing]
-mock
-pytest
-pytest-asyncio
-pytest-cov
