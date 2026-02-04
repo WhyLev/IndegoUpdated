@@ -64,6 +64,8 @@ from .const import (
     ENTITY_RUNTIME,
     ENTITY_UPDATE_AVAILABLE,
     ENTITY_VACUUM,
+    ENTITY_NETWORK_SIGNAL,
+    ENTITY_API_HEALTH,
     HTTP_HEADER_USER_AGENT,
     INDEGO_PLATFORMS,
     LAWN_MOWER_TYPE,
@@ -227,6 +229,34 @@ ENTITY_DEFINITIONS = {
             "total_mowing_time_h",
             "total_charging_time_h",
             "total_operation_time_h",
+        ],
+    },
+    ENTITY_NETWORK_SIGNAL: {
+        CONF_TYPE: SENSOR_TYPE,
+        CONF_NAME: "network signal",
+        CONF_ICON: "mdi:signal",
+        CONF_DEVICE_CLASS: None,
+        CONF_UNIT_OF_MEASUREMENT: "dBm",
+        CONF_ATTR: [
+            "last_updated",
+            "mcc",
+            "mnc",
+            "signal_mode",
+            "network_count",
+        ],
+    },
+    ENTITY_API_HEALTH: {
+        CONF_TYPE: SENSOR_TYPE,
+        CONF_NAME: "API health",
+        CONF_ICON: "mdi:api",
+        CONF_DEVICE_CLASS: None,
+        CONF_UNIT_OF_MEASUREMENT: None,
+        CONF_ATTR: [
+            "request_count",
+            "error_count",
+            "last_error",
+            "circuit_breaker_state",
+            "circuit_breaker_failures",
         ],
     },
     ENTITY_VACUUM: {
@@ -667,6 +697,8 @@ class IndegoHub:
                 self._update_alerts(),
                 self._update_last_completed_mow(),
                 self._update_next_mow(),
+                self._update_network(),
+                self._update_api_health(),
             ],
             return_exceptions=True,
         )
@@ -875,6 +907,47 @@ class IndegoHub:
             self.entities[ENTITY_LAWN_MOWED].add_attributes(
                 {"next_mow": next_mow}
             )
+
+    async def _update_network(self):
+        """Update network connectivity information."""
+        try:
+            await self._indego_client.update_network()
+            
+            if self._indego_client.network:
+                # Update network signal sensor with RSSI value
+                self.entities[ENTITY_NETWORK_SIGNAL].state = self._indego_client.network.rssi
+                
+                self.entities[ENTITY_NETWORK_SIGNAL].add_attributes(
+                    {
+                        "last_updated": last_updated_now(),
+                        "mcc": self._indego_client.network.mcc,
+                        "mnc": self._indego_client.network.mnc,
+                        "signal_mode": self._indego_client.network.currMode,
+                        "network_count": self._indego_client.network.networkCount,
+                    }
+                )
+        except Exception as exc:
+            _LOGGER.debug("Network update failed: %s", str(exc))
+
+    async def _update_api_health(self):
+        """Update API health metrics."""
+        try:
+            health = self._indego_client.api_health
+            
+            # Use circuit breaker state as the sensor state
+            self.entities[ENTITY_API_HEALTH].state = health.get("circuit_breaker_state", "unknown")
+            
+            self.entities[ENTITY_API_HEALTH].add_attributes(
+                {
+                    "request_count": health.get("request_count", 0),
+                    "error_count": health.get("error_count", 0),
+                    "last_error": health.get("last_error", None),
+                    "circuit_breaker_state": health.get("circuit_breaker_state", "unknown"),
+                    "circuit_breaker_failures": health.get("circuit_breaker_failures", 0),
+                }
+            )
+        except Exception as exc:
+            _LOGGER.debug("API health update failed: %s", str(exc))
 
     @property
     def serial(self) -> str:

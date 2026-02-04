@@ -61,6 +61,8 @@ ENTITY_MOWING_MODE: Final = "mowing_mode"
 ENTITY_RUNTIME: Final = "runtime_total"
 ENTITY_VACUUM: Final = "vacuum"
 ENTITY_LAWN_MOWER: Final = "lawn_mower"
+ENTITY_NETWORK_SIGNAL: Final = "network_signal"
+ENTITY_API_HEALTH: Final = "api_health"
 
 HTTP_HEADER_USER_AGENT: Final = "User-Agent"
 HTTP_HEADER_USER_AGENT_DEFAULT: Final = "HA/Indego"

@@ -7,6 +7,6 @@
   "codeowners": ["@jm-73", "@eavanvalkenburg", "@sander1988"],
   "requirements": [],
   "iot_class": "cloud_push",
-  "version": "5.7.8",
+  "version": "5.8.0",
   "loggers": ["custom_components.indego"]
 }
