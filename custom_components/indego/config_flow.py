@@ -17,7 +17,7 @@ from homeassistant.config_entries import (
 )
 from homeassistant.core import callback
 
-from pyIndego import IndegoAsyncClient
+from .pyindego_api import IndegoAsyncClient
 
 from .const import (
     DOMAIN,
