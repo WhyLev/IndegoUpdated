@@ -2,6 +2,7 @@
 import asyncio
 import logging
 import random
+import time
 from typing import Callable, Optional, TypeVar, Any
 
 _LOGGER = logging.getLogger(__name__)
@@ -173,7 +174,6 @@ class CircuitBreaker:
         if self._last_failure_time is None:
             return False
             
-        import time
         time_since_failure = time.time() - self._last_failure_time
         return time_since_failure >= self.recovery_timeout
     
@@ -222,7 +222,6 @@ class CircuitBreaker:
         except self.expected_exception as exc:
             self._failure_count += 1
             
-            import time
             self._last_failure_time = time.time()
             
             if self._failure_count >= self.failure_threshold:

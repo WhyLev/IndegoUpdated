@@ -601,7 +601,7 @@ class IndegoAsyncClient(IndegoBaseClient):
             except Exception as exc:
                 if self._raise_request_exceptions:
                     raise
-                error_msg = f"Request {method.value} {path} gave an unhandled error: {str(exc)}"
+                error_msg = f"Request {method.value} {path} encountered an unhandled error: {str(exc)}"
                 _LOGGER.error("[%s] %s", request_id, error_msg)
                 self._api_error_count += 1
                 self._last_api_error = error_msg
