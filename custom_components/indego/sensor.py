@@ -2,7 +2,7 @@
 import logging
 
 from homeassistant.components.sensor import SensorEntity, ENTITY_ID_FORMAT as SENSOR_FORMAT
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -33,7 +33,17 @@ async def async_setup_entry(
 class IndegoSensor(IndegoEntity, SensorEntity):
     """Class for Indego Sensors."""
 
-    def __init__(self, entity_id, name, icon, device_class, unit_of_measurement, attributes, device_info: DeviceInfo, translation_key: str = None):
+    def __init__(
+        self,
+        entity_id,
+        name,
+        icon,
+        device_class,
+        unit_of_measurement,
+        attributes,
+        device_info: DeviceInfo,
+        translation_key: str = None
+    ):
         """Initialize a sensor.
 
         Args:
@@ -88,9 +98,12 @@ class IndegoSensor(IndegoEntity, SensorEntity):
         if self._updateble_icon:
             return self._icon_func(self._state)
         if self._icon == "battery":
-            return icon_for_battery_level(
-                int(self._state) if self._state is not None and (isinstance(self._state, int) or self._state.isdigit()) else None, self.charging
+            battery_level = (
+                int(self._state)
+                if self._state is not None and (isinstance(self._state, int) or self._state.isdigit())
+                else None
             )
+            return icon_for_battery_level(battery_level, self.charging)
         return self._icon
 
     @property

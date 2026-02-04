@@ -13,14 +13,12 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_DEVICE_CLASS,
     CONF_ICON,
-    CONF_ID,
     CONF_NAME,
     CONF_TYPE,
     CONF_UNIT_OF_MEASUREMENT,
     EVENT_HOMEASSISTANT_STARTED,
     EVENT_HOMEASSISTANT_STOP,
     STATE_ON,
-    STATE_UNKNOWN,
     UnitOfTemperature,
 )
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
@@ -38,7 +36,48 @@ from .api import IndegoOAuth2Session
 from .binary_sensor import IndegoBinarySensor
 from .vacuum import IndegoVacuum
 from .lawn_mower import IndegoLawnMower
-from .const import *
+from .const import (
+    BINARY_SENSOR_TYPE,
+    CONF_ATTR,
+    CONF_EXPOSE_INDEGO_AS_MOWER,
+    CONF_EXPOSE_INDEGO_AS_VACUUM,
+    CONF_MOWER_NAME,
+    CONF_MOWER_SERIAL,
+    CONF_SEND_COMMAND,
+    CONF_SERVICES_REGISTERED,
+    CONF_SHOW_ALL_ALERTS,
+    CONF_SMARTMOWING,
+    CONF_TRANSLATION_KEY,
+    CONF_USER_AGENT,
+    DEFAULT_NAME_COMMANDS,
+    DOMAIN,
+    ENTITY_ALERT,
+    ENTITY_BATTERY,
+    ENTITY_LAST_COMPLETED,
+    ENTITY_LAWN_MOWED,
+    ENTITY_LAWN_MOWER,
+    ENTITY_MOWER_STATE,
+    ENTITY_MOWER_STATE_DETAIL,
+    ENTITY_MOWING_MODE,
+    ENTITY_NEXT_MOW,
+    ENTITY_ONLINE,
+    ENTITY_RUNTIME,
+    ENTITY_UPDATE_AVAILABLE,
+    ENTITY_VACUUM,
+    HTTP_HEADER_USER_AGENT,
+    INDEGO_PLATFORMS,
+    LAWN_MOWER_TYPE,
+    SENSOR_TYPE,
+    SERVER_DATA_ALERT_INDEX,
+    SERVICE_NAME_COMMAND,
+    SERVICE_NAME_DELETE_ALERT,
+    SERVICE_NAME_DELETE_ALERT_ALL,
+    SERVICE_NAME_READ_ALERT,
+    SERVICE_NAME_READ_ALERT_ALL,
+    SERVICE_NAME_SMARTMOW,
+    STATUS_UPDATE_FAILURE_DELAY_TIME,
+    VACUUM_TYPE,
+)
 from .sensor import IndegoSensor
 
 _LOGGER = logging.getLogger(__name__)
@@ -288,7 +327,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         await instance._update_alerts()
         await instance._indego_client.delete_alert(index)
-        await instance._update_alerts()     
+        await instance._update_alerts()
 
     async def async_delete_alert_all(call):
         """Handle the service call."""
@@ -297,7 +336,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         await instance._update_alerts()
         await instance._indego_client.delete_all_alerts()
-        await instance._update_alerts()   
+        await instance._update_alerts()
 
     async def async_read_alert(call):
         """Handle the service call."""
@@ -337,27 +376,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             schema=SERVICE_SCHEMA_SMARTMOWING,
         )
         hass.services.async_register(
-            DOMAIN, 
-            SERVICE_NAME_DELETE_ALERT, 
-            async_delete_alert, 
+            DOMAIN,
+            SERVICE_NAME_DELETE_ALERT,
+            async_delete_alert,
             schema=SERVICE_SCHEMA_DELETE_ALERT
         )
         hass.services.async_register(
-            DOMAIN, 
-            SERVICE_NAME_READ_ALERT, 
-            async_read_alert, 
+            DOMAIN,
+            SERVICE_NAME_READ_ALERT,
+            async_read_alert,
             schema=SERVICE_SCHEMA_READ_ALERT
         )
         hass.services.async_register(
-            DOMAIN, 
-            SERVICE_NAME_DELETE_ALERT_ALL, 
-            async_delete_alert_all, 
+            DOMAIN,
+            SERVICE_NAME_DELETE_ALERT_ALL,
+            async_delete_alert_all,
             schema=SERVICE_SCHEMA_DELETE_ALERT_ALL
         )
         hass.services.async_register(
-            DOMAIN, 
-            SERVICE_NAME_READ_ALERT_ALL, 
-            async_read_alert_all, 
+            DOMAIN,
+            SERVICE_NAME_READ_ALERT_ALL,
+            async_read_alert_all,
             schema=SERVICE_SCHEMA_READ_ALERT_ALL
         )
 
@@ -388,7 +427,15 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 class IndegoHub:
     """Class for the IndegoHub, which controls the sensors and binary sensors."""
 
-    def __init__(self, name: str, session: IndegoOAuth2Session, serial: str, features: dict, hass: HomeAssistant, user_agent: Optional[str] = None):
+    def __init__(
+        self,
+        name: str,
+        session: IndegoOAuth2Session,
+        serial: str,
+        features: dict,
+        hass: HomeAssistant,
+        user_agent: Optional[str] = None
+    ):
         """Initialize the IndegoHub.
 
         Args:
@@ -565,9 +612,15 @@ class IndegoHub:
         if update_failed:
             if self._update_fail_count is None:
                 self._update_fail_count = 1
-            _LOGGER.debug("Delaying next status update with %i seconds due to previous failure...", STATUS_UPDATE_FAILURE_DELAY_TIME[self._update_fail_count])
+            _LOGGER.debug(
+                "Delaying next status update with %i seconds due to previous failure...",
+                STATUS_UPDATE_FAILURE_DELAY_TIME[self._update_fail_count]
+            )
             when = datetime.now() + timedelta(seconds=STATUS_UPDATE_FAILURE_DELAY_TIME[self._update_fail_count])
-            self._update_fail_count = min(self._update_fail_count + 1, len(STATUS_UPDATE_FAILURE_DELAY_TIME) - 1)
+            self._update_fail_count = min(
+                self._update_fail_count + 1,
+                len(STATUS_UPDATE_FAILURE_DELAY_TIME) - 1
+            )
             self._unsub_refresh_state = async_track_point_in_time(self._hass, self._create_refresh_state_task, when)
             return
 
@@ -647,7 +700,7 @@ class IndegoHub:
     async def _update_operating_data(self):
         await self._indego_client.update_operating_data()
 
-        _LOGGER.debug(f"Updating operating data")
+        _LOGGER.debug("Updating operating data")
         if self._indego_client.operating_data:
             self.entities[ENTITY_BATTERY].state = self._indego_client.operating_data.battery.percent_adjusted
 
@@ -660,8 +713,10 @@ class IndegoHub:
                     "voltage_V": self._indego_client.operating_data.battery.voltage,
                     "discharge_Ah": self._indego_client.operating_data.battery.discharge,
                     "cycles": self._indego_client.operating_data.battery.cycles,
-                    f"battery_temp_{UnitOfTemperature.CELSIUS}": self._indego_client.operating_data.battery.battery_temp,
-                    f"ambient_temp_{UnitOfTemperature.CELSIUS}": self._indego_client.operating_data.battery.ambient_temp,
+                    f"battery_temp_{UnitOfTemperature.CELSIUS}":
+                        self._indego_client.operating_data.battery.battery_temp,
+                    f"ambient_temp_{UnitOfTemperature.CELSIUS}":
+                        self._indego_client.operating_data.battery.ambient_temp,
                 }
             )
 

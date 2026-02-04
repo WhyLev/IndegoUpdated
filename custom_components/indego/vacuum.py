@@ -74,6 +74,7 @@ INDEGO_VACUUM_FEATURES = (
     | VacuumEntityFeature.START
 )
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: ConfigEntry,
