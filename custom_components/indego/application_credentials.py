@@ -5,6 +5,7 @@ from homeassistant.components.application_credentials import AuthorizationServer
 from homeassistant.helpers import config_entry_oauth2_flow
 from homeassistant.core import HomeAssistant
 
+
 async def async_get_auth_implementation(
     hass: HomeAssistant, auth_domain: str, credential: ClientCredential
 ) -> config_entry_oauth2_flow.AbstractOAuth2Implementation:

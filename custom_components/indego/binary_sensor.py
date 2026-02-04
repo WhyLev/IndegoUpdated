@@ -10,7 +10,7 @@ from homeassistant.const import (
     STATE_ON,
     STATE_UNKNOWN,
 )
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -40,7 +40,16 @@ async def async_setup_entry(
 class IndegoBinarySensor(IndegoEntity, BinarySensorEntity):
     """Class for Indego Binary Sensors."""
 
-    def __init__(self, entity_id, name, icon, device_class, attributes, device_info: DeviceInfo, translation_key: str = None):
+    def __init__(
+        self,
+        entity_id,
+        name,
+        icon,
+        device_class,
+        attributes,
+        device_info: DeviceInfo,
+        translation_key: str = None
+    ):
         """Initialize a binary sensor.
 
         Args:

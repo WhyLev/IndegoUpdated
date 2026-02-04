@@ -9,7 +9,12 @@ from homeassistant.helpers import selector
 from homeassistant.helpers import config_entry_oauth2_flow
 from homeassistant.components.application_credentials import ClientCredential, async_import_client_credential
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.config_entries import OptionsFlowWithConfigEntry, ConfigEntry, ConfigFlowResult, SOURCE_REAUTH, UnknownEntry
+from homeassistant.config_entries import (
+    OptionsFlowWithConfigEntry,
+    ConfigEntry,
+    ConfigFlowResult,
+    SOURCE_REAUTH,
+)
 from homeassistant.core import callback
 
 from pyIndego import IndegoAsyncClient
@@ -93,7 +98,9 @@ class IndegoOptionsFlowHandler(OptionsFlowWithConfigEntry):
         _LOGGER.debug("Updating config options: '%s'", data)
 
         if CONF_USER_AGENT in data:
-            self.hass.data[DOMAIN][self.config_entry.entry_id].client.set_default_header(HTTP_HEADER_USER_AGENT, data[CONF_USER_AGENT])
+            self.hass.data[DOMAIN][self.config_entry.entry_id].client.set_default_header(
+                HTTP_HEADER_USER_AGENT, data[CONF_USER_AGENT]
+            )
             _LOGGER.debug("Applied new User-Agent '%s' to Indego API client.", data[CONF_USER_AGENT])
 
         return self.async_create_entry(title="", data=data)
@@ -117,7 +124,10 @@ class IndegoFlowHandler(config_entry_oauth2_flow.AbstractOAuth2FlowHandler, doma
     def extra_authorize_data(self) -> dict:
         """Extra data that needs to be appended to the authorize url."""
         return {
-            "scope": "openid profile email offline_access https://prodindego.onmicrosoft.com/indego-mobile-api/Indego.Mower.User"
+            "scope": (
+                "openid profile email offline_access "
+                "https://prodindego.onmicrosoft.com/indego-mobile-api/Indego.Mower.User"
+            )
         }
 
     async def async_step_user(
@@ -203,14 +213,28 @@ class IndegoFlowHandler(config_entry_oauth2_flow.AbstractOAuth2FlowHandler, doma
                 vol.Optional(
                     CONF_USER_AGENT,
                     description={
-                        "suggested_value": (self._options[CONF_USER_AGENT] if CONF_USER_AGENT in self._options else HTTP_HEADER_USER_AGENT_DEFAULT)
+                        "suggested_value": (
+                            self._options[CONF_USER_AGENT]
+                            if CONF_USER_AGENT in self._options
+                            else HTTP_HEADER_USER_AGENT_DEFAULT
+                        )
                     },
                 ): str,
                 vol.Optional(
-                    CONF_EXPOSE_INDEGO_AS_MOWER, default=(self._options[CONF_EXPOSE_INDEGO_AS_MOWER] if CONF_EXPOSE_INDEGO_AS_MOWER in self._options else False)
+                    CONF_EXPOSE_INDEGO_AS_MOWER,
+                    default=(
+                        self._options[CONF_EXPOSE_INDEGO_AS_MOWER]
+                        if CONF_EXPOSE_INDEGO_AS_MOWER in self._options
+                        else False
+                    )
                 ): bool,
                 vol.Optional(
-                    CONF_EXPOSE_INDEGO_AS_VACUUM, default=(self._options[CONF_EXPOSE_INDEGO_AS_VACUUM] if CONF_EXPOSE_INDEGO_AS_VACUUM in self._options else False)
+                    CONF_EXPOSE_INDEGO_AS_VACUUM,
+                    default=(
+                        self._options[CONF_EXPOSE_INDEGO_AS_VACUUM]
+                        if CONF_EXPOSE_INDEGO_AS_VACUUM in self._options
+                        else False
+                    )
                 ): bool,
             }
         )
