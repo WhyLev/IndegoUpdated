@@ -25,6 +25,7 @@ from .const import (
 from .indego_base_client import IndegoBaseClient
 from .states import Calendar
 from .helpers import random_request_id
+from .retry_helper import RetryConfig, async_retry_with_backoff, CircuitBreaker
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,6 +42,8 @@ class IndegoAsyncClient(IndegoBaseClient):
         api_url: str = DEFAULT_URL,
         session: aiohttp.ClientSession = None,
         raise_request_exceptions: bool = False,
+        enable_retry: bool = True,
+        enable_circuit_breaker: bool = True,
     ):
         """Initialize the Async Client.
 
@@ -51,6 +54,8 @@ class IndegoAsyncClient(IndegoBaseClient):
             map_filename (str, optional): Filename to store maps in. Defaults to None.
             api_url (str, optional): url for the api, defaults to DEFAULT_URL.
             raise_request_exceptions (bool): Should unexpected API request exception be raised or not. Default False to keep things backwards compatible.
+            enable_retry (bool): Enable retry with exponential backoff. Default True.
+            enable_circuit_breaker (bool): Enable circuit breaker pattern. Default True.
         """
         super().__init__(token, token_refresh_method, serial, map_filename, api_url, raise_request_exceptions)
         if session:
@@ -61,6 +66,29 @@ class IndegoAsyncClient(IndegoBaseClient):
         else:
             self._session = aiohttp.ClientSession(raise_for_status=False)
             self._should_close_session = True
+        
+        # Configure retry behavior
+        self._enable_retry = enable_retry
+        self._retry_config = RetryConfig(
+            max_retries=3,
+            base_delay=1.0,
+            max_delay=30.0,
+            exponential_base=2.0,
+            jitter=True,
+        )
+        
+        # Configure circuit breaker
+        self._enable_circuit_breaker = enable_circuit_breaker
+        self._circuit_breaker = CircuitBreaker(
+            failure_threshold=5,
+            recovery_timeout=60.0,
+            expected_exception=Exception,
+        )
+        
+        # API health tracking
+        self._api_request_count = 0
+        self._api_error_count = 0
+        self._last_api_error = None
 
     async def __aenter__(self):
         """Enter for async with."""
@@ -83,6 +111,17 @@ class IndegoAsyncClient(IndegoBaseClient):
         """Close the aiohttp session."""
         if self._should_close_session:
             await self._session.close()
+    
+    @property
+    def api_health(self) -> dict:
+        """Get API health metrics."""
+        return {
+            "request_count": self._api_request_count,
+            "error_count": self._api_error_count,
+            "last_error": self._last_api_error,
+            "circuit_breaker_state": self._circuit_breaker.state if self._enable_circuit_breaker else "disabled",
+            "circuit_breaker_failures": self._circuit_breaker.failure_count if self._enable_circuit_breaker else 0,
+        }
 
     async def get_mowers(self):
         """Get a list of the available mowers (serials) in the account."""
@@ -463,7 +502,7 @@ class IndegoAsyncClient(IndegoBaseClient):
         path: str,
         data: dict = None,
         headers: dict = None,
-        timeout: int = 30
+        timeout: int = 60  # Increased from 30 to 60 for slow networks
     ):
         """Request implemented by the subclasses either synchronously or asynchronously.
 
@@ -472,107 +511,131 @@ class IndegoAsyncClient(IndegoBaseClient):
             path (str): url to call on top of base_url.
             data (dict, optional): if applicable, data to be sent, defaults to None.
             headers (dict, optional): headers to be included, defaults to None, which should be filled by the method.
-            timeout (int, optional): Timeout for the api call. Defaults to 30.
+            timeout (int, optional): Timeout for the api call. Defaults to 60.
 
         """
-        await self.start()
+        # Track API calls
+        self._api_request_count += 1
+        
+        # Define the actual request function
+        async def _do_request():
+            await self.start()
 
-        url = f"{self._api_url}{path}"
+            url = f"{self._api_url}{path}"
 
-        if not headers:
-            headers = self._default_headers.copy()
-            headers["Authorization"] = "Bearer %s" % self._token
+            if not headers:
+                req_headers = self._default_headers.copy()
+                req_headers["Authorization"] = "Bearer %s" % self._token
+            else:
+                req_headers = headers
 
-        request_id = random_request_id()
-        request_start_time = None
-        try:
-            log_headers = headers.copy()
-            if 'Authorization' in log_headers:
-                log_headers['Authorization'] = '******'
-            _LOGGER.debug(
-                "[%s] %s call to API endpoint %s, headers: %s, data: %s",
-                request_id,
-                method.value,
-                url,
-                json.dumps(log_headers) if log_headers is not None else '',
-                json.dumps(data) if data is not None else '',
-            )
+            request_id = random_request_id()
+            request_start_time = None
+            try:
+                log_headers = req_headers.copy()
+                if 'Authorization' in log_headers:
+                    log_headers['Authorization'] = '******'
+                _LOGGER.debug(
+                    "[%s] %s call to API endpoint %s, headers: %s, data: %s",
+                    request_id,
+                    method.value,
+                    url,
+                    json.dumps(log_headers) if log_headers is not None else '',
+                    json.dumps(data) if data is not None else '',
+                )
 
-            request_start_time = time.time()
-            async with self._session.request(
-                method=method.value,
-                url=url,
-                json=data,
-                headers=headers,
-                timeout=timeout,
-            ) as response:
-                status = response.status
-                _LOGGER.debug("[%s] HTTP status code: %i", request_id, status)
+                request_start_time = time.time()
+                async with self._session.request(
+                    method=method.value,
+                    url=url,
+                    json=data,
+                    headers=req_headers,
+                    timeout=timeout,
+                ) as response:
+                    status = response.status
+                    _LOGGER.debug("[%s] HTTP status code: %i", request_id, status)
 
-                is_json = response.content_type == CONTENT_TYPE_JSON
-                if status == 200:
-                    if is_json:
-                        resp = await response.json()
-                        _LOGGER.debug("[%s] Response (JSON): %s", request_id, resp)
+                    is_json = response.content_type == CONTENT_TYPE_JSON
+                    if status == 200:
+                        if is_json:
+                            resp = await response.json()
+                            _LOGGER.debug("[%s] Response (JSON): %s", request_id, resp)
+                            return resp
+
+                    resp = await response.content.read()
+                    if len(resp) < 1000:
+                        _LOGGER.debug("[%s] Response (raw): %s", request_id, resp)
+                    else:
+                        _LOGGER.debug("[%s] Response (raw): Not logged, exceeds 1000 characters", request_id)
+
+                    if status == 200:
                         return resp
 
-                resp = await response.content.read()
-                if len(resp) < 1000:
-                    _LOGGER.debug("[%s] Response (raw): %s", request_id, resp)
-                else:
-                    _LOGGER.debug("[%s] Response (raw): Not logged, exceeds 1000 characters", request_id)
+                    if self._log_request_result(request_id, status, url):
+                        return {} if is_json else ""
 
-                if status == 200:
-                    return resp
+                    response.raise_for_status()
 
-                if self._log_request_result(request_id, status, url):
-                    return {} if is_json else ""
+            except (asyncio.TimeoutError, ServerTimeoutError, HTTPGatewayTimeout, ClientOSError) as exc:
+                if self._raise_request_exceptions:
+                    raise
+                error_msg = f"{method.value} {path} request timed out after {time.time() - request_start_time if request_start_time else timeout} seconds: {str(exc)}"
+                _LOGGER.error("[%s] %s", request_id, error_msg)
+                self._api_error_count += 1
+                self._last_api_error = error_msg
+                return None
 
-                response.raise_for_status()
+            except (TooManyRedirects, ClientResponseError, SocketError) as exc:
+                if self._raise_request_exceptions:
+                    raise
+                error_msg = f"{method.value} {path} failed after {time.time() - request_start_time if request_start_time else 0} seconds: {str(exc)}"
+                _LOGGER.error("[%s] %s", request_id, error_msg)
+                self._api_error_count += 1
+                self._last_api_error = error_msg
+                return None
 
-        except (asyncio.TimeoutError, ServerTimeoutError, HTTPGatewayTimeout, ClientOSError) as exc:
-            if self._raise_request_exceptions:
-                raise
-            _LOGGER.error(
-                "[%s] %s %s request timed out after %i seconds: %s",
-                request_id,
-                method.value,
-                path,
-                time.time() - request_start_time,
-                str(exc)
+            except asyncio.CancelledError:
+                _LOGGER.debug("[%s] Task cancelled by task runner", request_id)
+                return None
+
+            except Exception as exc:
+                if self._raise_request_exceptions:
+                    raise
+                error_msg = f"Request {method.value} {path} gave an unhandled error: {str(exc)}"
+                _LOGGER.error("[%s] %s", request_id, error_msg)
+                self._api_error_count += 1
+                self._last_api_error = error_msg
+                return None
+        
+        # Apply circuit breaker if enabled
+        if self._enable_circuit_breaker:
+            try:
+                result = await self._circuit_breaker.call(_do_request)
+            except Exception as exc:
+                _LOGGER.error("Circuit breaker prevented request: %s", str(exc))
+                self._api_error_count += 1
+                self._last_api_error = str(exc)
+                return None
+        else:
+            result = await _do_request()
+        
+        # Apply retry logic if enabled and result is None (indicating failure)
+        if self._enable_retry and result is None:
+            result = await async_retry_with_backoff(
+                _do_request,
+                config=self._retry_config,
+                retry_on_exceptions=(
+                    asyncio.TimeoutError,
+                    ServerTimeoutError,
+                    HTTPGatewayTimeout,
+                    ClientOSError,
+                    ConnectionError,
+                )
             )
-            return None
+        
+        return result
 
-        except (TooManyRedirects, ClientResponseError, SocketError) as exc:
-            if self._raise_request_exceptions:
-                raise
-            _LOGGER.error(
-                "[%s] %s %s failed after %i seconds: %s",
-                request_id,
-                method.value,
-                path,
-                time.time() - request_start_time,
-                str(exc)
-            )
-            return None
-
-        except asyncio.CancelledError:
-            _LOGGER.debug("[%s] Task cancelled by task runner", request_id)
-            return None
-
-        except Exception as exc:
-            if self._raise_request_exceptions:
-                raise
-            _LOGGER.error(
-                "[%s] Request %s %s gave a unhandled error: %s",
-                request_id,
-                method.value,
-                path,
-                str(exc)
-            )
-            return None
-
-    async def get(self, path: str, timeout: int = 30):
+    async def get(self, path: str, timeout: int = 60):
         """Get implemented by the subclasses either synchronously or asynchronously.
 
         Args:
@@ -582,7 +645,7 @@ class IndegoAsyncClient(IndegoBaseClient):
         """
         return await self._request(method=Methods.GET, path=path, timeout=timeout)
 
-    async def put(self, path: str, data: dict, timeout: int = 30):
+    async def put(self, path: str, data: dict, timeout: int = 60):
         """Put implemented by the subclasses either synchronously or asynchronously.
 
         Args:
