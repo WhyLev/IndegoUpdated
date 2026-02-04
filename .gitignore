@@ -1,2 +1,7 @@
 .idea/
 __pycache__/
+.vscode/
+*.zip
+*.pyc
+*.pyo
+.DS_Store
