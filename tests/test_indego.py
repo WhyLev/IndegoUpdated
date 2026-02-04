@@ -1,9 +1,11 @@
 """Test the states of pyIndego."""
 import asyncio
 import logging
+import sys
 from datetime import datetime
 from socket import error as SocketError
 from typing import Final
+from pathlib import Path
 
 import pytest
 from aiohttp import (
@@ -17,10 +19,13 @@ from mock import MagicMock, patch
 from requests.exceptions import RequestException, Timeout
 from requests.exceptions import TooManyRedirects as reqTooManyRedirects
 
-from pyIndego import IndegoAsyncClient, IndegoClient
-from pyIndego.const import CONTENT_TYPE, CONTENT_TYPE_JSON, Methods
-from pyIndego.helpers import convert_bosch_datetime
-from pyIndego.states import (
+# Add custom_components/indego to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "custom_components" / "indego"))
+
+from pyindego_api import IndegoAsyncClient, IndegoClient
+from pyindego_api.const import CONTENT_TYPE, CONTENT_TYPE_JSON, Methods
+from pyindego_api.helpers import convert_bosch_datetime
+from pyindego_api.states import (
     Alert,
     Calendar,
     Config,
