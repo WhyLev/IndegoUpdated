@@ -177,10 +177,21 @@ To see the debug logs from the component (and the pyIndego library) in your log 
 ``` yaml
 #configuration.yaml
 logger:
-  logs: 
+  logs:
     custom_components.indego: debug
     pyIndego: debug
 ```
+
+## Using a Forked PyIndego Version
+
+If you've forked the [PyIndego library](https://github.com/OnFreund/PyIndego) and want to use your updated version with this integration, see the [PyIndego Integration Guide](PYINDEGO_INTEGRATION_GUIDE.md) for detailed instructions.
+
+**Quick Summary:** Update the `requirements` field in `custom_components/indego/manifest.json` to point to your forked repository:
+```json
+"requirements": ["pyIndego @ git+https://github.com/YOUR_USERNAME/pyIndego.git@YOUR_BRANCH", "svgutils==0.3.4"]
+```
+
+No changes to the Python import statements are needed if your fork maintains API compatibility.
 
 ## Supported models
 As known today the following models are supported:

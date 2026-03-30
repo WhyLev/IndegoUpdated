@@ -1,0 +1,12 @@
+{
+  "domain": "indego",
+  "name": "Bosch Indego Mower",
+  "config_flow": true,
+  "documentation": "https://github.com/sander1988/Indego",
+  "dependencies": ["application_credentials"],
+  "codeowners": ["@whylev", "@sander1988"],
+  "requirements": ["pyIndego @ git+https://github.com/YOUR_USERNAME/pyIndego.git@YOUR_BRANCH", "svgutils==0.3.4"],
+  "iot_class": "cloud_push",
+  "version": "5.7.8",
+  "loggers": ["custom_components.indego", "pyIndego"]
+}
