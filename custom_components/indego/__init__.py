@@ -543,49 +543,39 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         instance = find_instance_for_mower_service_call(call)
         _LOGGER.info("Deleting all alerts from mower: %s", instance._serial)
 
-        await instance._update_alerts()
+        max_rounds = 30
 
-        # Loop to delete all alerts (API may return only ~10 at a time)
-        max_attempts = 10  # Prevent infinite loops
-        attempt = 0
-        while attempt < max_attempts:
-            alerts_before = len(instance._indego_client.alerts)
-            _LOGGER.debug(
-                "Delete attempt %d/%d - Current alert count: %d",
-                attempt + 1,
-                max_attempts,
-                alerts_before,
+        for round_num in range(1, max_rounds + 1):
+            await instance._update_alerts()
+
+            loaded_alerts = len(instance._indego_client.alerts or [])
+            total_alerts = getattr(instance._indego_client, "alerts_count", loaded_alerts)
+
+            _LOGGER.info(
+                "Delete-all round %d/%d for mower %s: loaded=%d total=%s",
+                round_num,
+                max_rounds,
+                instance._serial,
+                loaded_alerts,
+                total_alerts,
             )
 
-            if alerts_before == 0:
-                _LOGGER.info("All alerts successfully deleted")
+            if loaded_alerts == 0 and total_alerts == 0:
+                _LOGGER.info("All alerts deleted for mower: %s", instance._serial)
+                break
+
+            if loaded_alerts == 0:
+                _LOGGER.warning(
+                    "Alert count is %s but no alerts are loaded for mower %s; stopping delete loop",
+                    total_alerts,
+                    instance._serial,
+                )
                 break
 
             await instance._indego_client.delete_all_alerts()
-            await asyncio.sleep(5)  # Wait 5 seconds between deletions
-            await instance._update_alerts()
+            await asyncio.sleep(5)
 
-            alerts_after = len(instance._indego_client.alerts)
-            _LOGGER.debug(
-                "Delete attempt %d/%d - Alert count after: %d",
-                attempt + 1,
-                max_attempts,
-                alerts_after,
-            )
-
-            attempt += 1
-
-            # If no progress, stop trying
-            if alerts_after >= alerts_before:
-                _LOGGER.warning("No progress in alert deletion after %d attempts", attempt)
-                break
-
-        if attempt >= max_attempts and len(instance._indego_client.alerts) > 0:
-            _LOGGER.error(
-                "Failed to delete all alerts after %d attempts (%d alerts remaining)",
-                max_attempts,
-                len(instance._indego_client.alerts),
-            )
+        await instance._update_alerts()
 
     async def async_read_alert(call):
         """Handle the service call."""
@@ -692,14 +682,31 @@ class IndegoHub:
     # State-specific stuck detection timeouts (in seconds)
     # Maps mower state codes to how long to wait before marking as stuck
     STUCK_DETECTION_TIMEOUTS = {
-        513: 60,    # IN_LAWN_MOWING - Normal mowing
-        516: 120,   # IN_LAWN_MAPPING - Learning lawn (slow, covers entire area)
-        518: 70,    # IN_LAWN_BORDER_CUT - Border cut (precise, but faster than mapping)
-        520: 120,   # IN_LAWN_MAPPING_PAUSED - Learning paused (still slow)
-        521: 70,    # IN_LAWN_BORDER_CUTTING - Border cutting (precise, but faster than mapping)
-        523: 120,   # IN_LAWN_SPOT_MOWING - Spot mowing (very precise, small area)
-        524: 120,   # IN_LAWN_RANDOM_MOWING - Random mowing
-        525: 120,   # IN_LAWN_SPOT_MOWING_COMPLETE - Spot mowing complete
+        513: 60,
+        517: 120,
+        518: 70,
+        519: 120,
+        521: 70,
+        523: 120,
+        524: 120,
+        768: 120,
+        769: 120,
+        770: 120,
+        771: 120,
+        772: 120,
+        773: 120,
+        774: 120,
+        775: 120,
+        776: 120,
+    }
+
+    STUCK_IGNORED_STATES = {
+        266,  # Leaving Dock
+        514,  # Relocalising
+        515,  # Loading map
+        516,  # Learning lawn / calibrating-like
+        520,  # Mapping paused
+        525,  # Spot mowing complete
     }
 
     # Grace period after mowing session starts (in seconds)
@@ -801,7 +808,7 @@ class IndegoHub:
                 if self._features[CONF_EXPOSE_INDEGO_AS_MOWER]:
                     self.entities[entity_key] = IndegoLawnMower(
                         f"indego_{self._serial}",
-                        self._mower_name,
+                        None,
                         device_info,
                         self
                     )
@@ -1497,18 +1504,31 @@ class IndegoHub:
                     if ENTITY_MOWER_SVG_Y in self.entities:
                         self.entities[ENTITY_MOWER_SVG_Y].state = svg_y
 
+
+#                    current_state_code = self._indego_client.state.state
+#                    is_mowing = 500 <= current_state_code <= 799
+#                    now = datetime.now()
+
                     current_state_code = self._indego_client.state.state
-                    is_mowing = 500 <= current_state_code <= 799
+                    stuck_detection_allowed = current_state_code not in self.STUCK_IGNORED_STATES
+                    is_mowing = stuck_detection_allowed and (
+                        500 <= current_state_code <= 799
+                        or current_state_code in {768, 769, 770, 771, 772, 773, 774, 775, 776}
+                    )
                     now = datetime.now()
+
+                    if not stuck_detection_allowed:
+                        _LOGGER.debug(
+                            "Stuck detection: state=%s detail=%s allowed=%s",
+                            current_state_code,
+                            self._indego_client.state_description_detail,
+                            stuck_detection_allowed,
+                        )
 
                     # Track mowing session start
                     if is_mowing and self._mowing_session_start_time is None:
                         self._mowing_session_start_time = now
-                        # Reset position tracking for new session to avoid false stuck detection
-                        self._last_position_change_time = now
-                        self._last_svg_x = svg_x
-                        self._last_svg_y = svg_y
-                        _LOGGER.debug("Mowing session started - resetting position tracking for stuck detection grace period")
+                        _LOGGER.debug("Mowing session started - activating stuck detection after grace period")
                     elif not is_mowing and self._mowing_session_start_time is not None:
                         self._mowing_session_start_time = None
 
@@ -1614,6 +1634,20 @@ class IndegoHub:
         return self._indego_client.generic_data
 
     async def _update_alerts(self):
+
+        # next lines just for test purposes regarding alert count
+
+        raw_alerts = await self._indego_client.get("alerts")
+
+        _LOGGER.warning(
+            "RAW ALERTS TYPE=%s LEN=%s",
+            type(raw_alerts),
+            len(raw_alerts) if hasattr(raw_alerts, "__len__") else "N/A",
+        )
+
+        _LOGGER.warning("RAW ALERTS DATA=%r", raw_alerts)
+
+        # from here normal code
         await self._indego_client.update_alerts()
 
         # Show "Problem" only if there are unread alerts
