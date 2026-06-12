@@ -1,12 +1,23 @@
 {
   "domain": "boschindego",
   "name": "Bosch Indego Lawnmower",
+  "codeowners": [
+    "@whylev",
+    "@kimzeuner"
+  ],
   "config_flow": true,
+  "dependencies": [
+    "application_credentials"
+  ],
   "documentation": "https://github.com/whylev/Indego",
-  "dependencies": ["application_credentials"],
-  "codeowners": ["@whylev", "@kimzeuner"],
-  "requirements": ["pyIndego==3.2.2"],
+  "issue_tracker": "https://github.com/whylev/Indego/issues",
   "iot_class": "cloud_polling",
+  "requirements": [
+    "pyIndego==3.2.2"
+  ],
   "version": "1.6.2",
-  "loggers": ["custom_components.indego", "pyIndego"]
+  "loggers": [
+    "custom_components.indego",
+    "pyIndego"
+  ]
 }
