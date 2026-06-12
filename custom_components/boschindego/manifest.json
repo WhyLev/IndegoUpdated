@@ -10,14 +10,14 @@
     "application_credentials"
   ],
   "documentation": "https://github.com/whylev/Indego",
-  "issue_tracker": "https://github.com/whylev/Indego/issues",
   "iot_class": "cloud_polling",
-  "requirements": [
-    "pyIndego==3.2.2"
-  ],
-  "version": "1.6.2",
+  "issue_tracker": "https://github.com/whylev/Indego/issues",
   "loggers": [
     "custom_components.indego",
     "pyIndego"
-  ]
+  ],
+  "requirements": [
+    "pyIndego==3.2.2"
+  ],
+  "version": "1.6.2"
 }
