@@ -1,6 +1,6 @@
 {
   "domain": "boschindego",
-  "name": "Bosch Indego",
+  "name": "Bosch Indego Lawnmower",
   "config_flow": true,
   "documentation": "https://github.com/whylev/Indego",
   "dependencies": ["application_credentials"],
