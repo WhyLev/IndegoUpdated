@@ -1,0 +1,17 @@
+name: HACS Action
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v4
+
+      - name: HACS Action
+        uses: hacs/action@22.5.0
+        with:
+          category: integration
