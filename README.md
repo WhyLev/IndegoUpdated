@@ -1,4 +1,4 @@
-[![GitHub release](https://img.shields.io/github/release/sander1988/Indego.svg)](https://github.com/sander1988/Indego/releases/) [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![GitHub release](https://img.shields.io/github/release/whylev/Indego.svg)](https://github.com/whylev/Indego/releases/) [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
 # Bosch Indego Mower
 
@@ -673,7 +673,7 @@ The integration supports the following Bosch Indego models:
 - Indego S+ 500
 - Indego M+ 700 (1st & 2nd Gen)
 
-_Not seeing your model? Please [open an issue](https://github.com/sander1988/Indego/issues) to request support._
+_Not seeing your model? Please [open an issue](https://github.com/whylev/Indego/issues) to request support._
 
 ## ⚠️ Known Issues
 
@@ -696,8 +696,8 @@ _Not seeing your model? Please [open an issue](https://github.com/sander1988/Ind
 
 ### Found a Bug or Have a Suggestion?
 
-1. Check [existing issues](https://github.com/sander1988/Indego/issues) first
-2. Open a [new issue](https://github.com/sander1988/Indego/issues/new) with:
+1. Check [existing issues](https://github.com/whylev/Indego/issues) first
+2. Open a [new issue](https://github.com/whylev/Indego/issues/new) with:
    - Your mower model and firmware version
    - Steps to reproduce
    - Relevant logs (with debug enabled)
@@ -705,16 +705,16 @@ _Not seeing your model? Please [open an issue](https://github.com/sander1988/Ind
 
 ### Getting Help
 
-- 📚 [Documentation & Issues](https://github.com/sander1988/Indego/issues)
+- 📚 [Documentation & Issues](https://github.com/whylev/Indego/issues)
 - 💬 [Discord Community](https://discord.gg/aD33GsP)
 - 📋 Services reference: **Developer Tools → Services** (search "Bosch Indego")
 
 ## 🙏 Credits
 
-**Maintainers:** [@whylev](https://github.com/whylev), [@kimzeuner](https://github.com/kimzeuner), [@sander1988](https://github.com/sander1988)
+**Maintainers:** [@whylev](https://github.com/whylev), [@kimzeuner](https://github.com/kimzeuner)
 
 **Contributors:**
-[Eduard](https://github.com/eavanvalkenburg), [Jumper78](https://github.com/Jumper78), [dykandDK](https://github.com/dykandDK), [ultrasub](https://github.com/UltraSub), [Gnol86](https://github.com/Gnol86), naethan, bekkm, onkelfarmor, ltjessem, nsimb, jjandersson, [Shamshala](https://github.com/Shamshala), nath, [urbatecte](https://github.com/urbatecte), [Windmelodie](https://github.com/Windmelodie), [Fuempel](https://github.com/Fuempel), [MagaliDB](https://github.com/MagaliDB), [mhosse](https://github.com/mhosse), [Promises](https://github.com/Pr0mises)
+[@sander1988](https://github.com/sander1988), [Eduard](https://github.com/eavanvalkenburg), [Jumper78](https://github.com/Jumper78), [dykandDK](https://github.com/dykandDK), [ultrasub](https://github.com/UltraSub), [Gnol86](https://github.com/Gnol86), naethan, bekkm, onkelfarmor, ltjessem, nsimb, jjandersson, [Shamshala](https://github.com/Shamshala), nath, [urbatecte](https://github.com/urbatecte), [Windmelodie](https://github.com/Windmelodie), [Fuempel](https://github.com/Fuempel), [MagaliDB](https://github.com/MagaliDB), [mhosse](https://github.com/mhosse), [Promises](https://github.com/Pr0mises)
 
 **Inspiration:**
 - [Bosch Indego API Documentation](http://grauonline.de/wordpress/?page_id=219)
