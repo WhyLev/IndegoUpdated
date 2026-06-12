@@ -27,7 +27,7 @@
             },
             "reauth_confirm": {
                 "title": "Autentificering udløbet",
-                "description": "Autentificeringen af Bosch Indego API'et er udløbet. Autentificer igen med dine Bosch SingleKey ID."
+                "description": "Autentificeringen af Bosch Indego API"et er udløbet. Autentificer igen med dine Bosch SingleKey ID."
             }
         }
     },
@@ -289,7 +289,7 @@
         },
         "download_map": {
             "name": "Download klippekort",
-            "description": "Henter det aktuelle slåningskort fra Bosch Cloud API'en og gemmer det lokalt som \"www/indego_map_base.svg\". Kortet afspejler den senest optegnede slåningsrute.",
+            "description": "Henter det aktuelle slåningskort fra Bosch Cloud API"en og gemmer det lokalt som \"www/indego_map_base.svg\". Kortet afspejler den senest optegnede slåningsrute.",
             "fields": {
                 "mower_serial": {
                     "description": "Græsslåmaskine serienummer. Kun nødvendigt, når du har konfigureret flere græsslåmaskiner."
@@ -306,7 +306,7 @@
                 },
                 "calendar_type": {
                     "name": "Kalendertype",
-                    "description": "Vælg kalender ('calendar' for manuel kalender eller 'predictive' for deaktiverede tidsrum i SmartMowing-tilstand)."
+                    "description": "Vælg kalender ("calendar" for manuel kalender eller "predictive" for deaktiverede tidsrum i SmartMowing-tilstand)."
                 },
                 "day": {
                     "name": "Dag",
