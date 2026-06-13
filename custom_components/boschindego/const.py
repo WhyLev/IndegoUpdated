@@ -1,7 +1,7 @@
 """Constants for Indego integration."""
 from typing import Final
 
-DOMAIN: Final = "indego"
+DOMAIN: Final = "boschindego"
 
 OAUTH2_AUTHORIZE: Final = "https://prodindego.b2clogin.com/prodindego.onmicrosoft.com/b2c_1a_signup_signin/oauth2/v2.0/authorize"
 OAUTH2_TOKEN: Final = "https://prodindego.b2clogin.com/prodindego.onmicrosoft.com/b2c_1a_signup_signin/oauth2/v2.0/token"
