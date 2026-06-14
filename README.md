@@ -4,7 +4,7 @@
 
 **Home Assistant Custom Component for Bosch Indego robotic lawn mowers**
 
-A comprehensive Home Assistant integration that provides full control and monitoring of your Bosch Indego lawn mower. Get real-time status, battery information, mowing schedules, and more.
+A comprehensive Home Assistant integration that provides full control and monitoring of your Bosch Indego lawn mower. Get real-time status, battery information, mowing schedules, calendar slot configuration, and more.
 
 ![Sensors in Home Assistant](/doc/01_sensors.png)
 ![Diagnostics in Home Assistant](/doc/02_diagnostics.png)
@@ -16,17 +16,19 @@ A comprehensive Home Assistant integration that provides full control and monito
 - 📍 **Lawn Mapping** - Visual SVG map with mower position overlay (dynamic streaming based on movement)
 - 🤖 **SmartMowing Switch** - Toggle automatic schedule optimization based on weather
 - ⚠️ **Alert Management** - Monitor and manage mower alerts with action buttons and complete error list extraction
+- 📅 **Calendar Slot Configuration** - Set and track mowing time slots via dedicated service and sensors
 - 🌍 **Multi-language Support** - German, English, Dutch, French, Spanish, Italian, Danish, Norwegian, Polish, Swedish, Slovak, and more
 - 🏠 **Native Entities** - Lawn Mower and Vacuum entities for seamless Home Assistant integration
 - 📱 **Multiple Mowers** - Support for multiple mowers in one Home Assistant instance
 - 🔌 **Service Monitoring** - Bosch Cloud API availability detection with HTTP 5xx error tracking
-- 🔋 **Advanced Battery Info** - Detailed battery metrics (voltage, temperature, cycles, discharge)
+- 🔋 **Advanced Battery Info** - Detailed battery metrics (voltage, temperature, cycles, discharge in Wh)
 - 🛡️ **Intelligent Offline Detection** - 3-layer system (error codes, timeout, successful updates)
-- 📍 **Stuck Detection** - Automatic detection when mower is immobilized (> 60 seconds without movement)
+- 📍 **Adaptive Stuck Detection** - Smart detection adjusting timeouts based on current activity (mowing/border cut/mapping) with startup grace period
 - 👤 **Custom User Agent** - Configurable User-Agent for API requests to work around Bosch restrictions
 - 📈 **Session Tracking** - Counter for completed mowing sessions
 - 🎯 **Dynamic Camera Streaming** - Camera shows as streaming when mower is actively moving/mowing
 - 🔲 **Alert Action Buttons** - Quick action buttons to manage specific alerts
+- 📊 **Long-Term Statistics** - State class support for historical data graphs in Home Assistant
 
 ## 📖 Table of Contents
 
@@ -62,7 +64,7 @@ Join our Discord community to discuss features, vote on improvements, and get su
 
 ### Option 2: Manual Installation
 
-1. Copy the `indego` folder from `custom_components` to your Home Assistant `custom_components` folder
+1. Copy the `boschindego` folder from `custom_components` to your Home Assistant `custom_components` folder
 2. Restart Home Assistant
 
 ## Getting Started
@@ -127,8 +129,8 @@ All entities are automatically discovered after setup and will appear as "Unused
 | **Battery Temperature** ⚙️ | Battery cell temperature (°C) - diagnostic |
 | **Ambient Temperature** ⚙️ | Ambient air temperature (°C) - diagnostic |
 | **Battery Cycles** ⚙️ | Battery charge cycles count - diagnostic |
-| **Battery Discharge** ⚙️ | Battery discharge capacity (Ah) - diagnostic |
-| **Battery Charging** ⚙️ | Whether mower is currently charging (On/Off) |
+| **Battery Discharge** ⚙️ | Battery discharge capacity (Wh) - diagnostic |
+| **Battery Charging** | Whether mower is currently charging (On/Off) |
 
 **⚙️ = Diagnostic sensors (hidden by default)**
 
@@ -140,6 +142,8 @@ All entities are automatically discovered after setup and will appear as "Unused
 | **Total Mowing Time** | Total cumulative mowing time (hours) |
 | **Last Completed Mow** | Timestamp of last full lawn mowing completion |
 | **Next Mow Time** | Scheduled next mowing time |
+| **Calendar Slots** | Currently configured mowing time slots |
+| **Predictive Calendar Slots** | Predicted/optimized mowing time slots |
 
 #### Position & Movement
 
@@ -162,7 +166,8 @@ All entities are automatically discovered after setup and will appear as "Unused
 |--------|-------------|
 | **Online Status** | Whether mower is connected (On/Off) - with intelligent 3-layer offline detection |
 | **Alerts** | Active alert status indicator with count of unread alerts |
-| **Mower Stuck** | Indicates if mower is stuck (detected by no movement >5px for 60+ seconds during mowing) |
+| **Mower Stuck** | Indicates if mower is stuck - adaptive timeout based on current activity, with 60s startup grace period |
+| **Battery Charging** | Whether mower is currently charging (On/Off) |
 | **Service Status** | Bosch Cloud API availability - detects HTTP 5xx errors |
 | **Update Available** | Firmware update availability (On/Off) |
 
@@ -191,7 +196,7 @@ Enable **"Expose as Lawn Mower"** to add a native Home Assistant Lawn Mower enti
 
 - **Commands**: Start Mowing, Pause, Dock (return to charging)
 - **States**: DOCKED, MOWING, PAUSED, RETURNING, ERROR
-- **Features**: Automatically maps 60+ mower states to Home Assistant standard activities
+- **Features**: Automatically maps 60+ mower states to Home Assistant standard activities; displays ERROR when unread alerts or device errors are present
 - **Entity ID**: `lawn_mower.indego_<SERIAL>`
 
 #### Vacuum Entity (Legacy)
@@ -278,7 +283,7 @@ The `binary_sensor.indego_<SERIAL>_alert` sensor stores all active mower alerts 
 
 #### Error Code Reference
 
-Over 90 error codes are mapped in the integration. See error list in **Developer Tools → Services → search "indego"** or check [error_codes.py](custom_components/indego/error_codes.py) for complete reference.
+Over 90 error codes are mapped in the integration. See error list in **Developer Tools → Services → search "indego"** or check [error_codes.py](custom_components/boschindego/error_codes.py) for complete reference.
 
 ### 💻 Service Monitoring
 
@@ -323,13 +328,17 @@ The lawn map camera entity provides dynamic streaming capabilities:
 - **Map Updates**: SVG map reloads when mower movement is detected for fresh position data
 - **Visual Feedback**: Streaming indicator in Home Assistant UI shows when mower is actively working
 
-### 🎯 Stuck Detection
+### 🎯 Adaptive Stuck Detection
 
-Automatic stuck mower detection system:
+Automatic stuck mower detection with activity-aware timeouts to minimize false positives:
 
 - **Binary Sensor**: `binary_sensor.indego_<SERIAL>_mower_stuck`
-- **Detection Threshold**: No movement > 5 pixels for 60+ seconds while mowing
-- **Tracking**: Only during active mowing/movement states (state numbers 500-799)
+- **Adaptive Timeouts** based on current activity:
+  - Normal Mowing: 60 seconds without movement (>5px)
+  - Border Cut: 70 seconds
+  - Mapping & Spot Mowing: 120 seconds
+- **Startup Grace Period**: 60-second grace period at the beginning of each session to allow for calibration
+- **Tracking**: Only during active mowing/movement states (state numbers 500-799); specific states are excluded to avoid false positives during expected pauses
 - **Attributes**:
   - `stuck_since` - Timestamp when mower became stuck
   - `stuck_x` - X position (pixels) where mower is stuck
@@ -408,13 +417,24 @@ Detailed battery information available as diagnostic sensors (disabled by defaul
 | **Battery Temperature** | °C | Track battery thermal behavior |
 | **Ambient Temperature** | °C | Monitor environmental conditions |
 | **Battery Cycles** | count | Track battery age and health |
-| **Battery Discharge** | Ah | Monitor discharge capacity |
+| **Battery Discharge** | Wh | Monitor discharge energy with `total_increasing` state class |
 
 **Enable these sensors:** Settings → Devices & Services → Indego → Sensors → Enable
 
+#### Long-Term Statistics
+
+Several sensors support Home Assistant long-term statistics for historical data graphs:
+
+| Sensor | State Class |
+|--------|-------------|
+| **Battery Percentage** | measurement |
+| **Lawn Mowed Size** | measurement |
+| **Total Runtime** | total_increasing |
+| **Battery Discharge** | total_increasing |
+
 #### Multilingual Support
 
-The integration includes translations for 11 languages:
+The integration includes translations for 12 languages:
 - German (Deutsch), English, Dutch (Nederlands), French (Français)
 - Spanish (Español), Italian (Italiano), Danish (Dansk), Norwegian (Norsk)
 - Polish (Polski), Swedish (Svenska), Slovak (Slovenčina)
@@ -466,7 +486,7 @@ The integration maps 60+ distinct mower states to Home Assistant standard activi
 - Provides human-readable state descriptions like "Mowing - Relocalizing", "Charging", "Returning to Dock"
 
 **Battery** (`sensor.indego_<SERIAL>_battery_percentage`):
-- Attributes: `voltage_V`, `discharge_Ah`, `cycles`, `battery_temp_°C`, `ambient_temp_°C`, `last_updated`
+- Attributes: `voltage_V`, `discharge_Wh`, `cycles`, `battery_temp_°C`, `ambient_temp_°C`, `last_updated`
 
 **Lawn Mowed** (`sensor.indego_<SERIAL>_lawn_mowed`):
 - Attributes: `last_completed_mow`, `next_mow`, `last_session_operation_min`, `last_session_cut_min`, `last_session_charge_min`, `last_updated`
@@ -490,6 +510,13 @@ The integration maps 60+ distinct mower states to Home Assistant standard activi
   - < 50 hours: "good"
   - 50-149 hours: "service_due_soon"
   - >= 150 hours: "service_required"
+
+**Calendar Slots** (`sensor.indego_<SERIAL>_calendar_slots`):
+- Configured mowing time slots retrieved from the mower
+- Updated via the `set_calendar_slot` service
+
+**Predictive Calendar Slots** (`sensor.indego_<SERIAL>_predictive_calendar_slots`):
+- Predicted or SmartMowing-optimized time slots
 
 ### Entity Categories
 
@@ -541,6 +568,29 @@ data:
 **Service Compatibility:**
 - These commands trigger the corresponding Lawn Mower entity methods (async_start_mowing, async_dock, async_pause)
 - Commands can also be sent directly to Lawn Mower entity via Home Assistant UI
+
+### Calendar Slot Configuration
+
+**Service:** `indego.set_calendar_slot`
+
+Configure mowing time slots on your mower directly from Home Assistant. The service supports the Home Assistant visual action editor for intuitive UI-based configuration.
+
+**Parameters:**
+- `slot` (required): The calendar slot to configure
+- `start` (required): Start time for the mowing slot (validated for correct format including seconds)
+- `end` (required): End time for the mowing slot
+- `mower_serial` (optional): Serial number (only needed for multiple mowers)
+
+**Example:**
+```yaml
+service: indego.set_calendar_slot
+data:
+  slot: 1
+  start: "08:00:00"
+  end: "12:00:00"
+```
+
+The current and predicted calendar slots are exposed as sensors (`calendar_slots` and `predictive_calendar_slots`) and update automatically after changes.
 
 ### SmartMowing Control
 
@@ -596,14 +646,14 @@ data:
 #### Delete All Alerts
 **Service:** `indego.delete_alert_all`
 
-Batch deletes all alerts with configurable delays between deletions.
+Loops through all alert batches from the Bosch API until all alerts are cleared.
 
 **Parameters:**
 - `mower_serial` (optional)
 
 **Batch Settings:**
 - Delay between deletions: 10 seconds
-- Maximum rounds: 20 (removes up to 20 alerts per call)
+- Maximum rounds: 20 (safety limit to prevent infinite loops)
 
 #### Mark Alert as Read
 **Service:** `indego.read_alert`
@@ -635,7 +685,7 @@ Batch marks all alerts as read with configurable delays.
 
 **Service:** `indego.download_map`
 
-Downloads the current lawn map from Bosch Cloud API and saves as `www/indego_map_<SERIAL>.svg` in your Home Assistant configuration directory. 
+Downloads the current lawn map from Bosch Cloud API and saves as `www/indego_map_<SERIAL>.svg` in your Home Assistant configuration directory.
 
 **Used by:**
 - Camera entity to display the mowing map with mower position overlay
@@ -655,7 +705,7 @@ To enable debug logging for troubleshooting, add this to your Home Assistant con
 ```yaml
 logger:
   logs:
-    custom_components.indego: debug
+    custom_components.boschindego: debug
     pyIndego: debug
 ```
 
