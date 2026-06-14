@@ -69,18 +69,22 @@ Join our Discord community to discuss features, vote on improvements, and get su
 
 ## Getting Started
 
-### 1. Install Chrome Extension (Required for Authentication)
+### 1. Install Browser Extension (Required for Authentication)
 
-Bosch Indego uses OAuth authentication (Bosch SingleKey ID). To complete authentication, you need a Chrome extension:
+Bosch Indego uses OAuth authentication (Bosch SingleKey ID). To complete authentication, you need to install a browser extension:
 
-1. Download: [HomeAssistant Indego authentication helper](/chrome-extension.zip)
+1. Download: [HomeAssistant Indego authentication helper](/browser-extension.zip)
 2. Extract the ZIP file
-3. Go to `chrome://extensions/` in Google Chrome
-4. Enable **Developer mode** (top right)
-5. Click **Load unpacked** and select the extracted folder
+3. Open your browser's extension management page:
+   - **Chrome / Edge / Brave / Opera / Vivaldi / Arc:** `chrome://extensions` or `edge://extensions`
+   - **Firefox:** `about:debugging#/runtime/this-firefox`
+4. Enable **Developer mode** (Chromium browsers only)
+5. Click **Load unpacked** (Chromium) or **Load Temporary Add-on** (Firefox) and select the extracted folder
 6. ✅ You can disable the extension after setup if you prefer
 
-**Note:** Currently only Google Chrome supports the Bosch authentication flow.
+**Supported browsers:** All Chromium-based browsers (Chrome, Edge, Brave, Opera, Vivaldi, Arc, Thorium, and more) + Firefox
+
+📖 [Full list of Chromium-based browsers](https://en.wikipedia.org/wiki/Chromium_(web_browser)#Browsers_based_on_Chromium)
 
 ### 2. Add the Integration
 
