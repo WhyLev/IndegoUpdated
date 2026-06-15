@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: write
+  contents: write  # Erlaubt der Action, die Änderung ins Repo zu pushen
 
 jobs:
   update-version:
@@ -14,21 +14,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.target_commitish }}
+          ref: ${{ github.event.release.target_commitish }} # Pusht auf den richtigen Branch (z.B. main)
 
       - name: Extract Version Number
         id: get_version
         run: |
-          # removes 'v' from Tag (v1.5.0 -> 1.5.0)
+          # Entfernt ein eventuelles 'v' aus dem Tag (z.B. v1.6.6 -> 1.6.6)
           VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Update manifest.json
         run: |
-          jq '.version = env.VERSION' manifest.json > tmp.json && mv tmp.json manifest.json
+          # Aktualisiert die Version im Unterordner
+          jq '.version = env.VERSION' custom_components/boschindego/manifest.json > tmp.json && mv tmp.json custom_components/boschindego/manifest.json
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update manifest version to ${{ env.VERSION }} [skip ci]"
-          file_pattern: 'manifest.json'
+          file_pattern: 'custom_components/boschindego/manifest.json'
