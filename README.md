@@ -7,11 +7,6 @@
 
 A comprehensive Home Assistant integration that provides full control and monitoring of your Bosch Indego lawn mower. Get real-time status, battery information, mowing schedules, calendar slot configuration, and more.
 
-![Sensors in Home Assistant](/doc/sensors.png)
-![Diagnostics in Home Assistant](/doc/diagnostics.png)
-![Configuration options for Bosch Indego integration](/doc/configuration.png)
-![Lawn Mower entity activity mapping](/doc/activity.png)
-
 ## ✨ Features
 
 - 🎮 **Full Mower Control** - Start, pause, dock, and schedule mowing
@@ -37,6 +32,7 @@ A comprehensive Home Assistant integration that provides full control and monito
 
 - [Features](#-features)
 - [Community](#-community)
+- [User Interface & Entities](#-user-interface--entities)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Monitored Entities](#-monitored-entities)
@@ -52,7 +48,47 @@ A comprehensive Home Assistant integration that provides full control and monito
 ## 💬 Community
 
 Join our Discord community to discuss features, vote on improvements, and get support:
-[discord.gg/aD33GsP](https://discord.gg/aD33GsP)
+
+[![Discord Shield](https://img.shields.io/discord/XXXXXX?style=for-the-badge&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/aD33GsP)
+<br>👉 [discord.gg/aD33GsP](https://discord.gg/aD33GsP)
+
+---
+
+## 📸 User Interface & Entities
+
+To keep your dashboard organized, the integration splits data into logical sections. 
+
+<details>
+  <summary>🔍 Click to expand Dashboard & Entity Screenshots</summary>
+  <br>
+  
+  <table width="100%">
+    <tr>
+      <td width="50%" valign="top">
+        <h3>📊 Device Monitoring</h3>
+        <p>Keep track of all live statistics, battery levels, and sensory data from your mower.</p>
+        <img src="doc/sensors.png" alt="Sensors in Home Assistant" width="100%">
+      </td>
+      <td width="50%" valign="top">
+        <h3>🛠️ System Diagnostics</h3>
+        <p>Monitor connection strength, internal temperatures, and precise error tracking codes.</p>
+        <img src="doc/diagnostics.png" alt="Diagnostics in Home Assistant" width="100%">
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top">
+        <h3>🔄 Live Activity & State</h3>
+        <p>Real-time entity mapping showing current mower behavior and operational status.</p>
+        <img src="doc/activity.png" alt="Lawn Mower entity activity mapping" width="100%">
+      </td>
+      <td width="50%" valign="top">
+        <h3>⚙️ Integration Setup</h3>
+        <p>Flexible configuration options to fine-tune polling intervals and integration behavior.</p>
+        <img src="doc/configuration.png" alt="Configuration options for Bosch Indego integration" width="100%">
+      </td>
+    </tr>
+  </table>
+</details>
 
 ## Installation
 
