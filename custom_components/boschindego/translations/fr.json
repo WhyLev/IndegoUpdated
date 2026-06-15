@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Mode de tonte",
                 "state": {
-                    "Calendar": "Calendrier manuel"
+                    "calendar": "Calendrier manuel"
                 }
             },
             "runtime_total": {
