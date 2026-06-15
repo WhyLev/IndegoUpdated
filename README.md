@@ -1,4 +1,5 @@
-[![GitHub release](https://img.shields.io/github/release/whylev/Indego.svg)](https://github.com/whylev/Indego/releases/) [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![GitHub Release](https://img.shields.io/github/v/release/whylev/Indego?style=for-the-badge&logo=github&color=41BDF5)](https://github.com/whylev/Indego/releases)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5?style=for-the-badge&logo=homeassistant)](https://github.com/custom-components/hacs)
 
 # Bosch Indego Mower
 
