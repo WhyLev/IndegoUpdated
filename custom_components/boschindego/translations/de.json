@@ -152,7 +152,10 @@
                 "name": "Nächster Mähtermin"
             },
             "mowing_mode": {
-                "name": "Mähmodus"
+                "name": "Mähmodus",
+                "state": {
+                    "Calendar": "Manueller Kalender"
+                }
             },
             "runtime_total": {
                 "name": "Gesamtmähzeit"
@@ -195,123 +198,215 @@
             },
             "predictive_calendar_slots": {
                 "name": "SmartMowing Sperrzeiten",
+                "state": {
+                    "Manual calendar active": "Manueller Kalender aktiv",
+                    "off": "Aus"
+                },
                 "state_attributes": {
-                    "today_slot_1": {
-                        "name": "Heute Slot 1",
+                    "last_updated": {
+                        "name": "Zuletzt aktualisiert"
+                    },
+                    "smartmowing_enabled": {
+                        "name": "SmartMowing aktiv"
+                    },
+                    "mowing_mode": {
+                        "name": "Mähmodus"
+                    },
+                    "earliest_start": {
+                        "name": "Frühester Start",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not enabled": "Nicht aktiviert"
                         }
                     },
-                    "today_slot_2": {
-                        "name": "Heute Slot 2",
+                    "latest_end": {
+                        "name": "Spätestes Ende",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not enabled": "Nicht aktiviert"
                         }
                     },
-                    "monday_slot_1": {
-                        "name": "Montag Slot 1",
+                    "blocked_before": {
+                        "name": "Gesperrt vor",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not enabled": "Nicht aktiviert"
                         }
                     },
-                    "monday_slot_2": {
-                        "name": "Montag Slot 2",
+                    "blocked_after": {
+                        "name": "Gesperrt nach",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not enabled": "Nicht aktiviert"
+                        }
+                    }
+                }
+            },
+            "predictive_schedule": {
+                "name": "SmartMowing Zeitplan",
+                "state": {
+                    "Manual calendar active": "Manueller Kalender aktiv",
+                    "none": "Keine"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Zuletzt aktualisiert"
+                    },
+                    "next_mow_slot": {
+                        "name": "Nächster geplanter Mähslot",
+                        "state": {
+                            "none": "Keine"
                         }
                     },
-                    "tuesday_slot_1": {
-                        "name": "Dienstag Slot 1",
+                    "next_mow_day": {
+                        "name": "Nächster geplanter Mähtag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "none": "Keine",
+                            "monday": "Montag",
+                            "tuesday": "Dienstag",
+                            "wednesday": "Mittwoch",
+                            "thursday": "Donnerstag",
+                            "friday": "Freitag",
+                            "saturday": "Samstag",
+                            "sunday": "Sonntag"
                         }
                     },
-                    "tuesday_slot_2": {
-                        "name": "Dienstag Slot 2",
+                    "next_mow_time": {
+                        "name": "Nächste geplante Mähzeit",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "none": "Keine"
                         }
                     },
-                    "wednesday_slot_1": {
-                        "name": "Mittwoch Slot 1",
+                    "schedule_monday": {
+                        "name": "Zeitplan Montag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "wednesday_slot_2": {
-                        "name": "Mittwoch Slot 2",
+                    "schedule_tuesday": {
+                        "name": "Zeitplan Dienstag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "thursday_slot_1": {
-                        "name": "Donnerstag Slot 1",
+                    "schedule_wednesday": {
+                        "name": "Zeitplan Mittwoch",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "thursday_slot_2": {
-                        "name": "Donnerstag Slot 2",
+                    "schedule_thursday": {
+                        "name": "Zeitplan Donnerstag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "friday_slot_1": {
-                        "name": "Freitag Slot 1",
+                    "schedule_friday": {
+                        "name": "Zeitplan Freitag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "friday_slot_2": {
-                        "name": "Freitag Slot 2",
+                    "schedule_saturday": {
+                        "name": "Zeitplan Samstag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "saturday_slot_1": {
-                        "name": "Samstag Slot 1",
+                    "schedule_sunday": {
+                        "name": "Zeitplan Sonntag",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "not scheduled": "Nicht geplant"
                         }
                     },
-                    "saturday_slot_2": {
-                        "name": "Samstag Slot 2",
+                    "exclusion_monday_user": {
+                        "name": "Sperrzeit Montag Benutzer",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "none": "Keine"
                         }
                     },
-                    "sunday_slot_1": {
-                        "name": "Sonntag Slot 1",
+                    "exclusion_monday_weather": {
+                        "name": "Sperrzeit Montag Wetter",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "none": "Keine"
                         }
                     },
-                    "sunday_slot_2": {
-                        "name": "Sonntag Slot 2",
+                    "exclusion_tuesday_user": {
+                        "name": "Sperrzeit Dienstag Benutzer",
                         "state": {
-                            "not enabled": "Nicht aktiviert",
-                            "not configured": "Nicht konfiguriert"
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_tuesday_weather": {
+                        "name": "Sperrzeit Dienstag Wetter",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_wednesday_user": {
+                        "name": "Sperrzeit Mittwoch Benutzer",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_wednesday_weather": {
+                        "name": "Sperrzeit Mittwoch Wetter",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_thursday_user": {
+                        "name": "Sperrzeit Donnerstag Benutzer",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_thursday_weather": {
+                        "name": "Sperrzeit Donnerstag Wetter",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_friday_user": {
+                        "name": "Sperrzeit Freitag Benutzer",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_friday_weather": {
+                        "name": "Sperrzeit Freitag Wetter",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_saturday_user": {
+                        "name": "Sperrzeit Samstag Benutzer",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_saturday_weather": {
+                        "name": "Sperrzeit Samstag Wetter",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_sunday_user": {
+                        "name": "Sperrzeit Sonntag Benutzer",
+                        "state": {
+                            "none": "Keine"
+                        }
+                    },
+                    "exclusion_sunday_weather": {
+                        "name": "Sperrzeit Sonntag Wetter",
+                        "state": {
+                            "none": "Keine"
                         }
                     }
                 }
             },
             "calendar_slots": {
                 "name": "Geplante Mähzeiten",
+                "state": {
+                    "SmartMowing active": "SmartMowing aktiv",
+                    "off": "Aus"
+                },
                 "state_attributes": {
                     "today_slot_1": {
                         "name": "Heute Slot 1",
