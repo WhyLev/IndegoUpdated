@@ -7,8 +7,10 @@
 
 A comprehensive Home Assistant integration that provides full control and monitoring of your Bosch Indego lawn mower. Get real-time status, battery information, mowing schedules, calendar slot configuration, and more.
 
-![Sensors in Home Assistant](/doc/01_sensors.png)
-![Diagnostics in Home Assistant](/doc/02_diagnostics.png)
+![Sensors in Home Assistant](/doc/sensors.png)
+![Diagnostics in Home Assistant](/doc/diagnostics.png)
+![Configuration options for Bosch Indego integration](/doc/configuration.png)
+![Lawn Mower entity activity mapping](/doc/activity.png)
 
 ## ✨ Features
 
@@ -204,6 +206,8 @@ Enable **"Expose as Lawn Mower"** to add a native Home Assistant Lawn Mower enti
 - **Features**: Automatically maps 60+ mower states to Home Assistant standard activities; displays ERROR when unread alerts or device errors are present
 - **Entity ID**: `lawn_mower.indego_<SERIAL>`
 
+![Bosch Indego mower card in Home Assistant dashboard](/doc/mower_card.png)
+
 #### Vacuum Entity (Legacy)
 
 Enable **"Expose as Vacuum"** for backward compatibility with Vacuum automations:
@@ -220,6 +224,8 @@ Visual SVG map with mower position overlay:
 - **Map Updates**: Refreshes on mower position changes (>5px movement)
 - **File Location**: `www/indego_map_<SERIAL>.svg`
 - **Entity ID**: `camera.indego_<SERIAL>_lawn_map`
+
+![Lawn map with mower position overlay](/doc/svg_map.png)
 
 
 ## 🔍 Advanced Features & Monitoring
@@ -365,6 +371,8 @@ data:
   command: mow
   mower_serial: "0123456789ABCDEF"  # Required for multiple mowers
 ```
+
+![Send command action in Home Assistant](/doc/action_send_command.png)
 
 ### ⚙️ Advanced Configuration
 
@@ -594,6 +602,8 @@ data:
   start: "08:00:00"
   end: "12:00:00"
 ```
+
+![Set calendar slot action with visual editor](/doc/action_set_calendar.png)
 
 The current and predicted calendar slots are exposed as sensors (`calendar_slots` and `predictive_calendar_slots`) and update automatically after changes.
 
