@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "SmartMowing blocked times",
                 "state": {
-                    "Manual calendar active": "Manual calendar active",
+                    "manual calendar active": "Manual calendar active",
                     "off": "Off"
                 },
                 "state_attributes": {
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "SmartMowing schedule",
                 "state": {
-                    "Manual calendar active": "Manual calendar active",
+                    "manual calendar active": "Manual calendar active",
                     "none": "None"
                 },
                 "state_attributes": {
