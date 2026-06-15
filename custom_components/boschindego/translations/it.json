@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "SmartMowing active": "SmartMowing attivo",
+                    "smartmowing active": "SmartMowing attivo",
                     "off": "Spento"
                 },
                 "name": "Orari di taglio pianificati",
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "Periodi bloccati SmartMowing",
                 "state": {
-                    "Manual calendar active": "Calendario manuale attivo",
+                    "manual calendar active": "Calendario manuale attivo",
                     "off": "Spento"
                 },
                 "state_attributes": {
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "Programma SmartMowing",
                 "state": {
-                    "Manual calendar active": "Calendario manuale attivo",
+                    "manual calendar active": "Calendario manuale attivo",
                     "none": "Nessuno"
                 },
                 "state_attributes": {

@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "SmartMowing active": "SmartMowing aktívny",
+                    "smartmowing active": "SmartMowing aktívny",
                     "off": "Vypnuté"
                 },
                 "name": "Naplánované časy kosenia",
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "Blokované časy SmartMowing",
                 "state": {
-                    "Manual calendar active": "Manuálny kalendár aktívny",
+                    "manual calendar active": "Manuálny kalendár aktívny",
                     "off": "Vypnuté"
                 },
                 "state_attributes": {
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "Plán SmartMowing",
                 "state": {
-                    "Manual calendar active": "Manuálny kalendár aktívny",
+                    "manual calendar active": "Manuálny kalendár aktívny",
                     "none": "Žiadne"
                 },
                 "state_attributes": {

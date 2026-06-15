@@ -199,7 +199,7 @@
             "predictive_calendar_slots": {
                 "name": "SmartMowing Sperrzeiten",
                 "state": {
-                    "Manual calendar active": "Manueller Kalender aktiv",
+                    "manual calendar active": "Manueller Kalender aktiv",
                     "off": "Aus"
                 },
                 "state_attributes": {
@@ -241,7 +241,7 @@
             "predictive_schedule": {
                 "name": "SmartMowing Zeitplan",
                 "state": {
-                    "Manual calendar active": "Manueller Kalender aktiv",
+                    "manual calendar active": "Manueller Kalender aktiv",
                     "none": "Keine"
                 },
                 "state_attributes": {
@@ -666,6 +666,24 @@
                 "end": {
                     "name": "Ende",
                     "description": "Endzeit des gewählten Slots. Wird nur benötigt wenn ein Zeitslot aktiviert werden soll. Nur Stunden und Minuten werden übernommen."
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Zeitfenster für SmartMowing Zeiten setzen",
+            "description": "Das Zeitfenster in dem der Mäher im SmartMowing Modus mähen darf.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Seriennummer",
+                    "description": "Seriennummer des Mähroboters. Wird nur benötigt, wenn mehrere Mähroboter eingerichtet sind."
+                },
+                "earliest_start": {
+                    "name": "Frühester Start",
+                    "description": "Um wie viel Uhr soll der Mäher frühestens beginnen."
+                },
+                "latest_end": {
+                    "name": "Spätestes Ende",
+                    "description": "Um wie viel uhr soll der Mäher spätestens beenden."
                 }
             }
         }

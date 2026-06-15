@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "SmartMowing active": "SmartMowing actief",
+                    "smartmowing active": "SmartMowing actief",
                     "off": "Uit"
                 },
                 "name": "Geplande maaitijden",
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "SmartMowing-blokkeertijden",
                 "state": {
-                    "Manual calendar active": "Handmatige kalender actief",
+                    "manual calendar active": "Handmatige kalender actief",
                     "off": "Uit"
                 },
                 "state_attributes": {
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "SmartMowing-schema",
                 "state": {
-                    "Manual calendar active": "Handmatige kalender actief",
+                    "manual calendar active": "Handmatige kalender actief",
                     "none": "Geen"
                 },
                 "state_attributes": {

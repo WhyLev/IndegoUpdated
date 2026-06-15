@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "SmartMowing active": "SmartMowing aktiv",
+                    "smartmowing active": "SmartMowing aktiv",
                     "off": "Fra"
                 },
                 "name": "Planlagte klippetider",
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "SmartMowing-spærretider",
                 "state": {
-                    "Manual calendar active": "Manuel kalender aktiv",
+                    "manual calendar active": "Manuel kalender aktiv",
                     "off": "Fra"
                 },
                 "state_attributes": {
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "SmartMowing-tidsplan",
                 "state": {
-                    "Manual calendar active": "Manuel kalender aktiv",
+                    "manual calendar active": "Manuel kalender aktiv",
                     "none": "Ingen"
                 },
                 "state_attributes": {
