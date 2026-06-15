@@ -2,10 +2,12 @@ name: Update Manifest Version
 
 on:
   release:
-    types: [published]
+    # ‘created’ triggers as soon as the release (including drafts) is created, 
+    # BEFORE the final source code archive for the release is frozen.
+    types: [created]
 
 permissions:
-  contents: write  # Erlaubt der Action, die Änderung ins Repo zu pushen
+  contents: write
 
 jobs:
   update-version:
@@ -14,18 +16,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.target_commitish }} # Pusht auf den richtigen Branch (z.B. main)
+          ref: ${{ github.event.release.target_commitish }}
 
       - name: Extract Version Number
         id: get_version
         run: |
-          # Entfernt ein eventuelles 'v' aus dem Tag (z.B. v1.6.6 -> 1.6.6)
           VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Update manifest.json
         run: |
-          # Aktualisiert die Version im Unterordner
           jq '.version = env.VERSION' custom_components/boschindego/manifest.json > tmp.json && mv tmp.json custom_components/boschindego/manifest.json
 
       - name: Commit and Push Changes
