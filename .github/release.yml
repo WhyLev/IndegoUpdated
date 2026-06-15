@@ -1,0 +1,33 @@
+changelog:
+  categories:
+    - title: "🚀 Features & Improvements"
+      labels:
+        - enhancement
+        - feature
+        - feature-request
+        - documentation
+        - translation
+
+    - title: "🐛 Bug Fixes"
+      labels:
+        - bug
+        - fix
+        - hotfix
+
+    - title: "🛠 Technical Changes"
+      labels:
+        - chore
+        - refactor
+        - dependencies
+        - maintenance
+
+  exclude:
+    labels:
+      - duplicate
+      - question
+      - invalid
+      - wontfix
+
+  replacers:
+    - search: "Merge pull request"
+      replace: ""
