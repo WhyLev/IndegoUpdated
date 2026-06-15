@@ -84,15 +84,18 @@ class IndegoSwitch(IndegoEntity, SwitchEntity):
     @property
     def is_on(self) -> bool:
         """Return true if switch is on."""
-        # Check if SmartMowing is enabled by parsing the mowing mode description
         try:
             mowing_mode = getattr(
-                self._indego_hub._indego_client.state, "mowing_mode_description", None
+                self._indego_hub._indego_client.generic_data,
+                "mowing_mode_description",
+                None,
             )
-            if mowing_mode:
-                # Check if mowing mode contains "Smart" (SmartMowing indicator)
-                self._is_on = "Smart" in str(mowing_mode)
+
+            if mowing_mode is not None:
+                self._is_on = str(mowing_mode).lower() == "smartmowing"
+
             return self._is_on
+
         except (AttributeError, TypeError):
             return self._is_on
 
