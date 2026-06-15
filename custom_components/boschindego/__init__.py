@@ -1866,7 +1866,7 @@ class IndegoHub:
         sensor = self.entities[ENTITY_CALENDAR_SLOTS]
 
         if _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "SmartMowing active"
+            sensor.state = "smartmowing active"
         else:
             sensor.state = ", ".join(today_slots) if today_slots else "off"
 
