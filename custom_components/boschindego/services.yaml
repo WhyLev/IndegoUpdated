@@ -110,25 +110,14 @@ set_calendar_slot:
       required: false
       selector:
         text: {}
-    calendar_type:
-      name: Calendar type
-      description: Type of calendar to use. Use "calendar for manual calendar or "predictive" for the forbidden time slots in SmartMowing mode.
-      example: "calendar"
-      required: false
-      default: "calendar"
-      selector:
-        select:
-          translation_key: calendar_type_options
-          options:
-            - "calendar"
-            - "predictive"
-    day:
-      name: Day
+    days:
+      name: Days
       description: Which day to configure.
       example: "monday"
       required: true
       selector:
         select:
+          multiple: true
           translation_key: day_options
           options:
             - "monday"
@@ -168,5 +157,32 @@ set_calendar_slot:
       description: Set End Time of the selected slot and day. Only needed if you want to enable a slot. Only hour and minute will be used.
       example: '"20:00"'
       required: false
+      selector:
+        time: {}
+
+set_predictive_mowing_window:
+  description: Set the allowed mowing window for SmartMowing.
+  fields:
+    mower_serial:
+      name: Serial number
+      description: Serial number of the mower. Only required if multiple mowers are configured.
+      example: "0123456789"
+      required: false
+      selector:
+        text: {}
+
+    earliest_start:
+      name: Earliest start
+      description: Earliest time SmartMowing is allowed to mow. Only hours and minutes are used.
+      example: "08:00"
+      required: true
+      selector:
+        time: {}
+
+    latest_end:
+      name: Latest end
+      description: Latest time SmartMowing is allowed to mow. Only hours and minutes are used.
+      example: "20:00"
+      required: true
       selector:
         time: {}
