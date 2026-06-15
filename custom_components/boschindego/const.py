@@ -29,12 +29,13 @@ CONF_POLLING: Final = "polling"
 CONF_ENABLED_BY_DEFAULT: Final = "enabled_by_default"
 CONF_ENTITY_CATEGORY: Final = "entity_category"
 
-CONF_CALENDAR_TYPE: Final = "calendar_type"
-CONF_DAY: Final = "day"
+CONF_DAYS: Final = "days"
 CONF_SLOT: Final = "slot"
 CONF_ENABLED: Final = "enabled"
 CONF_START: Final = "start"
 CONF_END: Final = "end"
+CONF_EARLIEST_START: Final = "earliest_start"
+CONF_LATEST_END: Final = "latest_end"
 
 CONF_SERVICE: Final = "service"
 CONF_SERVICE_DATA: Final = "service_data"
@@ -114,10 +115,12 @@ SERVICE_NAME_RESET_SMART_MOWING: Final = "reset_smart_mowing"
 
 # Calendar
 ENTITY_PREDICTIVE_CALENDAR_SLOTS: Final = "predictive_calendar_slots"
+ENTITY_PREDICTIVE_SCHEDULE: Final = "predictive_schedule"
 ENTITY_CALENDAR_SLOTS: Final = "calendar_slots"
 
 # Calendar services
 SERVICE_NAME_SET_CALENDAR_SLOT: Final = "set_calendar_slot"
+SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW: Final = "set_predictive_mowing_window"
 
 
 DELETE_ALERTS_BATCH_DELAY_SECONDS: Final = 10

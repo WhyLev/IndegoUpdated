@@ -152,7 +152,10 @@
                 "name": "Prossimo taglio"
             },
             "mowing_mode": {
-                "name": "Modalità di taglio"
+                "name": "Modalità di taglio",
+                "state": {
+                    "calendar": "Calendario manuale"
+                }
             },
             "runtime_total": {
                 "name": "Tempo totale di taglio"
@@ -192,6 +195,332 @@
             },
             "battery_discharge": {
                 "name": "Scarica batteria"
+            },
+            "calendar_slots": {
+                "state": {
+                    "smartmowing_active": "SmartMowing attivo",
+                    "off": "Spento"
+                },
+                "name": "Orari di taglio pianificati",
+                "state_attributes": {
+                    "today_slot_1": {
+                        "name": "Slot di oggi 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "today_slot_2": {
+                        "name": "Slot di oggi 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "monday_slot_1": {
+                        "name": "Lunedì Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "monday_slot_2": {
+                        "name": "Lunedì Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "tuesday_slot_1": {
+                        "name": "Martedì Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "tuesday_slot_2": {
+                        "name": "Martedì Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "wednesday_slot_1": {
+                        "name": "Mercoledì Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "wednesday_slot_2": {
+                        "name": "Mercoledì Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "thursday_slot_1": {
+                        "name": "Giovedì Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "thursday_slot_2": {
+                        "name": "Giovedì Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "friday_slot_1": {
+                        "name": "Venerdì Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "friday_slot_2": {
+                        "name": "Venerdì Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "saturday_slot_1": {
+                        "name": "Sabato Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "saturday_slot_2": {
+                        "name": "Sabato Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "sunday_slot_1": {
+                        "name": "Domenica Slot 1",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    },
+                    "sunday_slot_2": {
+                        "name": "Domenica Slot 2",
+                        "state": {
+                            "not_enabled": "Non attivato",
+                            "not_configured": "Non configurato"
+                        }
+                    }
+                }
+            },
+            "predictive_calendar_slots": {
+                "name": "Periodi bloccati SmartMowing",
+                "state": {
+                    "manual_calendar_active": "Calendario manuale attivo",
+                    "off": "Spento"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Ultimo aggiornamento"
+                    },
+                    "smartmowing_enabled": {
+                        "name": "SmartMowing attivo"
+                    },
+                    "mowing_mode": {
+                        "name": "Modalità di taglio"
+                    },
+                    "earliest_start": {
+                        "name": "Inizio più anticipato",
+                        "state": {
+                            "not_enabled": "Non attivato"
+                        }
+                    },
+                    "latest_end": {
+                        "name": "Fine più tardiva",
+                        "state": {
+                            "not_enabled": "Non attivato"
+                        }
+                    },
+                    "blocked_before": {
+                        "name": "Bloccato prima di",
+                        "state": {
+                            "not_enabled": "Non attivato"
+                        }
+                    },
+                    "blocked_after": {
+                        "name": "Bloccato dopo",
+                        "state": {
+                            "not_enabled": "Non attivato"
+                        }
+                    }
+                }
+            },
+            "predictive_schedule": {
+                "name": "Programma SmartMowing",
+                "state": {
+                    "manual_calendar_active": "Calendario manuale attivo",
+                    "none": "Nessuno"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Ultimo aggiornamento"
+                    },
+                    "next_mow_slot": {
+                        "name": "Prossima fascia di taglio pianificata",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "next_mow_day": {
+                        "name": "Prossimo giorno di taglio pianificato",
+                        "state": {
+                            "none": "Nessuno",
+                            "monday": "Lunedì",
+                            "tuesday": "Martedì",
+                            "wednesday": "Mercoledì",
+                            "thursday": "Giovedì",
+                            "friday": "Venerdì",
+                            "saturday": "Sabato",
+                            "sunday": "Domenica"
+                        }
+                    },
+                    "next_mow_time": {
+                        "name": "Prossimo orario di taglio pianificato",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_monday": {
+                        "name": "Programma Lunedì",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_monday_user": {
+                        "name": "Periodo bloccato Lunedì utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_monday_weather": {
+                        "name": "Periodo bloccato Lunedì meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_tuesday": {
+                        "name": "Programma Martedì",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_tuesday_user": {
+                        "name": "Periodo bloccato Martedì utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_tuesday_weather": {
+                        "name": "Periodo bloccato Martedì meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_wednesday": {
+                        "name": "Programma Mercoledì",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_wednesday_user": {
+                        "name": "Periodo bloccato Mercoledì utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_wednesday_weather": {
+                        "name": "Periodo bloccato Mercoledì meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_thursday": {
+                        "name": "Programma Giovedì",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_thursday_user": {
+                        "name": "Periodo bloccato Giovedì utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_thursday_weather": {
+                        "name": "Periodo bloccato Giovedì meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_friday": {
+                        "name": "Programma Venerdì",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_friday_user": {
+                        "name": "Periodo bloccato Venerdì utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_friday_weather": {
+                        "name": "Periodo bloccato Venerdì meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_saturday": {
+                        "name": "Programma Sabato",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_saturday_user": {
+                        "name": "Periodo bloccato Sabato utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_saturday_weather": {
+                        "name": "Periodo bloccato Sabato meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "schedule_sunday": {
+                        "name": "Programma Domenica",
+                        "state": {
+                            "not_scheduled": "Non programmato"
+                        }
+                    },
+                    "exclusion_sunday_user": {
+                        "name": "Periodo bloccato Domenica utente",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    },
+                    "exclusion_sunday_weather": {
+                        "name": "Periodo bloccato Domenica meteo",
+                        "state": {
+                            "none": "Nessuno"
+                        }
+                    }
+                }
             }
         },
         "camera": {

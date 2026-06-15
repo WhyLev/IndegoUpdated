@@ -152,7 +152,10 @@
                 "name": "Nästa klippning"
             },
             "mowing_mode": {
-                "name": "Klippläge"
+                "name": "Klippläge",
+                "state": {
+                    "calendar": "Manuell kalender"
+                }
             },
             "runtime_total": {
                 "name": "Total klippetid"
@@ -192,6 +195,332 @@
             },
             "battery_discharge": {
                 "name": "Batteriavlastning"
+            },
+            "calendar_slots": {
+                "state": {
+                    "smartmowing_active": "SmartMowing aktiv",
+                    "off": "Av"
+                },
+                "name": "Planerade klipptider",
+                "state_attributes": {
+                    "today_slot_1": {
+                        "name": "Dagens intervall 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "today_slot_2": {
+                        "name": "Dagens intervall 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "monday_slot_1": {
+                        "name": "Måndag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "monday_slot_2": {
+                        "name": "Måndag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "tuesday_slot_1": {
+                        "name": "Tisdag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "tuesday_slot_2": {
+                        "name": "Tisdag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "wednesday_slot_1": {
+                        "name": "Onsdag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "wednesday_slot_2": {
+                        "name": "Onsdag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "thursday_slot_1": {
+                        "name": "Torsdag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "thursday_slot_2": {
+                        "name": "Torsdag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "friday_slot_1": {
+                        "name": "Fredag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "friday_slot_2": {
+                        "name": "Fredag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "saturday_slot_1": {
+                        "name": "Lördag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "saturday_slot_2": {
+                        "name": "Lördag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "sunday_slot_1": {
+                        "name": "Söndag Slot 1",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    },
+                    "sunday_slot_2": {
+                        "name": "Söndag Slot 2",
+                        "state": {
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
+                        }
+                    }
+                }
+            },
+            "predictive_calendar_slots": {
+                "name": "SmartMowing-blockerade tider",
+                "state": {
+                    "manual_calendar_active": "Manuell kalender aktiv",
+                    "off": "Av"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Senast uppdaterad"
+                    },
+                    "smartmowing_enabled": {
+                        "name": "SmartMowing aktiv"
+                    },
+                    "mowing_mode": {
+                        "name": "Klippläge"
+                    },
+                    "earliest_start": {
+                        "name": "Tidigaste start",
+                        "state": {
+                            "not_enabled": "Inte aktiverad"
+                        }
+                    },
+                    "latest_end": {
+                        "name": "Senaste slut",
+                        "state": {
+                            "not_enabled": "Inte aktiverad"
+                        }
+                    },
+                    "blocked_before": {
+                        "name": "Blockerat före",
+                        "state": {
+                            "not_enabled": "Inte aktiverad"
+                        }
+                    },
+                    "blocked_after": {
+                        "name": "Blockerat efter",
+                        "state": {
+                            "not_enabled": "Inte aktiverad"
+                        }
+                    }
+                }
+            },
+            "predictive_schedule": {
+                "name": "SmartMowing-schema",
+                "state": {
+                    "manual_calendar_active": "Manuell kalender aktiv",
+                    "none": "Ingen"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Senast uppdaterad"
+                    },
+                    "next_mow_slot": {
+                        "name": "Nästa planerade klippintervall",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "next_mow_day": {
+                        "name": "Nästa planerade klippdag",
+                        "state": {
+                            "none": "Ingen",
+                            "monday": "Måndag",
+                            "tuesday": "Tisdag",
+                            "wednesday": "Onsdag",
+                            "thursday": "Torsdag",
+                            "friday": "Fredag",
+                            "saturday": "Lördag",
+                            "sunday": "Söndag"
+                        }
+                    },
+                    "next_mow_time": {
+                        "name": "Nästa planerade klipptid",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_monday": {
+                        "name": "Schema Måndag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_monday_user": {
+                        "name": "Blockerad tid Måndag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_monday_weather": {
+                        "name": "Blockerad tid Måndag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_tuesday": {
+                        "name": "Schema Tisdag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_tuesday_user": {
+                        "name": "Blockerad tid Tisdag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_tuesday_weather": {
+                        "name": "Blockerad tid Tisdag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_wednesday": {
+                        "name": "Schema Onsdag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_wednesday_user": {
+                        "name": "Blockerad tid Onsdag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_wednesday_weather": {
+                        "name": "Blockerad tid Onsdag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_thursday": {
+                        "name": "Schema Torsdag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_thursday_user": {
+                        "name": "Blockerad tid Torsdag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_thursday_weather": {
+                        "name": "Blockerad tid Torsdag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_friday": {
+                        "name": "Schema Fredag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_friday_user": {
+                        "name": "Blockerad tid Fredag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_friday_weather": {
+                        "name": "Blockerad tid Fredag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_saturday": {
+                        "name": "Schema Lördag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_saturday_user": {
+                        "name": "Blockerad tid Lördag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_saturday_weather": {
+                        "name": "Blockerad tid Lördag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "schedule_sunday": {
+                        "name": "Schema Söndag",
+                        "state": {
+                            "not_scheduled": "Inte planerad"
+                        }
+                    },
+                    "exclusion_sunday_user": {
+                        "name": "Blockerad tid Söndag användare",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    },
+                    "exclusion_sunday_weather": {
+                        "name": "Blockerad tid Söndag väder",
+                        "state": {
+                            "none": "Ingen"
+                        }
+                    }
+                }
             }
         },
         "camera": {

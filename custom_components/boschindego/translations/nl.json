@@ -152,7 +152,10 @@
                 "name": "Volgende maaien"
             },
             "mowing_mode": {
-                "name": "Maaimode"
+                "name": "Maaimode",
+                "state": {
+                    "calendar": "Handmatige kalender"
+                }
             },
             "runtime_total": {
                 "name": "Totale maaibedrijf"
@@ -192,6 +195,332 @@
             },
             "battery_discharge": {
                 "name": "Batterijontlading"
+            },
+            "calendar_slots": {
+                "state": {
+                    "smartmowing_active": "SmartMowing actief",
+                    "off": "Uit"
+                },
+                "name": "Geplande maaitijden",
+                "state_attributes": {
+                    "today_slot_1": {
+                        "name": "Vandaag slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "today_slot_2": {
+                        "name": "Vandaag slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "monday_slot_1": {
+                        "name": "Maandag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "monday_slot_2": {
+                        "name": "Maandag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "tuesday_slot_1": {
+                        "name": "Dinsdag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "tuesday_slot_2": {
+                        "name": "Dinsdag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "wednesday_slot_1": {
+                        "name": "Woensdag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "wednesday_slot_2": {
+                        "name": "Woensdag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "thursday_slot_1": {
+                        "name": "Donderdag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "thursday_slot_2": {
+                        "name": "Donderdag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "friday_slot_1": {
+                        "name": "Vrijdag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "friday_slot_2": {
+                        "name": "Vrijdag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "saturday_slot_1": {
+                        "name": "Zaterdag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "saturday_slot_2": {
+                        "name": "Zaterdag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "sunday_slot_1": {
+                        "name": "Zondag Slot 1",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    },
+                    "sunday_slot_2": {
+                        "name": "Zondag Slot 2",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld",
+                            "not_configured": "Niet geconfigureerd"
+                        }
+                    }
+                }
+            },
+            "predictive_calendar_slots": {
+                "name": "SmartMowing-blokkeertijden",
+                "state": {
+                    "manual_calendar_active": "Handmatige kalender actief",
+                    "off": "Uit"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Laatst bijgewerkt"
+                    },
+                    "smartmowing_enabled": {
+                        "name": "SmartMowing actief"
+                    },
+                    "mowing_mode": {
+                        "name": "Maaimodus"
+                    },
+                    "earliest_start": {
+                        "name": "Vroegste start",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld"
+                        }
+                    },
+                    "latest_end": {
+                        "name": "Laatste einde",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld"
+                        }
+                    },
+                    "blocked_before": {
+                        "name": "Geblokkeerd voor",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld"
+                        }
+                    },
+                    "blocked_after": {
+                        "name": "Geblokkeerd na",
+                        "state": {
+                            "not_enabled": "Niet ingeschakeld"
+                        }
+                    }
+                }
+            },
+            "predictive_schedule": {
+                "name": "SmartMowing-schema",
+                "state": {
+                    "manual_calendar_active": "Handmatige kalender actief",
+                    "none": "Geen"
+                },
+                "state_attributes": {
+                    "last_updated": {
+                        "name": "Laatst bijgewerkt"
+                    },
+                    "next_mow_slot": {
+                        "name": "Volgend gepland maaislot",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "next_mow_day": {
+                        "name": "Volgende geplande maaidag",
+                        "state": {
+                            "none": "Geen",
+                            "monday": "Maandag",
+                            "tuesday": "Dinsdag",
+                            "wednesday": "Woensdag",
+                            "thursday": "Donderdag",
+                            "friday": "Vrijdag",
+                            "saturday": "Zaterdag",
+                            "sunday": "Zondag"
+                        }
+                    },
+                    "next_mow_time": {
+                        "name": "Volgende geplande maaitijd",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_monday": {
+                        "name": "Schema Maandag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_monday_user": {
+                        "name": "Blokkeertijd Maandag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_monday_weather": {
+                        "name": "Blokkeertijd Maandag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_tuesday": {
+                        "name": "Schema Dinsdag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_tuesday_user": {
+                        "name": "Blokkeertijd Dinsdag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_tuesday_weather": {
+                        "name": "Blokkeertijd Dinsdag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_wednesday": {
+                        "name": "Schema Woensdag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_wednesday_user": {
+                        "name": "Blokkeertijd Woensdag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_wednesday_weather": {
+                        "name": "Blokkeertijd Woensdag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_thursday": {
+                        "name": "Schema Donderdag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_thursday_user": {
+                        "name": "Blokkeertijd Donderdag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_thursday_weather": {
+                        "name": "Blokkeertijd Donderdag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_friday": {
+                        "name": "Schema Vrijdag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_friday_user": {
+                        "name": "Blokkeertijd Vrijdag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_friday_weather": {
+                        "name": "Blokkeertijd Vrijdag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_saturday": {
+                        "name": "Schema Zaterdag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_saturday_user": {
+                        "name": "Blokkeertijd Zaterdag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_saturday_weather": {
+                        "name": "Blokkeertijd Zaterdag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "schedule_sunday": {
+                        "name": "Schema Zondag",
+                        "state": {
+                            "not_scheduled": "Niet gepland"
+                        }
+                    },
+                    "exclusion_sunday_user": {
+                        "name": "Blokkeertijd Zondag gebruiker",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    },
+                    "exclusion_sunday_weather": {
+                        "name": "Blokkeertijd Zondag weer",
+                        "state": {
+                            "none": "Geen"
+                        }
+                    }
+                }
             }
         },
         "camera": {

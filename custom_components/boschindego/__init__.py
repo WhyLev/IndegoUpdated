@@ -69,7 +69,7 @@ SERVICE_SCHEMA_COMMAND = vol.Schema({
 
 SERVICE_SCHEMA_SMARTMOWING = vol.Schema({
     vol.Optional(CONF_MOWER_SERIAL): cv.string,
-    vol.Required(CONF_SMARTMOWING): cv.string
+    vol.Required(CONF_SMARTMOWING): cv.boolean
 })
 
 SERVICE_SCHEMA_DELETE_ALERT = vol.Schema({
@@ -96,15 +96,23 @@ SERVICE_SCHEMA_DOWNLOAD_MAP = vol.Schema({
 
 SERVICE_SCHEMA_SET_CALENDAR_SLOT = vol.Schema({
     vol.Optional(CONF_MOWER_SERIAL): cv.string,
-    vol.Optional(CONF_CALENDAR_TYPE, default="calendar"): vol.In(["calendar", "predictive"]),
-    vol.Required(CONF_DAY): vol.In([
-        "monday", "tuesday", "wednesday", "thursday",
-        "friday", "saturday", "sunday",
-    ]),
+    vol.Required(CONF_DAYS): vol.All(
+        cv.ensure_list,
+        [vol.In([
+            "monday", "tuesday", "wednesday", "thursday",
+            "friday", "saturday", "sunday",
+        ])],
+    ),
     vol.Required(CONF_SLOT): vol.In([1, 2]),
     vol.Optional(CONF_ENABLED, default=True): cv.boolean,
     vol.Optional(CONF_START): cv.string,
     vol.Optional(CONF_END): cv.string,
+})
+
+SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW = vol.Schema({
+    vol.Optional(CONF_MOWER_SERIAL): cv.string,
+    vol.Required(CONF_EARLIEST_START): cv.string,
+    vol.Required(CONF_LATEST_END): cv.string,
 })
 
 
@@ -439,22 +447,11 @@ ENTITY_DEFINITIONS = {
         CONF_ATTR: [
             "last_updated",
             "smartmowing_enabled",
-            "today_slot_1",
-            "today_slot_2",
-            "monday_slot_1",
-            "monday_slot_2",
-            "tuesday_slot_1",
-            "tuesday_slot_2",
-            "wednesday_slot_1",
-            "wednesday_slot_2",
-            "thursday_slot_1",
-            "thursday_slot_2",
-            "friday_slot_1",
-            "friday_slot_2",
-            "saturday_slot_1",
-            "saturday_slot_2",
-            "sunday_slot_1",
-            "sunday_slot_2",
+            "mowing_mode",
+            "earliest_start",
+            "latest_end",
+            "blocked_before",
+            "blocked_after",
         ],
         CONF_TRANSLATION_KEY: "predictive_calendar_slots",
     },
@@ -483,6 +480,40 @@ ENTITY_DEFINITIONS = {
             "sunday_slot_2",
         ],
         CONF_TRANSLATION_KEY: "calendar_slots",
+    },
+    ENTITY_PREDICTIVE_SCHEDULE: {
+        CONF_TYPE: SENSOR_TYPE,
+        CONF_ICON: "mdi:calendar-search",
+        CONF_DEVICE_CLASS: None,
+        CONF_UNIT_OF_MEASUREMENT: None,
+        CONF_ATTR: [
+            "last_updated",
+            "next_mow_slot",
+            "next_mow_day",
+            "next_mow_time",
+            "schedule_monday",
+            "schedule_tuesday",
+            "schedule_wednesday",
+            "schedule_thursday",
+            "schedule_friday",
+            "schedule_saturday",
+            "schedule_sunday",
+            "exclusion_monday_user",
+            "exclusion_monday_weather",
+            "exclusion_tuesday_user",
+            "exclusion_tuesday_weather",
+            "exclusion_wednesday_user",
+            "exclusion_wednesday_weather",
+            "exclusion_thursday_user",
+            "exclusion_thursday_weather",
+            "exclusion_friday_user",
+            "exclusion_friday_weather",
+            "exclusion_saturday_user",
+            "exclusion_saturday_weather",
+            "exclusion_sunday_user",
+            "exclusion_sunday_weather",
+        ],
+        CONF_TRANSLATION_KEY: "predictive_schedule",
     },
 }
 
@@ -517,8 +548,8 @@ def _calendar_slots_by_day(calendar) -> dict:
     ]
 
     for day_name in day_names:
-        result[f"{day_name}_slot_1"] = "not enabled"
-        result[f"{day_name}_slot_2"] = "not enabled"
+        result[f"{day_name}_slot_1"] = "not_enabled"
+        result[f"{day_name}_slot_2"] = "not_enabled"
 
     if calendar is None or not getattr(calendar, "days", None):
         return result
@@ -534,7 +565,7 @@ def _calendar_slots_by_day(calendar) -> dict:
             attr_name = f"{day_name}_slot_{index + 1}"
 
             if index >= len(slots):
-                result[attr_name] = "not configured"
+                result[attr_name] = "not_configured"
                 continue
 
             slot = slots[index]
@@ -542,7 +573,7 @@ def _calendar_slots_by_day(calendar) -> dict:
             if getattr(slot, "En", False):
                 result[attr_name] = _format_calendar_slot(slot)
             else:
-                result[attr_name] = "not enabled"
+                result[attr_name] = "not_enabled"
 
     return result
 
@@ -555,7 +586,7 @@ def _today_calendar_slots(slots_by_day: dict) -> list:
             slots_by_day.get(f"{today_name}_slot_1"),
             slots_by_day.get(f"{today_name}_slot_2"),
         ]
-        if slot not in (None, "not enabled", "not configured")
+        if slot not in (None, "not_enabled", "not_configured")
     ]
 
 def _today_calendar_day_name() -> str:
@@ -629,6 +660,66 @@ def _calendar_to_payload(calendar, selected_cal: int = 1) -> dict:
         ],
     }
 
+def _predictive_calendar_payload(earliest_start: str, latest_end: str) -> dict:
+    start_hour, start_minute = _parse_slot_time(earliest_start)
+    end_hour, end_minute = _parse_slot_time(latest_end)
+
+    days = []
+
+    for day_index in range(7):
+        days.append({
+            "day": day_index,
+            "slots": [
+                {
+                    "En": True,
+                    "StHr": 0,
+                    "StMin": 0,
+                    "EnHr": start_hour,
+                    "EnMin": start_minute,
+                },
+                {
+                    "En": True,
+                    "StHr": end_hour,
+                    "StMin": end_minute,
+                    "EnHr": 23,
+                    "EnMin": 59,
+                },
+            ],
+        })
+
+    return {
+        "sel_cal": 1,
+        "cals": [
+            {
+                "cal": 1,
+                "days": days,
+            }
+        ],
+    }
+
+def _predictive_calendar_window(calendar) -> dict:
+    result = {
+        "earliest_start": "not_enabled",
+        "latest_end": "not_enabled",
+        "blocked_before": "not_enabled",
+        "blocked_after": "not_enabled",
+    }
+
+    if calendar is None or not getattr(calendar, "days", None):
+        return result
+
+    first_day = calendar.days[0]
+    slots = getattr(first_day, "slots", [])
+
+    if len(slots) > 0 and getattr(slots[0], "En", False):
+        result["blocked_before"] = _format_calendar_slot(slots[0])
+        result["earliest_start"] = f"{slots[0].EnHr:02d}:{slots[0].EnMin:02d}"
+
+    if len(slots) > 1 and getattr(slots[1], "En", False):
+        result["blocked_after"] = _format_calendar_slot(slots[1])
+        result["latest_end"] = f"{slots[1].StHr:02d}:{slots[1].StMin:02d}"
+
+    return result
 
 def _set_payload_slot(payload: dict, day_name: str, slot_number: int, enabled: bool, start: str | None, end: str | None) -> dict:
     day_index = DAY_NAME_TO_INDEX[day_name]
@@ -661,6 +752,94 @@ def _set_payload_slot(payload: dict, day_name: str, slot_number: int, enabled: b
     })
 
     return payload
+
+def _schedule_slot_to_text(slot) -> str:
+    return (
+        f"{slot.StHr:02d}:{slot.StMin:02d}-"
+        f"{slot.EnHr:02d}:{slot.EnMin:02d}"
+    )
+
+
+def _predictive_schedule_attributes(schedule) -> dict:
+    day_names = [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+    ]
+
+    attrs = {
+        "next_mow_slot": "none",
+        "next_mow_day": "none",
+        "next_mow_time": "none",
+    }
+
+    for day_name in day_names:
+        attrs[f"schedule_{day_name}"] = "not_scheduled"
+        attrs[f"exclusion_{day_name}_user"] = "none"
+        attrs[f"exclusion_{day_name}_weather"] = "none"
+
+    if schedule is None:
+        return attrs
+
+    schedule_days = getattr(schedule, "schedule_days", None) or []
+    exclusion_days = getattr(schedule, "exclusion_days", None) or []
+
+    for day in schedule_days:
+        day_name = getattr(day, "day_name", None)
+        if day_name not in day_names:
+            continue
+
+        slots = getattr(day, "slots", []) or []
+        slot_texts = [
+            _schedule_slot_to_text(slot)
+            for slot in slots
+            if getattr(slot, "En", True)
+        ]
+
+        if slot_texts:
+            attrs[f"schedule_{day_name}"] = ", ".join(slot_texts)
+
+            if attrs["next_mow_slot"] == "none":
+                attrs["next_mow_slot"] = f"{day_name} {slot_texts[0]}"
+                attrs["next_mow_day"] = day_name
+                attrs["next_mow_time"] = slot_texts[0]
+
+    for day in exclusion_days:
+        day_name = getattr(day, "day_name", None)
+        if day_name not in day_names:
+            continue
+
+        user_slots = []
+        weather_slots = []
+
+        for slot in getattr(day, "slots", []) or []:
+            text = _schedule_slot_to_text(slot)
+            attr = getattr(slot, "Attr", None)
+
+            if attr == "C":
+                user_slots.append(text)
+            else:
+                weather_slots.append(text)
+
+        if user_slots:
+            attrs[f"exclusion_{day_name}_user"] = ", ".join(user_slots)
+
+        if weather_slots:
+            attrs[f"exclusion_{day_name}_weather"] = ", ".join(weather_slots)
+
+    return attrs
+
+def _is_smartmowing_active(generic_data) -> bool:
+    mowing_mode = getattr(
+        generic_data,
+        "mowing_mode_description",
+        None,
+    )
+    return str(mowing_mode).lower() == "smartmowing"
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Load a config entry."""
@@ -751,10 +930,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         """Handle the smartmowing service call."""
         instance = find_instance_for_mower_service_call(call)
         enable = call.data.get(CONF_SMARTMOWING, DEFAULT_NAME_COMMANDS)
-        _LOGGER.info("Setting smart mowing mode to: %s (Mower: %s)", enable, instance._serial)
+        enable_bool = enable is True
 
-        await instance._indego_client.put_mow_mode(enable)
+        _LOGGER.info("Setting smart mowing mode to: %s (Mower: %s)", enable_bool, instance._serial)
+
+        await instance._indego_client.put_mow_mode(enable_bool)
+
+        if ENTITY_SMARTMOWING_SWITCH in instance.entities:
+            instance.entities[ENTITY_SMARTMOWING_SWITCH].is_on = enable_bool
+
+        await asyncio.sleep(3)
+
         await instance._update_generic_data()
+        await instance._update_predictive_calendar()
 
     async def async_delete_alert(call):
         """Handle the service call."""
@@ -834,20 +1022,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         """Handle set_calendar_slot service call."""
         instance = find_instance_for_mower_service_call(call)
 
-        calendar_type = call.data[CONF_CALENDAR_TYPE]
-        day = call.data[CONF_DAY]
+        days = call.data[CONF_DAYS]
         slot = call.data[CONF_SLOT]
         enabled = call.data[CONF_ENABLED]
         start = call.data.get(CONF_START)
         end = call.data.get(CONF_END)
 
         await instance.async_set_calendar_slot(
-            calendar_type=calendar_type,
-            day=day,
+            days=days,
             slot=slot,
             enabled=enabled,
             start=start,
             end=end,
+        )
+
+    async def async_set_predictive_mowing_window(call):
+        """Handle set_predictive_mowing_window service call."""
+        instance = find_instance_for_mower_service_call(call)
+
+        await instance.async_set_predictive_mowing_window(
+            earliest_start=call.data[CONF_EARLIEST_START],
+            latest_end=call.data[CONF_LATEST_END],
         )
 
     # In HASS we can have multiple Indego component instances as long as the mower serial is unique.
@@ -903,6 +1098,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             SERVICE_NAME_SET_CALENDAR_SLOT,
             async_set_calendar_slot,
             schema=SERVICE_SCHEMA_SET_CALENDAR_SLOT,
+        )
+
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW,
+            async_set_predictive_mowing_window,
+            schema=SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW,
         )
 
         hass.data[DOMAIN][CONF_SERVICES_REGISTERED] = entry.entry_id
@@ -1023,8 +1225,7 @@ class IndegoHub:
 
     async def async_set_calendar_slot(
         self,
-        calendar_type: str,
-        day: str,
+        days: list[str],
         slot: int,
         enabled: bool,
         start: str | None = None,
@@ -1032,9 +1233,8 @@ class IndegoHub:
     ):
         """Set one calendar slot."""
         _LOGGER.info(
-            "Setting %s calendar slot: day=%s slot=%s enabled=%s start=%s end=%s mower=%s",
-            calendar_type,
-            day,
+            "Setting calendar slot: days=%s slot=%s enabled=%s start=%s end=%s mower=%s",
+            days,
             slot,
             enabled,
             start,
@@ -1053,22 +1253,12 @@ class IndegoHub:
                 _LOGGER.error("Invalid time format for slot: %s", e)
                 raise HomeAssistantError(f"Invalid time format: {e}") from e
 
-        if calendar_type == "predictive":
-            await self._indego_client.update_predictive_calendar()
-            calendar = getattr(self._indego_client, "predictive_calendar", None)
-
-            payload = _calendar_to_payload(calendar, selected_cal=1)
-            payload = _set_payload_slot(payload, day, slot, enabled, start, end)
-
-            await self._indego_client.put_predictive_cal(payload)
-            await self._update_predictive_calendar()
-            return
-
         await self._indego_client.update_calendar()
         calendar = getattr(self._indego_client, "calendar", None)
 
         payload = _calendar_to_payload(calendar, selected_cal=1)
-        payload = _set_payload_slot(payload, day, slot, enabled, start, end)
+        for day in days:
+            payload = _set_payload_slot(payload, day, slot, enabled, start, end)
 
         # Experimental: pyIndego documents GET /calendar, but not PUT /calendar.
         result = await self._indego_client.put(
@@ -1079,6 +1269,59 @@ class IndegoHub:
         _LOGGER.warning("SET CALENDAR SLOT RESULT = %r", result)
 
         await self._update_calendar()
+
+    async def async_set_predictive_mowing_window(
+        self,
+        earliest_start: str,
+        latest_end: str,
+    ):
+        """Set SmartMowing allowed mowing window."""
+        _LOGGER.info(
+            "Setting predictive mowing window: earliest_start=%s latest_end=%s mower=%s",
+            earliest_start,
+            latest_end,
+            self._serial,
+        )
+
+        payload = _predictive_calendar_payload(earliest_start, latest_end)
+
+        result = await self._indego_client.put_predictive_cal(payload)
+
+        _LOGGER.debug("Set predictive mowing window result: %r", result)
+
+        await self._update_predictive_calendar()
+
+    async def _update_predictive_schedule(self):
+        """Update SmartMowing predictive schedule."""
+        _LOGGER.debug("Fetching predictive schedule from Bosch API")
+
+        await self._indego_client.update_predictive_schedule()
+
+        schedule = getattr(self._indego_client, "predictive_schedule", None)
+
+#        _LOGGER.warning(
+#            "PREDICTIVE SCHEDULE = %r",
+#            schedule
+#        )
+
+        if ENTITY_PREDICTIVE_SCHEDULE not in self.entities:
+            return
+
+        attrs = _predictive_schedule_attributes(schedule)
+
+        sensor = self.entities[ENTITY_PREDICTIVE_SCHEDULE]
+
+        if not _is_smartmowing_active(self._indego_client.generic_data):
+            sensor.state = "manual_calendar_active"
+        else:
+            sensor.state = attrs["next_mow_slot"]
+
+        sensor.set_attributes(
+            {
+                "last_updated": last_updated_now(),
+                **attrs,
+            }
+        )
 
     async def async_send_command_to_client(self, command: str):
         """Send a mower command to the Indego client."""
@@ -1359,6 +1602,7 @@ class IndegoHub:
                 self._update_last_completed_mow(),
                 self._update_next_mow(),
                 self._update_predictive_calendar(),
+                self._update_predictive_schedule(),
                 self._update_calendar(),
             ],
             return_exceptions=True,
@@ -1563,7 +1807,7 @@ class IndegoHub:
             _LOGGER.error("Unexpected error while updating operating data: %s", str(exc))
 
     async def _update_predictive_calendar(self):
-        """Update predictive calendar data / smart mowing blocked slots."""
+        """Update predictive calendar data / SmartMowing allowed mowing window."""
         _LOGGER.debug("Fetching predictive calendar from Bosch API")
 
         await self._indego_client.update_predictive_calendar()
@@ -1581,24 +1825,26 @@ class IndegoHub:
 
         smartmowing_enabled = str(mowing_mode).lower() == "smartmowing"
 
-        slots_by_day = _calendar_slots_by_day(calendar)
-        today_name = _today_calendar_day_name()
-        today_slots = _today_calendar_slots(slots_by_day)
+        window = _predictive_calendar_window(calendar)
 
         sensor = self.entities[ENTITY_PREDICTIVE_CALENDAR_SLOTS]
 
-        if not smartmowing_enabled:
-            sensor.state = "off"
+        if not _is_smartmowing_active(self._indego_client.generic_data):
+            sensor.state = "manual_calendar_active"
+        elif (
+            window["earliest_start"] != "not_enabled"
+            and window["latest_end"] != "not_enabled"
+        ):
+            sensor.state = f"{window['earliest_start']}-{window['latest_end']}"
         else:
-            sensor.state = ", ".join(today_slots) if today_slots else "off"
+            sensor.state = "off"
 
         sensor.set_attributes(
             {
                 "last_updated": last_updated_now(),
                 "smartmowing_enabled": smartmowing_enabled,
-                "today_slot_1": slots_by_day.get(f"{today_name}_slot_1"),
-                "today_slot_2": slots_by_day.get(f"{today_name}_slot_2"),
-                **slots_by_day,
+                "mowing_mode": mowing_mode,
+                **window,
             }
         )
 
@@ -1618,7 +1864,11 @@ class IndegoHub:
         today_slots = _today_calendar_slots(slots_by_day)
 
         sensor = self.entities[ENTITY_CALENDAR_SLOTS]
-        sensor.state = ", ".join(today_slots) if today_slots else "off"
+
+        if _is_smartmowing_active(self._indego_client.generic_data):
+            sensor.state = "smartmowing_active"
+        else:
+            sensor.state = ", ".join(today_slots) if today_slots else "off"
 
         sensor.set_attributes(
             {
@@ -1996,22 +2246,48 @@ class IndegoHub:
 
         try:
             if self._indego_client.generic_data:
+                mowing_mode = getattr(
+                    self._indego_client.generic_data,
+                    "mowing_mode_description",
+                    STATE_UNKNOWN,
+                )
+
                 if ENTITY_MOWING_MODE in self.entities:
-                    mowing_mode = getattr(
-                        self._indego_client.generic_data,
-                        'mowing_mode_description',
-                        STATE_UNKNOWN
-                    )
                     self.entities[ENTITY_MOWING_MODE].state = mowing_mode
                     _LOGGER.debug("Mowing mode: %s", mowing_mode)
+
+                if ENTITY_SMARTMOWING_SWITCH in self.entities:
+                    self.entities[ENTITY_SMARTMOWING_SWITCH].is_on = (
+                        str(mowing_mode).lower() == "smartmowing"
+                    )
+
             else:
                 _LOGGER.debug("Generic data is empty from API")
+
                 if ENTITY_MOWING_MODE in self.entities:
                     self.entities[ENTITY_MOWING_MODE].state = STATE_UNKNOWN
+
+                if ENTITY_SMARTMOWING_SWITCH in self.entities:
+                    self.entities[ENTITY_SMARTMOWING_SWITCH].is_on = False
+
         except Exception as exc:
             _LOGGER.error("Error processing generic data: %s", str(exc))
+
             if ENTITY_MOWING_MODE in self.entities:
                 self.entities[ENTITY_MOWING_MODE].state = STATE_UNKNOWN
+
+            if ENTITY_SMARTMOWING_SWITCH in self.entities:
+                self.entities[ENTITY_SMARTMOWING_SWITCH].is_on = False
+
+        try:
+            if ENTITY_PREDICTIVE_CALENDAR_SLOTS in self.entities:
+                await self._update_predictive_calendar()
+        except Exception as exc:
+            _LOGGER.debug(
+                "Could not refresh predictive calendar after generic data update: %s",
+                exc,
+            )
+
 
         return self._indego_client.generic_data
 
