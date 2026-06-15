@@ -92,16 +92,30 @@ To keep your dashboard organized, the integration splits data into logical secti
 
 ## Installation
 
-### Option 1: Via HACS (Recommended)
+### ~~Option 1: Via HACS (Recommended)~~
 
-1. Add this repository to HACS (Community Store)
-2. Search for "Bosch Indego"
-3. Click "Install"
-4. Restart Home Assistant
+~~1. Add this repository to HACS (Community Store)~~  
+~~2. Search for "Bosch Indego"~~  
+~~3. Click "Install"~~  
+~~4. Restart Home Assistant~~
 
-[HACS Repository](https://hacs.xyz/)
+> [!NOTE]  
+> The integration is currently **not** available in the default HACS store. Please use **Option 2** (Custom Repository) or **Option 3** below to install it.
 
-### Option 2: Manual Installation
+---
+
+### Option 2: Via HACS Custom Repository
+
+If you want to use HACS but the integration is not yet in the default store, you can easily add it manually:
+
+1. Open **HACS** in your Home Assistant dashboard.
+2. Click the **three dots** in the top right corner.
+3. Select **Custom repositories**.
+4. Add the GitHub link: `https://github.com/whylev/Indego`
+5. Select **Integration** from the category dropdown menu.
+6. Click **Add**, then search for **"Bosch Indego Lawnmower"** in HACS and click install.
+
+### Option 3: Manual Installation
 
 1. Copy the `boschindego` folder from `custom_components` to your Home Assistant `custom_components` folder
 2. Restart Home Assistant
