@@ -1312,7 +1312,7 @@ class IndegoHub:
         sensor = self.entities[ENTITY_PREDICTIVE_SCHEDULE]
 
         if not _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "Manual calendar active"
+            sensor.state = "manual calendar active"
         else:
             sensor.state = attrs["next_mow_slot"]
 
@@ -1830,7 +1830,7 @@ class IndegoHub:
         sensor = self.entities[ENTITY_PREDICTIVE_CALENDAR_SLOTS]
 
         if not _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "Manual calendar active"
+            sensor.state = "manual calendar active"
         elif (
             window["earliest_start"] != "not enabled"
             and window["latest_end"] != "not enabled"
