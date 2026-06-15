@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Modo de corte",
                 "state": {
-                    "Calendar": "Calendario manual"
+                    "calendar": "Calendario manual"
                 }
             },
             "runtime_total": {
