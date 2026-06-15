@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Mowing Mode",
                 "state": {
-                    "Calendar": "Manual Calendar"
+                    "calendar": "Manual Calendar"
                 }
             },
             "runtime_total": {
