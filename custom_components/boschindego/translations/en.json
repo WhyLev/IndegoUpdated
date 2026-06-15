@@ -129,7 +129,7 @@
                     "stuck_on_lawn_help_needed": "Stuck on lawn, help needed",
                     "returning_to_dock": "Returning to dock",
                     "returning_to_dock_battery_low": "Returning to dock - Battery low",
-                    "returning_to_dock_calendar_timeslot_ended": "Returning to Dock - Calendar timeslot ended",
+                    "returning_to_dock_calendar_timeslot_ended": "Returning to Dock -  timeslot ended",
                     "returning_to_dock_battery_temp_range": "Returning to Dock - Battery temp range",
                     "returning_to_dock_lawn_complete": "Returning to Dock - Lawn complete",
                     "returning_to_dock_relocalising": "Returning to Dock - Relocating",
@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Mowing Mode",
                 "state": {
-                    "Calendar": "Manual Calendar"
+                    "calendar": "Manual Calendar"
                 }
             },
             "runtime_total": {
