@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Klippemode",
                 "state": {
-                    "Calendar": "Manuel kalender"
+                    "calendar": "Manuel kalender"
                 }
             },
             "runtime_total": {
