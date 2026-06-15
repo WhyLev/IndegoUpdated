@@ -1,0 +1,34 @@
+name: Update Manifest Version
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Extract Version Number
+        id: get_version
+        run: |
+          # removes 'v' from Tag (v1.5.0 -> 1.5.0)
+          VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update manifest.json
+        run: |
+          jq '.version = env.VERSION' manifest.json > tmp.json && mv tmp.json manifest.json
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update manifest version to ${{ env.VERSION }} [skip ci]"
+          file_pattern: 'manifest.json'
