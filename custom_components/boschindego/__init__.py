@@ -548,8 +548,8 @@ def _calendar_slots_by_day(calendar) -> dict:
     ]
 
     for day_name in day_names:
-        result[f"{day_name}_slot_1"] = "not enabled"
-        result[f"{day_name}_slot_2"] = "not enabled"
+        result[f"{day_name}_slot_1"] = "not_enabled"
+        result[f"{day_name}_slot_2"] = "not_enabled"
 
     if calendar is None or not getattr(calendar, "days", None):
         return result
@@ -565,7 +565,7 @@ def _calendar_slots_by_day(calendar) -> dict:
             attr_name = f"{day_name}_slot_{index + 1}"
 
             if index >= len(slots):
-                result[attr_name] = "not configured"
+                result[attr_name] = "not_configured"
                 continue
 
             slot = slots[index]
@@ -573,7 +573,7 @@ def _calendar_slots_by_day(calendar) -> dict:
             if getattr(slot, "En", False):
                 result[attr_name] = _format_calendar_slot(slot)
             else:
-                result[attr_name] = "not enabled"
+                result[attr_name] = "not_enabled"
 
     return result
 
@@ -586,7 +586,7 @@ def _today_calendar_slots(slots_by_day: dict) -> list:
             slots_by_day.get(f"{today_name}_slot_1"),
             slots_by_day.get(f"{today_name}_slot_2"),
         ]
-        if slot not in (None, "not enabled", "not configured")
+        if slot not in (None, "not_enabled", "not_configured")
     ]
 
 def _today_calendar_day_name() -> str:
@@ -699,10 +699,10 @@ def _predictive_calendar_payload(earliest_start: str, latest_end: str) -> dict:
 
 def _predictive_calendar_window(calendar) -> dict:
     result = {
-        "earliest_start": "not enabled",
-        "latest_end": "not enabled",
-        "blocked_before": "not enabled",
-        "blocked_after": "not enabled",
+        "earliest_start": "not_enabled",
+        "latest_end": "not_enabled",
+        "blocked_before": "not_enabled",
+        "blocked_after": "not_enabled",
     }
 
     if calendar is None or not getattr(calendar, "days", None):
@@ -778,7 +778,7 @@ def _predictive_schedule_attributes(schedule) -> dict:
     }
 
     for day_name in day_names:
-        attrs[f"schedule_{day_name}"] = "not scheduled"
+        attrs[f"schedule_{day_name}"] = "not_scheduled"
         attrs[f"exclusion_{day_name}_user"] = "none"
         attrs[f"exclusion_{day_name}_weather"] = "none"
 
@@ -1312,7 +1312,7 @@ class IndegoHub:
         sensor = self.entities[ENTITY_PREDICTIVE_SCHEDULE]
 
         if not _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "manual calendar active"
+            sensor.state = "manual_calendar_active"
         else:
             sensor.state = attrs["next_mow_slot"]
 
@@ -1830,10 +1830,10 @@ class IndegoHub:
         sensor = self.entities[ENTITY_PREDICTIVE_CALENDAR_SLOTS]
 
         if not _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "manual calendar active"
+            sensor.state = "manual_calendar_active"
         elif (
-            window["earliest_start"] != "not enabled"
-            and window["latest_end"] != "not enabled"
+            window["earliest_start"] != "not_enabled"
+            and window["latest_end"] != "not_enabled"
         ):
             sensor.state = f"{window['earliest_start']}-{window['latest_end']}"
         else:
@@ -1866,7 +1866,7 @@ class IndegoHub:
         sensor = self.entities[ENTITY_CALENDAR_SLOTS]
 
         if _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "smartmowing active"
+            sensor.state = "smartmowing_active"
         else:
             sensor.state = ", ".join(today_slots) if today_slots else "off"
 
