@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Režim kosenia",
                 "state": {
-                    "Calendar": "Manuálny kalendár"
+                    "calendar": "Manuálny kalendár"
                 }
             },
             "runtime_total": {
@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "smartmowing active": "SmartMowing aktívny",
+                    "smartmowing_active": "SmartMowing aktívny",
                     "off": "Vypnuté"
                 },
                 "name": "Naplánované časy kosenia",
@@ -206,113 +206,113 @@
                     "today_slot_1": {
                         "name": "Dnešný slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "today_slot_2": {
                         "name": "Dnešný slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "monday_slot_1": {
                         "name": "Pondelok Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "monday_slot_2": {
                         "name": "Pondelok Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "tuesday_slot_1": {
                         "name": "Utorok Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "tuesday_slot_2": {
                         "name": "Utorok Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "wednesday_slot_1": {
                         "name": "Streda Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "wednesday_slot_2": {
                         "name": "Streda Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "thursday_slot_1": {
                         "name": "Štvrtok Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "thursday_slot_2": {
                         "name": "Štvrtok Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "friday_slot_1": {
                         "name": "Piatok Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "friday_slot_2": {
                         "name": "Piatok Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "saturday_slot_1": {
                         "name": "Sobota Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "saturday_slot_2": {
                         "name": "Sobota Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "sunday_slot_1": {
                         "name": "Nedeľa Slot 1",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     },
                     "sunday_slot_2": {
                         "name": "Nedeľa Slot 2",
                         "state": {
-                            "not enabled": "Neaktivované",
-                            "not configured": "Nenakonfigurované"
+                            "not_enabled": "Neaktivované",
+                            "not_configured": "Nenakonfigurované"
                         }
                     }
                 }
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "Blokované časy SmartMowing",
                 "state": {
-                    "manual calendar active": "Manuálny kalendár aktívny",
+                    "manual_calendar_active": "Manuálny kalendár aktívny",
                     "off": "Vypnuté"
                 },
                 "state_attributes": {
@@ -336,25 +336,25 @@
                     "earliest_start": {
                         "name": "Najskorší začiatok",
                         "state": {
-                            "not enabled": "Neaktivované"
+                            "not_enabled": "Neaktivované"
                         }
                     },
                     "latest_end": {
                         "name": "Najneskorší koniec",
                         "state": {
-                            "not enabled": "Neaktivované"
+                            "not_enabled": "Neaktivované"
                         }
                     },
                     "blocked_before": {
                         "name": "Blokované pred",
                         "state": {
-                            "not enabled": "Neaktivované"
+                            "not_enabled": "Neaktivované"
                         }
                     },
                     "blocked_after": {
                         "name": "Blokované po",
                         "state": {
-                            "not enabled": "Neaktivované"
+                            "not_enabled": "Neaktivované"
                         }
                     }
                 }
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "Plán SmartMowing",
                 "state": {
-                    "manual calendar active": "Manuálny kalendár aktívny",
+                    "manual_calendar_active": "Manuálny kalendár aktívny",
                     "none": "Žiadne"
                 },
                 "state_attributes": {
@@ -397,7 +397,7 @@
                     "schedule_monday": {
                         "name": "Plán Pondelok",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_monday_user": {
@@ -415,7 +415,7 @@
                     "schedule_tuesday": {
                         "name": "Plán Utorok",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_tuesday_user": {
@@ -433,7 +433,7 @@
                     "schedule_wednesday": {
                         "name": "Plán Streda",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_wednesday_user": {
@@ -451,7 +451,7 @@
                     "schedule_thursday": {
                         "name": "Plán Štvrtok",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_thursday_user": {
@@ -469,7 +469,7 @@
                     "schedule_friday": {
                         "name": "Plán Piatok",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_friday_user": {
@@ -487,7 +487,7 @@
                     "schedule_saturday": {
                         "name": "Plán Sobota",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_saturday_user": {
@@ -505,7 +505,7 @@
                     "schedule_sunday": {
                         "name": "Plán Nedeľa",
                         "state": {
-                            "not scheduled": "Nenaplánované"
+                            "not_scheduled": "Nenaplánované"
                         }
                     },
                     "exclusion_sunday_user": {

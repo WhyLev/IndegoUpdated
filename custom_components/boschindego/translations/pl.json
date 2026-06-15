@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Tryb koszenia",
                 "state": {
-                    "Calendar": "Kalendarz ręczny"
+                    "calendar": "Kalendarz ręczny"
                 }
             },
             "runtime_total": {
@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "smartmowing active": "SmartMowing aktywny",
+                    "smartmowing_active": "SmartMowing aktywny",
                     "off": "Wyłączone"
                 },
                 "name": "Zaplanowane czasy koszenia",
@@ -206,113 +206,113 @@
                     "today_slot_1": {
                         "name": "Dzisiejszy przedział 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "today_slot_2": {
                         "name": "Dzisiejszy przedział 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "monday_slot_1": {
                         "name": "Poniedziałek Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "monday_slot_2": {
                         "name": "Poniedziałek Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "tuesday_slot_1": {
                         "name": "Wtorek Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "tuesday_slot_2": {
                         "name": "Wtorek Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "wednesday_slot_1": {
                         "name": "Środa Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "wednesday_slot_2": {
                         "name": "Środa Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "thursday_slot_1": {
                         "name": "Czwartek Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "thursday_slot_2": {
                         "name": "Czwartek Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "friday_slot_1": {
                         "name": "Piątek Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "friday_slot_2": {
                         "name": "Piątek Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "saturday_slot_1": {
                         "name": "Sobota Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "saturday_slot_2": {
                         "name": "Sobota Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "sunday_slot_1": {
                         "name": "Niedziela Slot 1",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     },
                     "sunday_slot_2": {
                         "name": "Niedziela Slot 2",
                         "state": {
-                            "not enabled": "Nieaktywny",
-                            "not configured": "Nie skonfigurowano"
+                            "not_enabled": "Nieaktywny",
+                            "not_configured": "Nie skonfigurowano"
                         }
                     }
                 }
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "Okresy blokady SmartMowing",
                 "state": {
-                    "manual calendar active": "Aktywny kalendarz ręczny",
+                    "manual_calendar_active": "Aktywny kalendarz ręczny",
                     "off": "Wyłączone"
                 },
                 "state_attributes": {
@@ -336,25 +336,25 @@
                     "earliest_start": {
                         "name": "Najwcześniejszy start",
                         "state": {
-                            "not enabled": "Nieaktywny"
+                            "not_enabled": "Nieaktywny"
                         }
                     },
                     "latest_end": {
                         "name": "Najpóźniejsze zakończenie",
                         "state": {
-                            "not enabled": "Nieaktywny"
+                            "not_enabled": "Nieaktywny"
                         }
                     },
                     "blocked_before": {
                         "name": "Zablokowane przed",
                         "state": {
-                            "not enabled": "Nieaktywny"
+                            "not_enabled": "Nieaktywny"
                         }
                     },
                     "blocked_after": {
                         "name": "Zablokowane po",
                         "state": {
-                            "not enabled": "Nieaktywny"
+                            "not_enabled": "Nieaktywny"
                         }
                     }
                 }
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "Harmonogram SmartMowing",
                 "state": {
-                    "manual calendar active": "Aktywny kalendarz ręczny",
+                    "manual_calendar_active": "Aktywny kalendarz ręczny",
                     "none": "Brak"
                 },
                 "state_attributes": {
@@ -397,7 +397,7 @@
                     "schedule_monday": {
                         "name": "Harmonogram Poniedziałek",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_monday_user": {
@@ -415,7 +415,7 @@
                     "schedule_tuesday": {
                         "name": "Harmonogram Wtorek",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_tuesday_user": {
@@ -433,7 +433,7 @@
                     "schedule_wednesday": {
                         "name": "Harmonogram Środa",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_wednesday_user": {
@@ -451,7 +451,7 @@
                     "schedule_thursday": {
                         "name": "Harmonogram Czwartek",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_thursday_user": {
@@ -469,7 +469,7 @@
                     "schedule_friday": {
                         "name": "Harmonogram Piątek",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_friday_user": {
@@ -487,7 +487,7 @@
                     "schedule_saturday": {
                         "name": "Harmonogram Sobota",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_saturday_user": {
@@ -505,7 +505,7 @@
                     "schedule_sunday": {
                         "name": "Harmonogram Niedziela",
                         "state": {
-                            "not scheduled": "Nie zaplanowano"
+                            "not_scheduled": "Nie zaplanowano"
                         }
                     },
                     "exclusion_sunday_user": {

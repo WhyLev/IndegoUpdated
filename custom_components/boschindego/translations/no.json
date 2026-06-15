@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Klippemodus",
                 "state": {
-                    "Calendar": "Manuell kalender"
+                    "calendar": "Manuell kalender"
                 }
             },
             "runtime_total": {
@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "smartmowing active": "SmartMowing aktiv",
+                    "smartmowing_active": "SmartMowing aktiv",
                     "off": "Av"
                 },
                 "name": "Planlagte klippetider",
@@ -206,113 +206,113 @@
                     "today_slot_1": {
                         "name": "I dag tidsrom 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "today_slot_2": {
                         "name": "I dag tidsrom 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "monday_slot_1": {
                         "name": "Mandag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "monday_slot_2": {
                         "name": "Mandag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "tuesday_slot_1": {
                         "name": "Tirsdag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "tuesday_slot_2": {
                         "name": "Tirsdag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "wednesday_slot_1": {
                         "name": "Onsdag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "wednesday_slot_2": {
                         "name": "Onsdag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "thursday_slot_1": {
                         "name": "Torsdag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "thursday_slot_2": {
                         "name": "Torsdag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "friday_slot_1": {
                         "name": "Fredag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "friday_slot_2": {
                         "name": "Fredag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "saturday_slot_1": {
                         "name": "Lørdag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "saturday_slot_2": {
                         "name": "Lørdag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "sunday_slot_1": {
                         "name": "Søndag Slot 1",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     },
                     "sunday_slot_2": {
                         "name": "Søndag Slot 2",
                         "state": {
-                            "not enabled": "Ikke aktivert",
-                            "not configured": "Ikke konfigurert"
+                            "not_enabled": "Ikke aktivert",
+                            "not_configured": "Ikke konfigurert"
                         }
                     }
                 }
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "SmartMowing-blokkerte tider",
                 "state": {
-                    "manual calendar active": "Manuell kalender aktiv",
+                    "manual_calendar_active": "Manuell kalender aktiv",
                     "off": "Av"
                 },
                 "state_attributes": {
@@ -336,25 +336,25 @@
                     "earliest_start": {
                         "name": "Tidligste start",
                         "state": {
-                            "not enabled": "Ikke aktivert"
+                            "not_enabled": "Ikke aktivert"
                         }
                     },
                     "latest_end": {
                         "name": "Seneste slutt",
                         "state": {
-                            "not enabled": "Ikke aktivert"
+                            "not_enabled": "Ikke aktivert"
                         }
                     },
                     "blocked_before": {
                         "name": "Blokkert før",
                         "state": {
-                            "not enabled": "Ikke aktivert"
+                            "not_enabled": "Ikke aktivert"
                         }
                     },
                     "blocked_after": {
                         "name": "Blokkert etter",
                         "state": {
-                            "not enabled": "Ikke aktivert"
+                            "not_enabled": "Ikke aktivert"
                         }
                     }
                 }
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "SmartMowing-tidsplan",
                 "state": {
-                    "manual calendar active": "Manuell kalender aktiv",
+                    "manual_calendar_active": "Manuell kalender aktiv",
                     "none": "Ingen"
                 },
                 "state_attributes": {
@@ -397,7 +397,7 @@
                     "schedule_monday": {
                         "name": "Tidsplan Mandag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_monday_user": {
@@ -415,7 +415,7 @@
                     "schedule_tuesday": {
                         "name": "Tidsplan Tirsdag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_tuesday_user": {
@@ -433,7 +433,7 @@
                     "schedule_wednesday": {
                         "name": "Tidsplan Onsdag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_wednesday_user": {
@@ -451,7 +451,7 @@
                     "schedule_thursday": {
                         "name": "Tidsplan Torsdag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_thursday_user": {
@@ -469,7 +469,7 @@
                     "schedule_friday": {
                         "name": "Tidsplan Fredag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_friday_user": {
@@ -487,7 +487,7 @@
                     "schedule_saturday": {
                         "name": "Tidsplan Lørdag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_saturday_user": {
@@ -505,7 +505,7 @@
                     "schedule_sunday": {
                         "name": "Tidsplan Søndag",
                         "state": {
-                            "not scheduled": "Ikke planlagt"
+                            "not_scheduled": "Ikke planlagt"
                         }
                     },
                     "exclusion_sunday_user": {

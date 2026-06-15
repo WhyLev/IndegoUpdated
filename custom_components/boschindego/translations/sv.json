@@ -154,7 +154,7 @@
             "mowing_mode": {
                 "name": "Klippläge",
                 "state": {
-                    "Calendar": "Manuell kalender"
+                    "calendar": "Manuell kalender"
                 }
             },
             "runtime_total": {
@@ -198,7 +198,7 @@
             },
             "calendar_slots": {
                 "state": {
-                    "smartmowing active": "SmartMowing aktiv",
+                    "smartmowing_active": "SmartMowing aktiv",
                     "off": "Av"
                 },
                 "name": "Planerade klipptider",
@@ -206,113 +206,113 @@
                     "today_slot_1": {
                         "name": "Dagens intervall 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "today_slot_2": {
                         "name": "Dagens intervall 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "monday_slot_1": {
                         "name": "Måndag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "monday_slot_2": {
                         "name": "Måndag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "tuesday_slot_1": {
                         "name": "Tisdag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "tuesday_slot_2": {
                         "name": "Tisdag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "wednesday_slot_1": {
                         "name": "Onsdag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "wednesday_slot_2": {
                         "name": "Onsdag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "thursday_slot_1": {
                         "name": "Torsdag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "thursday_slot_2": {
                         "name": "Torsdag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "friday_slot_1": {
                         "name": "Fredag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "friday_slot_2": {
                         "name": "Fredag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "saturday_slot_1": {
                         "name": "Lördag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "saturday_slot_2": {
                         "name": "Lördag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "sunday_slot_1": {
                         "name": "Söndag Slot 1",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     },
                     "sunday_slot_2": {
                         "name": "Söndag Slot 2",
                         "state": {
-                            "not enabled": "Inte aktiverad",
-                            "not configured": "Inte konfigurerad"
+                            "not_enabled": "Inte aktiverad",
+                            "not_configured": "Inte konfigurerad"
                         }
                     }
                 }
@@ -320,7 +320,7 @@
             "predictive_calendar_slots": {
                 "name": "SmartMowing-blockerade tider",
                 "state": {
-                    "manual calendar active": "Manuell kalender aktiv",
+                    "manual_calendar_active": "Manuell kalender aktiv",
                     "off": "Av"
                 },
                 "state_attributes": {
@@ -336,25 +336,25 @@
                     "earliest_start": {
                         "name": "Tidigaste start",
                         "state": {
-                            "not enabled": "Inte aktiverad"
+                            "not_enabled": "Inte aktiverad"
                         }
                     },
                     "latest_end": {
                         "name": "Senaste slut",
                         "state": {
-                            "not enabled": "Inte aktiverad"
+                            "not_enabled": "Inte aktiverad"
                         }
                     },
                     "blocked_before": {
                         "name": "Blockerat före",
                         "state": {
-                            "not enabled": "Inte aktiverad"
+                            "not_enabled": "Inte aktiverad"
                         }
                     },
                     "blocked_after": {
                         "name": "Blockerat efter",
                         "state": {
-                            "not enabled": "Inte aktiverad"
+                            "not_enabled": "Inte aktiverad"
                         }
                     }
                 }
@@ -362,7 +362,7 @@
             "predictive_schedule": {
                 "name": "SmartMowing-schema",
                 "state": {
-                    "manual calendar active": "Manuell kalender aktiv",
+                    "manual_calendar_active": "Manuell kalender aktiv",
                     "none": "Ingen"
                 },
                 "state_attributes": {
@@ -397,7 +397,7 @@
                     "schedule_monday": {
                         "name": "Schema Måndag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_monday_user": {
@@ -415,7 +415,7 @@
                     "schedule_tuesday": {
                         "name": "Schema Tisdag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_tuesday_user": {
@@ -433,7 +433,7 @@
                     "schedule_wednesday": {
                         "name": "Schema Onsdag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_wednesday_user": {
@@ -451,7 +451,7 @@
                     "schedule_thursday": {
                         "name": "Schema Torsdag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_thursday_user": {
@@ -469,7 +469,7 @@
                     "schedule_friday": {
                         "name": "Schema Fredag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_friday_user": {
@@ -487,7 +487,7 @@
                     "schedule_saturday": {
                         "name": "Schema Lördag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_saturday_user": {
@@ -505,7 +505,7 @@
                     "schedule_sunday": {
                         "name": "Schema Söndag",
                         "state": {
-                            "not scheduled": "Inte planerad"
+                            "not_scheduled": "Inte planerad"
                         }
                     },
                     "exclusion_sunday_user": {
