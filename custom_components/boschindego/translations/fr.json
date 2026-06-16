@@ -199,6 +199,7 @@
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing actif",
+                    "calendar_selection_required": "Sélection du calendrier requise",
                     "off": "Désactivé"
                 },
                 "name": "Horaires de tonte planifiés",

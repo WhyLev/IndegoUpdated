@@ -199,6 +199,7 @@
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing attivo",
+                    "calendar_selection_required": "Selezione del calendario richiesta",
                     "off": "Spento"
                 },
                 "name": "Orari di taglio pianificati",

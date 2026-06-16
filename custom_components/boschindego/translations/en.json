@@ -199,6 +199,7 @@
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing active",
+                    "calendar_selection_required": "Kalenderauswahl erforderlich",
                     "off": "Off"
                 },
                 "name": "Planned mowing times",
