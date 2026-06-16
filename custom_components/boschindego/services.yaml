@@ -186,3 +186,15 @@ set_predictive_mowing_window:
       required: true
       selector:
         time: {}
+
+border_cut:
+  name: Border Cut
+  description: Start a border cut pass – the mower will mow only along the perimeter wire.
+  fields:
+    mower_serial:
+      name: Serial number
+      description: Serial number of the mower. Only required if multiple mowers are configured.
+      example: "0123456789"
+      required: false
+      selector:
+        text: {}

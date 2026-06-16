@@ -115,6 +115,9 @@ SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW = vol.Schema({
     vol.Required(CONF_LATEST_END): cv.string,
 })
 
+SERVICE_SCHEMA_BORDER_CUT = vol.Schema({
+    vol.Optional(CONF_MOWER_SERIAL): cv.string,
+})
 
 def FUNC_ICON_MOWER_ALERT(state):
     if state:
@@ -1216,6 +1219,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             latest_end=call.data[CONF_LATEST_END],
         )
 
+    async def async_border_cut(call):
+        """Handle the border cut service call."""
+        instance = find_instance_for_mower_service_call(call)
+        _LOGGER.info("Starting border cut for mower: %s", instance._serial)
+        await instance.async_border_cut()
+
     # In HASS we can have multiple Indego component instances as long as the mower serial is unique.
     # So the mower services should only need to be registered for the first instance.
     if CONF_SERVICES_REGISTERED not in hass.data[DOMAIN]:
@@ -1276,6 +1285,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW,
             async_set_predictive_mowing_window,
             schema=SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW,
+        )
+
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_NAME_BORDER_CUT,
+            async_border_cut,
+            schema=SERVICE_SCHEMA_BORDER_CUT,
         )
 
         hass.data[DOMAIN][CONF_SERVICES_REGISTERED] = entry.entry_id
@@ -1509,6 +1525,11 @@ class IndegoHub:
         """Send a mower command to the Indego client."""
         _LOGGER.debug("Sending command to mower (%s): '%s'", self._serial, command)
         await self._indego_client.put_command(command)
+
+    async def async_border_cut(self):
+        """Start a border cut pass."""
+        _LOGGER.debug("Sending border cut command to mower: %s", self._serial)
+        await self._indego_client.put(f"alms/{self._serial}/borderCut", {})
 
     def _create_entities(self, device_info):
         """Create sub-entities and add them to Hass."""

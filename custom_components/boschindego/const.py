@@ -134,3 +134,7 @@ HTTP_HEADER_USER_AGENT_DEFAULTS: Final = [
     "HomeAssistant/Indego",
     "HA/Indego"
 ]
+
+# Border Cut Service
+SERVICE_NAME_BORDER_CUT: Final = "border_cut"
+ENTITY_BORDER_CUT_BUTTON: Final = "border_cut_button"
