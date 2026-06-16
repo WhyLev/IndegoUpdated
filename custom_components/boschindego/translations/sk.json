@@ -199,6 +199,7 @@
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktívny",
+                    "calendar_selection_required": "Vyžaduje sa výber kalendára",
                     "off": "Vypnuté"
                 },
                 "name": "Naplánované časy kosenia",

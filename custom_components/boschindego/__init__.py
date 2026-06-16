@@ -448,8 +448,10 @@ ENTITY_DEFINITIONS = {
             "last_updated",
             "smartmowing_enabled",
             "mowing_mode",
+            "allowed_mowing_time",
             "earliest_start",
             "latest_end",
+            "blocked_time",
             "blocked_before",
             "blocked_after",
         ],
@@ -697,12 +699,14 @@ def _predictive_calendar_payload(earliest_start: str, latest_end: str) -> dict:
         ],
     }
 
-def _predictive_calendar_window(calendar) -> dict:
+def _predictive_calendar_window(calendar, hass) -> dict:
     result = {
         "earliest_start": "not_enabled",
         "latest_end": "not_enabled",
         "blocked_before": "not_enabled",
         "blocked_after": "not_enabled",
+        "allowed_mowing_time": "not_enabled",
+        "blocked_time": "not_enabled",
     }
 
     if calendar is None or not getattr(calendar, "days", None):
@@ -718,6 +722,18 @@ def _predictive_calendar_window(calendar) -> dict:
     if len(slots) > 1 and getattr(slots[1], "En", False):
         result["blocked_after"] = _format_calendar_slot(slots[1])
         result["latest_end"] = f"{slots[1].StHr:02d}:{slots[1].StMin:02d}"
+
+    if (
+        result["earliest_start"] != "not_enabled"
+        and result["latest_end"] != "not_enabled"
+    ):
+        result["allowed_mowing_time"] = (
+            f"{_localized_text(hass, 'allowed_mowing_time')} "
+            f"{result['earliest_start']}-{result['latest_end']}"
+        )
+        result["blocked_time"] = (
+            f"{result['latest_end']}-{result['earliest_start']}"
+        )
 
     return result
 
@@ -760,7 +776,7 @@ def _schedule_slot_to_text(slot) -> str:
     )
 
 
-def _predictive_schedule_attributes(schedule) -> dict:
+def _predictive_schedule_attributes(schedule, hass) -> dict:
     day_names = [
         "monday",
         "tuesday",
@@ -804,7 +820,9 @@ def _predictive_schedule_attributes(schedule) -> dict:
             attrs[f"schedule_{day_name}"] = ", ".join(slot_texts)
 
             if attrs["next_mow_slot"] == "none":
-                attrs["next_mow_slot"] = f"{day_name} {slot_texts[0]}"
+                attrs["next_mow_slot"] = (
+                    f"{_localized_text(hass, day_name)} {slot_texts[0]}"
+                )
                 attrs["next_mow_day"] = day_name
                 attrs["next_mow_time"] = slot_texts[0]
 
@@ -833,13 +851,156 @@ def _predictive_schedule_attributes(schedule) -> dict:
 
     return attrs
 
-def _is_smartmowing_active(generic_data) -> bool:
-    mowing_mode = getattr(
+def _is_smartmowing_active(generic_data, forced_mowing_mode=None) -> bool:
+    mowing_mode = forced_mowing_mode or getattr(
         generic_data,
         "mowing_mode_description",
         None,
     )
     return str(mowing_mode).lower() == "smartmowing"
+
+def _is_calendar_selection_required(generic_data) -> bool:
+    mowing_mode = getattr(
+        generic_data,
+        "mowing_mode_description",
+        None,
+    )
+    alm_mode = getattr(
+        generic_data,
+        "alm_mode",
+        None,
+    )
+
+    return (
+        str(mowing_mode).lower() == "manual"
+        or str(alm_mode).lower() == "manual"
+    )
+
+LOCALIZED_TEXTS = {
+    "de": {
+        "allowed_mowing_time": "Erlaubte Mähzeit",
+        "monday": "Montag",
+        "tuesday": "Dienstag",
+        "wednesday": "Mittwoch",
+        "thursday": "Donnerstag",
+        "friday": "Freitag",
+        "saturday": "Samstag",
+        "sunday": "Sonntag",
+    },
+    "en": {
+        "allowed_mowing_time": "Allowed mowing time",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+    },
+    "da": {
+        "allowed_mowing_time": "Tilladt klippetid",
+        "monday": "Mandag",
+        "tuesday": "Tirsdag",
+        "wednesday": "Onsdag",
+        "thursday": "Torsdag",
+        "friday": "Fredag",
+        "saturday": "Lørdag",
+        "sunday": "Søndag",
+    },
+    "es": {
+        "allowed_mowing_time": "Tiempo de corte permitido",
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo",
+    },
+    "fr": {
+        "allowed_mowing_time": "Heure de tonte autorisée",
+        "monday": "Lundi",
+        "tuesday": "Mardi",
+        "wednesday": "Mercredi",
+        "thursday": "Jeudi",
+        "friday": "Vendredi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche",
+    },
+    "it": {
+        "allowed_mowing_time": "Orario di taglio consentito",
+        "monday": "Lunedì",
+        "tuesday": "Martedì",
+        "wednesday": "Mercoledì",
+        "thursday": "Giovedì",
+        "friday": "Venerdì",
+        "saturday": "Sabato",
+        "sunday": "Domenica",
+    },
+    "nl": {
+        "allowed_mowing_time": "Toegestane maaitijd",
+        "monday": "Maandag",
+        "tuesday": "Dinsdag",
+        "wednesday": "Woensdag",
+        "thursday": "Donderdag",
+        "friday": "Vrijdag",
+        "saturday": "Zaterdag",
+        "sunday": "Zondag",
+    },
+    "no": {
+        "allowed_mowing_time": "Tillatt klippetid",
+        "monday": "Mandag",
+        "tuesday": "Tirsdag",
+        "wednesday": "Onsdag",
+        "thursday": "Torsdag",
+        "friday": "Fredag",
+        "saturday": "Lørdag",
+        "sunday": "Søndag",
+    },
+    "pl": {
+        "allowed_mowing_time": "Dozwolony czas koszenia",
+        "monday": "Poniedziałek",
+        "tuesday": "Wtorek",
+        "wednesday": "Środa",
+        "thursday": "Czwartek",
+        "friday": "Piątek",
+        "saturday": "Sobota",
+        "sunday": "Niedziela",
+    },
+    "sk": {
+        "allowed_mowing_time": "Povolený čas kosenia",
+        "monday": "Pondelok",
+        "tuesday": "Utorok",
+        "wednesday": "Streda",
+        "thursday": "Štvrtok",
+        "friday": "Piatok",
+        "saturday": "Sobota",
+        "sunday": "Nedeľa",
+    },
+    "sv": {
+        "allowed_mowing_time": "Tillåten klipptid",
+        "monday": "Måndag",
+        "tuesday": "Tisdag",
+        "wednesday": "Onsdag",
+        "thursday": "Torsdag",
+        "friday": "Fredag",
+        "saturday": "Lördag",
+        "sunday": "Söndag",
+    },
+}
+
+
+def _language_code(hass) -> str:
+    language = getattr(hass.config, "language", None) or "en"
+    return language.split("-")[0].lower()
+
+
+def _localized_text(hass, key: str) -> str:
+    language = _language_code(hass)
+    return LOCALIZED_TEXTS.get(
+        language,
+        LOCALIZED_TEXTS["en"],
+    ).get(key, key)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Load a config entry."""
@@ -934,15 +1095,25 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         _LOGGER.info("Setting smart mowing mode to: %s (Mower: %s)", enable_bool, instance._serial)
 
+
         await instance._indego_client.put_mow_mode(enable_bool)
+
+        instance._forced_mowing_mode = "SmartMowing" if enable_bool else "Calendar"
 
         if ENTITY_SMARTMOWING_SWITCH in instance.entities:
             instance.entities[ENTITY_SMARTMOWING_SWITCH].is_on = enable_bool
 
+        if ENTITY_MOWING_MODE in instance.entities:
+            instance.entities[ENTITY_MOWING_MODE].state = (
+                "SmartMowing" if enable_bool else "Calendar"
+            )
+
         await asyncio.sleep(3)
 
-        await instance._update_generic_data()
         await instance._update_predictive_calendar()
+        await instance._update_predictive_schedule()
+        await instance._update_calendar()
+        await instance._update_generic_data()
 
     async def async_delete_alert(call):
         """Handle the service call."""
@@ -1209,6 +1380,7 @@ class IndegoHub:
         self._last_service_error = None  # Track last Bosch service error (5xx)
         self._consecutive_timeouts = 0  # Track consecutive position update timeouts
         self._last_timeout_warning_time = None  # Prevent timeout spam
+        self._forced_mowing_mode = None # force mowing mode and calendar sensors to update
 
         async def async_token_refresh() -> str:
             await session.async_ensure_token_valid()
@@ -1270,6 +1442,18 @@ class IndegoHub:
 
         await self._update_calendar()
 
+    async def async_select_manual_calendar(self):
+        """Try to select the manual calendar after SmartMowing was disabled."""
+        await self._indego_client.update_calendar()
+        calendar = getattr(self._indego_client, "calendar", None)
+
+        payload = _calendar_to_payload(calendar, selected_cal=2)
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/calendar",
+            payload,
+        )
+
     async def async_set_predictive_mowing_window(
         self,
         earliest_start: str,
@@ -1299,19 +1483,17 @@ class IndegoHub:
 
         schedule = getattr(self._indego_client, "predictive_schedule", None)
 
-#        _LOGGER.warning(
-#            "PREDICTIVE SCHEDULE = %r",
-#            schedule
-#        )
-
         if ENTITY_PREDICTIVE_SCHEDULE not in self.entities:
             return
 
-        attrs = _predictive_schedule_attributes(schedule)
+        attrs = _predictive_schedule_attributes(schedule, self._hass)
 
         sensor = self.entities[ENTITY_PREDICTIVE_SCHEDULE]
 
-        if not _is_smartmowing_active(self._indego_client.generic_data):
+        if not _is_smartmowing_active(
+            self._indego_client.generic_data,
+            self._forced_mowing_mode,
+        ):
             sensor.state = "manual_calendar_active"
         else:
             sensor.state = attrs["next_mow_slot"]
@@ -1814,6 +1996,7 @@ class IndegoHub:
 
         calendar = getattr(self._indego_client, "predictive_calendar", None)
 
+
         if ENTITY_PREDICTIVE_CALENDAR_SLOTS not in self.entities:
             return
 
@@ -1823,19 +2006,22 @@ class IndegoHub:
             None,
         )
 
-        smartmowing_enabled = str(mowing_mode).lower() == "smartmowing"
+        smartmowing_enabled = _is_smartmowing_active(
+            self._indego_client.generic_data,
+            self._forced_mowing_mode,
+        )
 
-        window = _predictive_calendar_window(calendar)
+        window = _predictive_calendar_window(calendar, self._hass)
 
         sensor = self.entities[ENTITY_PREDICTIVE_CALENDAR_SLOTS]
 
-        if not _is_smartmowing_active(self._indego_client.generic_data):
-            sensor.state = "manual_calendar_active"
-        elif (
-            window["earliest_start"] != "not_enabled"
-            and window["latest_end"] != "not_enabled"
+        if not _is_smartmowing_active(
+            self._indego_client.generic_data,
+            self._forced_mowing_mode,
         ):
-            sensor.state = f"{window['earliest_start']}-{window['latest_end']}"
+            sensor.state = "manual_calendar_active"
+        elif window["allowed_mowing_time"] != "not_enabled":
+            sensor.state = window["allowed_mowing_time"]
         else:
             sensor.state = "off"
 
@@ -1843,7 +2029,7 @@ class IndegoHub:
             {
                 "last_updated": last_updated_now(),
                 "smartmowing_enabled": smartmowing_enabled,
-                "mowing_mode": mowing_mode,
+                "mowing_mode": self._forced_mowing_mode or mowing_mode,
                 **window,
             }
         )
@@ -1865,10 +2051,20 @@ class IndegoHub:
 
         sensor = self.entities[ENTITY_CALENDAR_SLOTS]
 
-        if _is_smartmowing_active(self._indego_client.generic_data):
+        if _is_smartmowing_active(
+            self._indego_client.generic_data,
+            self._forced_mowing_mode,
+        ):
             sensor.state = "smartmowing_active"
+
+        elif today_slots:
+            sensor.state = ", ".join(today_slots)
+
+        elif _is_calendar_selection_required(self._indego_client.generic_data):
+            sensor.state = "calendar_selection_required"
+
         else:
-            sensor.state = ", ".join(today_slots) if today_slots else "off"
+            sensor.state = "off"
 
         sensor.set_attributes(
             {
@@ -2250,15 +2446,18 @@ class IndegoHub:
                     self._indego_client.generic_data,
                     "mowing_mode_description",
                     STATE_UNKNOWN,
+                    
                 )
 
+                effective_mowing_mode = self._forced_mowing_mode or mowing_mode
+
                 if ENTITY_MOWING_MODE in self.entities:
-                    self.entities[ENTITY_MOWING_MODE].state = mowing_mode
+                    self.entities[ENTITY_MOWING_MODE].state = effective_mowing_mode
                     _LOGGER.debug("Mowing mode: %s", mowing_mode)
 
                 if ENTITY_SMARTMOWING_SWITCH in self.entities:
                     self.entities[ENTITY_SMARTMOWING_SWITCH].is_on = (
-                        str(mowing_mode).lower() == "smartmowing"
+                        str(effective_mowing_mode).lower() == "smartmowing"
                     )
 
             else:

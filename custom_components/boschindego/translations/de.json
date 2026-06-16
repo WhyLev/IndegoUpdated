@@ -405,6 +405,7 @@
                 "name": "Geplante Mähzeiten",
                 "state": {
                     "smartmowing_active": "SmartMowing aktiv",
+                    "calendar_selection_required": "Kalenderauswahl erforderlich",
                     "off": "Aus"
                 },
                 "state_attributes": {

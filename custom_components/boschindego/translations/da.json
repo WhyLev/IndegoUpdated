@@ -199,6 +199,7 @@
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktiv",
+                    "calendar_selection_required": "Valg af kalender påkrævet",
                     "off": "Fra"
                 },
                 "name": "Planlagte klippetider",

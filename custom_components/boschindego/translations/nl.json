@@ -199,6 +199,7 @@
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing actief",
+                    "calendar_selection_required": "Kalenderselectie vereist",
                     "off": "Uit"
                 },
                 "name": "Geplande maaitijden",
