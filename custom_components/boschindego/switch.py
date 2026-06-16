@@ -15,6 +15,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from .mixins import IndegoEntity
 from .const import DATA_UPDATED, DOMAIN
 
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -129,12 +130,23 @@ class IndegoSwitch(IndegoEntity, SwitchEntity):
 
         await self._indego_hub._indego_client.put_mow_mode(False)
 
+        await self._indego_hub.async_select_manual_calendar()
+
         self.is_on = False
 
         await self._indego_hub._update_predictive_calendar()
         await self._indego_hub._update_predictive_schedule()
         await self._indego_hub._update_calendar()
         await self._indego_hub._update_generic_data()
+
+        mowing_mode = getattr(
+            self._indego_hub._indego_client.generic_data,
+            "mowing_mode_description",
+            None,
+        )
+
+        if str(mowing_mode).lower() == "calendar":
+            self._indego_hub._forced_mowing_mode = None
 
     @property
     def state(self) -> str:
