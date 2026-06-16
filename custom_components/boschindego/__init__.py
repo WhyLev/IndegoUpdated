@@ -859,6 +859,23 @@ def _is_smartmowing_active(generic_data, forced_mowing_mode=None) -> bool:
     )
     return str(mowing_mode).lower() == "smartmowing"
 
+def _is_calendar_selection_required(generic_data) -> bool:
+    mowing_mode = getattr(
+        generic_data,
+        "mowing_mode_description",
+        None,
+    )
+    alm_mode = getattr(
+        generic_data,
+        "alm_mode",
+        None,
+    )
+
+    return (
+        str(mowing_mode).lower() == "manual"
+        or str(alm_mode).lower() == "manual"
+    )
+
 LOCALIZED_TEXTS = {
     "de": {
         "allowed_mowing_time": "Erlaubte Mähzeit",
@@ -1425,6 +1442,18 @@ class IndegoHub:
 
         await self._update_calendar()
 
+    async def async_select_manual_calendar(self):
+        """Try to select the manual calendar after SmartMowing was disabled."""
+        await self._indego_client.update_calendar()
+        calendar = getattr(self._indego_client, "calendar", None)
+
+        payload = _calendar_to_payload(calendar, selected_cal=2)
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/calendar",
+            payload,
+        )
+
     async def async_set_predictive_mowing_window(
         self,
         earliest_start: str,
@@ -1967,6 +1996,7 @@ class IndegoHub:
 
         calendar = getattr(self._indego_client, "predictive_calendar", None)
 
+
         if ENTITY_PREDICTIVE_CALENDAR_SLOTS not in self.entities:
             return
 
@@ -2030,7 +2060,7 @@ class IndegoHub:
         elif today_slots:
             sensor.state = ", ".join(today_slots)
 
-        elif self._forced_mowing_mode == "Calendar":
+        elif _is_calendar_selection_required(self._indego_client.generic_data):
             sensor.state = "calendar_selection_required"
 
         else:
@@ -2416,15 +2446,18 @@ class IndegoHub:
                     self._indego_client.generic_data,
                     "mowing_mode_description",
                     STATE_UNKNOWN,
+                    
                 )
 
+                effective_mowing_mode = self._forced_mowing_mode or mowing_mode
+
                 if ENTITY_MOWING_MODE in self.entities:
-                    self.entities[ENTITY_MOWING_MODE].state = mowing_mode
+                    self.entities[ENTITY_MOWING_MODE].state = effective_mowing_mode
                     _LOGGER.debug("Mowing mode: %s", mowing_mode)
 
                 if ENTITY_SMARTMOWING_SWITCH in self.entities:
                     self.entities[ENTITY_SMARTMOWING_SWITCH].is_on = (
-                        str(mowing_mode).lower() == "smartmowing"
+                        str(effective_mowing_mode).lower() == "smartmowing"
                     )
 
             else:
