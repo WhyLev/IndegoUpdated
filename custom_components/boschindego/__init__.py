@@ -1629,16 +1629,26 @@ class IndegoHub:
     async def _initial_update(self, _=None):
         """Do the initial update and create all entities."""
         _LOGGER.info("Starting initial state synchronization for: %s", self._serial)
-
         # Don't set offline during startup - let the first successful API call set the state
         self.set_service_status(True)  # Service is up by default until we detect an error
+
+        # Restore session count from persisted entity state
+        if ENTITY_SESSION_COUNT in self.entities:
+            entity = self.entities[ENTITY_SESSION_COUNT]
+            restored_state = entity.state
+            if restored_state is not None:
+                try:
+                    self._session_count = int(float(restored_state))
+                    _LOGGER.debug("Restored session count: %d", self._session_count)
+                except (ValueError, TypeError):
+                    pass
+
         await self._create_refresh_state_task()
         await asyncio.gather(*[self.refresh_10m(), self.refresh_24h()])
 
         try:
             _LOGGER.debug("Fetching initial operating data (battery, garden size, etc.)")
             await self._update_operating_data()
-
         except Exception as exc:
             _LOGGER.warning("Error during initial operating data update: %s", str(exc))
 
