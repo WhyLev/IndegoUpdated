@@ -49,7 +49,7 @@ A comprehensive Home Assistant integration that provides full control and monito
 
 Join our Discord community to discuss features, vote on improvements, and get support:
 
-[![Discord Shield](https://img.shields.io/discord/XXXXXX?style=for-the-badge&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/aD33GsP)
+[![Discord Shield](https://img.shields.io/discord/714194682267303967?style=for-the-badge&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/aD33GsP)
 <br>👉 [discord.gg/aD33GsP](https://discord.gg/aD33GsP)
 
 ---
