@@ -1334,7 +1334,12 @@ class IndegoHub:
         519,  # Idle in lawn (intentional stand-still)
         520,  # Mapping paused
         525,  # Spot mowing complete
-        526,  # Random mowing complete (Pendant zu 525, fehlte bisher)
+        526,  # Random mowing complete
+        # Additional states that may occur immediately after undocking
+        518,  # (Undefined but observed)
+        521,  # (Undefined but observed)
+        523,  # (Undefined but observed)
+        524,  # (Undefined but observed)
     }
 
     # Grace period after mowing session starts (in seconds)
