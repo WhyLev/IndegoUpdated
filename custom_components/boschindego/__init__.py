@@ -1292,6 +1292,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             latest_end=call.data[CONF_LATEST_END],
         )
 
+    async def async_set_bump_sensitivity(call):
+        """Handle set_bump_sensitivity service call."""
+        instance = find_instance_for_mower_service_call(call)
+    
+        await instance.async_set_bump_sensitivity(
+            _bump_sensitivity_value(call.data[CONF_BUMP_SENSITIVITY])
+        )
 
     # In HASS we can have multiple Indego component instances as long as the mower serial is unique.
     # So the mower services should only need to be registered for the first instance.
