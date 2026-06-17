@@ -2167,6 +2167,8 @@ class IndegoHub:
 
             self._update_alert_state()
 
+            await self._update_alerts()
+
             # Check for offline error codes (WiFi lost, API error, No connection to server)
             state_code = getattr(self._indego_client.state, 'state', None)
             if state_code in (802, 803, 804):
@@ -2503,38 +2505,34 @@ class IndegoHub:
         return self._indego_client.generic_data
 
     async def _update_alerts(self):
-
         await self._indego_client.update_alerts()
 
-        # Show "Problem" only if there are unread alerts
+        alerts = self._indego_client.alerts or []
+
         unread_count = sum(
-            1 for alert in self._indego_client.alerts
+            1 for alert in alerts
             if str(alert.read_status).strip().lower() == "unread"
         )
+
+        # Explicitly always set state - never rely on restored state
         self.entities[ENTITY_ALERT].state = unread_count > 0
 
-        if self._indego_client.alerts:
-            # Build complete alert attributes with enhanced error descriptions
+        if alerts:
             alert_attributes = {
                 "alerts_count": self._indego_client.alerts_count,
-                "last_alert_error_code": self._indego_client.alerts[0].error_code,
-                "last_alert_message": self._indego_client.alerts[0].message,
-                "last_alert_date": format_indego_date(self._indego_client.alerts[0].date),
-                "last_alert_read": self._indego_client.alerts[0].read_status,
+                "last_alert_error_code": alerts[0].error_code,
+                "last_alert_message": alerts[0].message,
+                "last_alert_date": format_indego_date(alerts[0].date),
+                "last_alert_read": alerts[0].read_status,
             }
 
-            # Always store all alerts as individual attributes for easy extraction in automations
-            for index, alert in enumerate(self._indego_client.alerts):
+            for index, alert in enumerate(alerts):
                 error_code = str(alert.error_code)
-                # Use new comprehensive error description
                 error_desc = get_error_description(error_code)
                 error_severity = get_error_severity(error_code)
                 alert_time = format_indego_date(alert.date)
 
-                # Format: "ERROR_CODE: Error Description - 2024-01-01 12:34:56 [SEVERITY]"
                 alert_attributes[f"error_{index}"] = f"{error_code}: {error_desc} - {alert_time} [{error_severity.name}]"
-
-                # Also store individual components for advanced use cases
                 alert_attributes[f"error_{index}_code"] = error_code
                 alert_attributes[f"error_{index}_description"] = error_desc
                 alert_attributes[f"error_{index}_severity"] = error_severity.name
@@ -2544,13 +2542,11 @@ class IndegoHub:
 
             self.entities[ENTITY_ALERT].add_attributes(alert_attributes, False)
 
-            # Clear any other alerts that no longer exist
-            alert_index = len(self._indego_client.alerts)
+            alert_index = len(alerts)
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{alert_index}", False):
                 alert_index += 1
 
-            # Also clear individual components if alerts were removed
-            error_index = len(self._indego_client.alerts)
+            error_index = len(alerts)
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}_code", False):
                 error_index += 1
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}_severity", False):
@@ -2559,13 +2555,11 @@ class IndegoHub:
             self.entities[ENTITY_ALERT].async_schedule_update_ha_state()
 
         else:
-            self.entities[ENTITY_ALERT].set_attributes(
-                {
-                    "alerts_count": self._indego_client.alerts_count
-                }
-            )
+            # No alerts - explicitly clear everything
+            self.entities[ENTITY_ALERT].set_attributes({
+                "alerts_count": self._indego_client.alerts_count or 0,
+            })
 
-            # Clear all error attributes when no alerts
             error_index = 0
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}", False):
                 error_index += 1
@@ -2574,26 +2568,24 @@ class IndegoHub:
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}_code", False):
                 error_index += 1
 
-        self._update_alert_state()
-
     def _update_alert_state(self):
-        """Set alert sensor state based on current active error code, not just unread status."""
+        """Set alert sensor state based on active alerts and current error."""
         if ENTITY_ALERT not in self.entities:
             return
 
-        # Check if state is available and has 'error' attribute, otherwise default to 0 (no error)
+        alerts = self._indego_client.alerts or []
+        unread_count = sum(
+            1 for a in alerts
+            if str(a.read_status).strip().lower() == "unread"
+        )
         current_error = getattr(self._indego_client.state, "error", 0)
 
-        # If there are no active errors (current_error == 0) but the mower state is None, check for unread alerts to determine if we should show a problem state
-        if current_error == 0 and self._indego_client.state is None:
-            unread_count = sum(
-                1 for alert in self._indego_client.alerts
-                if str(alert.read_status).strip().lower() == "unread"
-            )
-            self.entities[ENTITY_ALERT].state = unread_count > 0
+        # If there are no alerts at all, the problem is considered resolved.
+        if self._indego_client.alerts_count == 0:
+            self.entities[ENTITY_ALERT].state = False
         else:
-            # Show "Problem" if there is an active error code, otherwise "OK"
-            self.entities[ENTITY_ALERT].state = current_error != 0
+            # Problem exists if there are unread alerts OR an active error code.
+            self.entities[ENTITY_ALERT].state = (unread_count > 0) or (current_error != 0)
 
     async def _update_updates_available(self):
         await self._indego_client.update_updates_available()
