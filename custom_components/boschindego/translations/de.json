@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Batterieentladung"
             },
+            "bump_sensitivity": {
+                "name": "Rasenbedingungen",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Rutschig",
+                    "uneven": "Uneben"
+                }
+            },
             "predictive_calendar_slots": {
                 "name": "SmartMowing Sperrzeiten",
                 "state": {
@@ -687,6 +695,20 @@
                     "description": "Um wie viel uhr soll der Mäher spätestens beenden."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Rasenbedingungen des Mähers einstellen",
+            "description": "Die Rasenbedingungen des Mähers einstellen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Seriennummer",
+                    "description": "Seriennummer des Mähroboters. Wird nur benötigt, wenn mehrere Mähroboter eingerichtet sind."
+                },
+                "bump_sensitivity": {
+                    "name": "Rasenbedingungen",
+                    "description": "Rasenbedingungen des Mähers"
+                }
+            }
         }
     },
     "selector": {
@@ -712,6 +734,13 @@
                 "mow": "Mähen",
                 "returnToDock": "Zurück zur Docking Station",
                 "pause": "Pause"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Rutschig",
+                "uneven": "Uneben"
             }
         }
     },

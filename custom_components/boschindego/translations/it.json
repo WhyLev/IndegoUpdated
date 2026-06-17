@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Scarica batteria"
             },
+            "bump_sensitivity": {
+                "name": "Condizioni del prato",
+                "state": {
+                    "normal": "Normale",
+                    "slippery": "Scivoloso",
+                    "uneven": "Irregolare"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing attivo",
@@ -659,6 +667,20 @@
                     "description": "Ora di fine della fascia selezionata. Necessaria solo se la fascia deve essere attivata. Vengono utilizzate solo ore e minuti."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Imposta le condizioni del prato del tosaerba",
+            "description": "Imposta le condizioni del prato del tosaerba",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numero di serie",
+                    "description": "Numero di serie del tosaerba. Richiesto solo se sono configurati più tosaerba."
+                },
+                "bump_sensitivity": {
+                    "name": "Condizioni del prato",
+                    "description": "Condizioni del prato del tosaerba"
+                }
+            }
         }
     },
     "selector": {
@@ -684,6 +706,13 @@
                 "mow": "Taglia l'erba",
                 "returnToDock": "Ritorna alla stazione di ricarica",
                 "pause": "Pausa"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normale",
+                "slippery": "Scivoloso",
+                "uneven": "Irregolare"
             }
         }
     },

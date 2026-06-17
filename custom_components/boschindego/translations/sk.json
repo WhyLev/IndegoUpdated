@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Vybíjanie batérie"
             },
+            "bump_sensitivity": {
+                "name": "Podmienky trávnika",
+                "state": {
+                    "normal": "Normálne",
+                    "slippery": "Šmykľavé",
+                    "uneven": "Nerovné"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktívny",
@@ -659,6 +667,20 @@
                     "description": "Čas ukončenia vybraného slotu. Vyžaduje sa iba v prípade, že sa má slot aktivovať. Použijú sa iba hodiny a minúty."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Nastaviť podmienky trávnika kosačky",
+            "description": "Nastaviť podmienky trávnika kosačky",
+            "fields": {
+                "mower_serial": {
+                    "name": "Sériové číslo",
+                    "description": "Sériové číslo kosačky. Vyžaduje sa iba v prípade, že je nakonfigurovaných viac kosačiek."
+                },
+                "bump_sensitivity": {
+                    "name": "Podmienky trávnika",
+                    "description": "Podmienky trávnika kosačky"
+                }
+            }
         }
     },
     "selector": {
@@ -684,6 +706,13 @@
                 "mow": "Kosiť",
                 "returnToDock": "Návrat do dokovacej stanice",
                 "pause": "Pauza"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normálne",
+                "slippery": "Šmykľavé",
+                "uneven": "Nerovné"
             }
         }
     },

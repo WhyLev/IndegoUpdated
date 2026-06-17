@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Décharge batterie"
             },
+            "bump_sensitivity": {
+                "name": "Conditions de la pelouse",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Glissant",
+                    "uneven": "Irrégulier"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing actif",
@@ -659,6 +667,20 @@
                     "description": "Heure de fin du créneau sélectionné. Requise uniquement lorsqu’un créneau doit être activé. Seules les heures et les minutes sont utilisées."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Définir les conditions de la pelouse de la tondeuse",
+            "description": "Définir les conditions de la pelouse de la tondeuse",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numéro de série",
+                    "description": "Numéro de série de la tondeuse. Requis uniquement si plusieurs tondeuses sont configurées."
+                },
+                "bump_sensitivity": {
+                    "name": "Conditions de la pelouse",
+                    "description": "Conditions de la pelouse de la tondeuse"
+                }
+            }
         }
     },
     "selector": {
@@ -684,6 +706,13 @@
                 "mow": "Tondre",
                 "returnToDock": "Retour à la station de charge",
                 "pause": "Pause"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Glissant",
+                "uneven": "Irrégulier"
             }
         }
     },

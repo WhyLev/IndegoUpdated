@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Batteriudladning"
             },
+            "bump_sensitivity": {
+                "name": "Plæneforhold",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Glat",
+                    "uneven": "Ujævn"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktiv",
@@ -669,6 +677,20 @@
                     "description": "Sluttidspunkt for den valgte slot. Kun nødvendigt hvis slotten skal aktiveres. Kun timer og minutter anvendes."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Indstil plæneforhold for plæneklipperen",
+            "description": "Indstil plæneforholdene for plæneklipperen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Plæneklipperens serienummer. Kun påkrævet hvis flere plæneklippere er konfigureret."
+                },
+                "bump_sensitivity": {
+                    "name": "Plæneforhold",
+                    "description": "Plæneforhold for plæneklipperen"
+                }
+            }
         }
     },
     "selector": {
@@ -694,6 +716,13 @@
                 "mow": "Klip græs",
                 "return_to_dock": "Tilbage til ladestationen",
                 "pause": "Pause"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Glat",
+                "uneven": "Ujævn"
             }
         }
     },

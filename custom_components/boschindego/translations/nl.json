@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Batterijontlading"
             },
+            "bump_sensitivity": {
+                "name": "Gazonomstandigheden",
+                "state": {
+                    "normal": "Normaal",
+                    "slippery": "Glad",
+                    "uneven": "Oneffen"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing actief",
@@ -659,6 +667,20 @@
                     "description": "Eindtijd van het geselecteerde tijdslot. Alleen nodig als het tijdslot geactiveerd moet worden. Alleen uren en minuten worden gebruikt."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Gazonomstandigheden van de maaier instellen",
+            "description": "De gazonomstandigheden van de maaier instellen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Serienummer van de maaier. Alleen vereist als meerdere maaiers zijn geconfigureerd."
+                },
+                "bump_sensitivity": {
+                    "name": "Gazonomstandigheden",
+                    "description": "Gazonomstandigheden van de maaier"
+                }
+            }
         }
     },
     "selector": {
@@ -684,6 +706,13 @@
                 "mow": "Maaien",
                 "returnToDock": "Terug naar het laadstation",
                 "pause": "Pauze"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normaal",
+                "slippery": "Glad",
+                "uneven": "Oneffen"
             }
         }
     },
