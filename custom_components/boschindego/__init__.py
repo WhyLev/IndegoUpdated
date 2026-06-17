@@ -115,6 +115,14 @@ SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW = vol.Schema({
     vol.Required(CONF_LATEST_END): cv.string,
 })
 
+SERVICE_SCHEMA_SET_BUMP_SENSITIVITY = vol.Schema({
+    vol.Optional(CONF_MOWER_SERIAL): cv.string,
+    vol.Required(CONF_BUMP_SENSITIVITY): vol.In([
+        "normal",
+        "slippery",
+        "uneven",
+    ]),
+})
 
 def FUNC_ICON_MOWER_ALERT(state):
     if state:
@@ -516,6 +524,16 @@ ENTITY_DEFINITIONS = {
             "exclusion_sunday_weather",
         ],
         CONF_TRANSLATION_KEY: "predictive_schedule",
+    },
+    ENTITY_BUMP_SENSITIVITY: {
+        CONF_TYPE: SENSOR_TYPE,
+        CONF_ICON: "mdi:alert-circle-outline",
+        CONF_DEVICE_CLASS: None,
+        CONF_UNIT_OF_MEASUREMENT: None,
+        CONF_ATTR: [
+            "last_updated",
+        ],
+        CONF_TRANSLATION_KEY: "bump_sensitivity",
     },
 }
 
@@ -1002,6 +1020,64 @@ def _localized_text(hass, key: str) -> str:
         LOCALIZED_TEXTS["en"],
     ).get(key, key)
 
+def _config_to_payload(config) -> dict:
+    """Convert pyIndego config object to API payload."""
+    if isinstance(config, dict):
+        return dict(config)
+
+    if hasattr(config, "model_dump"):
+        return config.model_dump(exclude_none=True)
+
+    if hasattr(config, "dict"):
+        return config.dict(exclude_none=True)
+
+    if hasattr(config, "__dict__"):
+        return {
+            key: value
+            for key, value in vars(config).items()
+            if not key.startswith("_")
+        }
+
+    raise ValueError(f"Unsupported config type: {type(config)}")
+
+def _get_config_value(config, *keys):
+    """Get config value from dict or object using multiple possible field names."""
+    if config is None:
+        return None
+
+    if isinstance(config, dict):
+        for key in keys:
+            if key in config:
+                return config[key]
+        return None
+
+    for key in keys:
+        if hasattr(config, key):
+            return getattr(config, key)
+
+    return None
+
+def _bump_sensitivity_state(value) -> str:
+    mapping = {
+        0: "normal",
+        1: "slippery",
+        2: "uneven",
+    }
+
+    try:
+        return mapping.get(int(value), str(value))
+    except (TypeError, ValueError):
+        return STATE_UNKNOWN
+
+def _bump_sensitivity_value(value) -> int:
+    mapping = {
+        "normal": 0,
+        "slippery": 1,
+        "uneven": 2,
+    }
+
+    return mapping[str(value).lower()]
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Load a config entry."""
     hass.data.setdefault(DOMAIN, {})
@@ -1216,6 +1292,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             latest_end=call.data[CONF_LATEST_END],
         )
 
+
     # In HASS we can have multiple Indego component instances as long as the mower serial is unique.
     # So the mower services should only need to be registered for the first instance.
     if CONF_SERVICES_REGISTERED not in hass.data[DOMAIN]:
@@ -1276,6 +1353,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW,
             async_set_predictive_mowing_window,
             schema=SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW,
+        )
+
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_NAME_SET_BUMP_SENSITIVITY,
+            async_set_bump_sensitivity,
+            schema=SERVICE_SCHEMA_SET_BUMP_SENSITIVITY,
         )
 
         hass.data[DOMAIN][CONF_SERVICES_REGISTERED] = entry.entry_id
@@ -1504,6 +1588,85 @@ class IndegoHub:
                 **attrs,
             }
         )
+
+    async def _update_config(self):
+        """Update mower config data."""
+        _LOGGER.debug("Fetching config data from Bosch API")
+
+        try:
+            config = await self._indego_client.get(
+                f"alms/{self._serial}/config"
+            )
+        except Exception as exc:
+            _LOGGER.warning("Failed to fetch config data from API: %s", exc)
+            return None
+
+#        _LOGGER.warning("CONFIG DATA RAW = %r", config)
+
+        if ENTITY_BUMP_SENSITIVITY in self.entities:
+            value = _get_config_value(
+                config,
+                "bump_sensitivity",
+                "bumpSensitivity",
+                "bump_sens",
+                "bumpSens",
+            )
+
+            self.entities[ENTITY_BUMP_SENSITIVITY].state = (
+                _bump_sensitivity_state(value)
+                if value is not None
+                else STATE_UNKNOWN
+            )
+
+            self.entities[ENTITY_BUMP_SENSITIVITY].set_attributes(
+                {
+                    "last_updated": last_updated_now(),
+                }
+            )
+
+            self.entities[ENTITY_BUMP_SENSITIVITY].async_schedule_update_ha_state()
+
+        return config
+
+    async def async_set_bump_sensitivity(self, bump_sensitivity: int):
+        """Set mower bump sensitivity."""
+        _LOGGER.info(
+            "Setting bump sensitivity to %s for mower %s",
+            bump_sensitivity,
+            self._serial,
+        )
+
+        try:
+            config = await self._indego_client.get(
+                f"alms/{self._serial}/config"
+            )
+        except Exception as exc:
+            raise HomeAssistantError(
+                f"Could not fetch mower config: {exc}"
+            ) from exc
+
+        payload = {
+            "bump_sensitivity": bump_sensitivity,
+        }
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/config",
+            payload,
+        )
+
+        if ENTITY_BUMP_SENSITIVITY in self.entities:
+            self.entities[ENTITY_BUMP_SENSITIVITY].state = (
+                _bump_sensitivity_state(bump_sensitivity)
+            )
+            self.entities[ENTITY_BUMP_SENSITIVITY].set_attributes(
+                {
+                    "last_updated": last_updated_now(),
+                }
+            )
+
+        _LOGGER.debug("Set bump sensitivity result: %r", result)
+
+        await self._update_config()
 
     async def async_send_command_to_client(self, command: str):
         """Send a mower command to the Indego client."""
@@ -1796,6 +1959,7 @@ class IndegoHub:
                 self._update_predictive_calendar(),
                 self._update_predictive_schedule(),
                 self._update_calendar(),
+                self._update_config(),
             ],
             return_exceptions=True,
         )
