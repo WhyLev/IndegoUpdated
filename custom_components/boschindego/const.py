@@ -122,6 +122,9 @@ ENTITY_CALENDAR_SLOTS: Final = "calendar_slots"
 SERVICE_NAME_SET_CALENDAR_SLOT: Final = "set_calendar_slot"
 SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW: Final = "set_predictive_mowing_window"
 
+# Security
+CONF_PIN = "pin"
+SERVICE_NAME_SET_PIN = "set_pin"
 
 DELETE_ALERTS_BATCH_DELAY_SECONDS: Final = 10
 DELETE_ALERTS_BATCH_MAX_ROUNDS: Final = 20
