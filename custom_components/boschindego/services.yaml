@@ -186,3 +186,22 @@ set_predictive_mowing_window:
       required: true
       selector:
         time: {}
+        
+set_pin:
+  name: Change mower PIN
+  description: Change the mower PIN.
+
+  fields:
+    mower_serial:
+      name: Serial number
+      description: Serial number of the mower. Only required if multiple mowers are configured.
+      required: false
+      selector:
+        text: {}
+
+    pin:
+      name: PIN
+      description: New 4-digit mower PIN.
+      required: true
+      selector:
+        text: {}
