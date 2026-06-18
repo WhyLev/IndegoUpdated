@@ -96,11 +96,7 @@
                     "mowing": "Mowing",
                     "docked": "Docked",
                     "sleeping": "Sleeping",
-                    "paused": "Paused",
-                    "Mowing": "Mowing",
-                    "Docked": "Docked",
-                    "Sleeping": "Sleeping",
-                    "Paused": "Paused"
+                    "paused": "Paused"
                 }
             },
             "mower_state_detail": {
