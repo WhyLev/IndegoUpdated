@@ -96,7 +96,11 @@
                     "mowing": "Mowing",
                     "docked": "Docked",
                     "sleeping": "Sleeping",
-                    "paused": "Paused"
+                    "paused": "Paused",
+                    "Mowing": "Mowing",
+                    "Docked": "Docked",
+                    "Sleeping": "Sleeping",
+                    "Paused": "Paused"
                 }
             },
             "mower_state_detail": {
@@ -133,7 +137,39 @@
                     "returning_to_dock_battery_temp_range": "Returning to Dock - Battery temp range",
                     "returning_to_dock_lawn_complete": "Returning to Dock - Lawn complete",
                     "returning_to_dock_relocalising": "Returning to Dock - Relocating",
-                    "returning_to_dock_requested_by_user_app": "Returning to Dock - requested by user/app"
+                    "returning_to_dock_requested_by_user_app": "Returning to Dock - requested by user/app",
+                    "Reading status": "Reading status",
+                    "Charging": "Charging",
+                    "Docked": "Docked",
+                    "Sleeping": "Sleeping",
+                    "Docked - Software update": "Docked - Software update",
+                    "Docked - Loading map": "Docked - Loading map",
+                    "Docked - Saving map": "Docked - Saving map",
+                    "Docked - Leaving dock": "Docked - Leaving dock",
+                    "Mowing": "Mowing",
+                    "Mowing - Relocalising": "Mowing - Relocating",
+                    "Mowing - Learning Lawn": "Mowing - Learning Lawn",
+                    "Mowing - Learning Lawn paused": "Mowing - Learning Lawn paused",
+                    "SpotMow": "SpotMow",
+                    "Mowing randomly": "Mowing randomly",
+                    "Diagnostic mode": "Diagnostic mode",
+                    "End of life": "End of life",
+                    "Software update": "Software update",
+                    "Energy save mode": "Energy save mode",
+                    "Relocalising": "Relocating",
+                    "Loading map": "Loading map",
+                    "Learning lawn": "Learning lawn",
+                    "Paused": "Paused",
+                    "Border cut": "Border cut",
+                    "Idle in lawn": "Idle in lawn",
+                    "Stuck on lawn, help needed": "Stuck on lawn, help needed",
+                    "Returning to dock": "Returning to dock",
+                    "Returning to dock - Battery low": "Returning to dock - Battery low",
+                    "Returning to dock - Calendar timeslot ended": "Returning to dock - Calendar timeslot ended",
+                    "Returning to dock - Battery temp range": "Returning to dock - Battery temperature range",
+                    "Returning to dock - Lawn complete": "Returning to dock - Lawn complete",
+                    "Returning to dock - Relocalising": "Returning to dock - Relocating",
+                    "Returning to dock - requested by user/app": "Returning to dock - requested by user/app"
                 }
             },
             "battery_percentage": {
@@ -195,6 +231,14 @@
             },
             "battery_discharge": {
                 "name": "Battery Discharge"
+            },
+            "bump_sensitivity": {
+                "name": "Lawn conditions",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Slippery",
+                    "uneven": "Uneven"
+                }
             },
             "calendar_slots": {
                 "state": {
@@ -546,6 +590,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "PIN protection"
+            },
+            "autolock": {
+                "name": "Keypad lock"
+            },
+            "automatic_update": {
+                "name": "Automatic updates"
             }
         }
     },
@@ -670,6 +723,52 @@
                     "description": "Set End Time of the selected slot and day. Only needed if you want to enable a slot."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Set mower lawn conditions",
+            "description": "Set the mower lawn conditions",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serial number",
+                    "description": "Serial number of the mower. Only required if multiple mowers are configured."
+                },
+                "bump_sensitivity": {
+                    "name": "Lawn conditions",
+                    "description": "Lawn conditions of the mower"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "PIN Code",
+            "description": "Change the mower PIN code",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serial number",
+                    "description": "Serial number of the mower. Only required if multiple mowers are configured."
+                },
+                "pin": {
+                    "name": "PIN Code",
+                    "description": "New four-digit mower PIN code"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Set SmartMowing mowing window",
+            "description": "Set the time window in which the mower may mow in SmartMowing mode.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serial number",
+                    "description": "Serial number of the mower. Only required if multiple mowers are configured."
+                },
+                "earliest_start": {
+                    "name": "Earliest start",
+                    "description": "The earliest time the mower should start."
+                },
+                "latest_end": {
+                    "name": "Latest end",
+                    "description": "The latest time the mower should finish."
+                }
+            }
         }
     },
     "selector": {
@@ -694,7 +793,15 @@
             "options": {
                 "mow": "Mow",
                 "return_to_dock": "Return to dock",
-                "pause": "Pause"
+                "pause": "Pause",
+                "returnToDock": "Return to dock"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Slippery",
+                "uneven": "Uneven"
             }
         }
     },

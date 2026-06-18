@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Batteriavlastning"
             },
+            "bump_sensitivity": {
+                "name": "Gräsförhållanden",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Halkigt",
+                    "uneven": "Ojämnt"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktiv",
@@ -546,6 +554,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "PIN-skydd"
+            },
+            "autolock": {
+                "name": "Knapplås"
+            },
+            "automatic_update": {
+                "name": "Automatiska uppdateringar"
             }
         }
     },
@@ -555,7 +572,8 @@
             "description": "Skicka kommandon till gräsklipparen. Välj ett kommando.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 },
                 "command": {
                     "name": "Skicka kommando",
@@ -568,10 +586,12 @@
             "description": "Aktivera eller inaktivera SmartMowing. Tillåtna värden är true eller false.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 },
                 "enable": {
-                    "description": "Aktivera SmartMowing."
+                    "description": "Aktivera SmartMowing.",
+                    "name": "Aktivera/inaktivera"
                 }
             }
         },
@@ -580,10 +600,12 @@
             "description": "Radera den valda aviseringen.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 },
                 "alert_index": {
-                    "description": "Radera den valda aviseringen. 0 för den senaste aviseringen."
+                    "description": "Radera den valda aviseringen. 0 för den senaste aviseringen.",
+                    "name": "Aviseringsindex"
                 }
             }
         },
@@ -592,7 +614,8 @@
             "description": "Radera alla aviseringar.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 }
             }
         },
@@ -601,10 +624,12 @@
             "description": "Markera den valda aviseringen som läst.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 },
                 "alert_index": {
-                    "description": "Markera den valda aviseringen som läst. 0 för den senaste aviseringen."
+                    "description": "Markera den valda aviseringen som läst. 0 för den senaste aviseringen.",
+                    "name": "Aviseringsindex"
                 }
             }
         },
@@ -613,7 +638,8 @@
             "description": "Markera alla aviseringar som lästa.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 }
             }
         },
@@ -622,7 +648,8 @@
             "description": "Hämtar den aktuella klippkartan från Bosch Cloud API och sparar den lokalt som \"www/indego_map_base.svg\". Kartan återspeglar den senast registrerade klippvägen.",
             "fields": {
                 "mower_serial": {
-                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade."
+                    "description": "Gräsklippare serienummer. Krävs endast när du har flera gräsklippare konfigurerade.",
+                    "name": "Serienummer"
                 }
             }
         },
@@ -659,6 +686,52 @@
                     "description": "Sluttid för valt tidsintervall. Krävs endast om tidsintervallet ska aktiveras. Endast timmar och minuter används."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Ange gräsförhållanden för klipparen",
+            "description": "Ange gräsförhållandena för klipparen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Klipparens serienummer. Krävs endast om flera klippare är konfigurerade."
+                },
+                "bump_sensitivity": {
+                    "name": "Gräsförhållanden",
+                    "description": "Gräsförhållanden för klipparen"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "PIN-kod",
+            "description": "Ändra gräsklipparens PIN-kod",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Gräsklipparens serienummer. Krävs endast om flera gräsklippare är konfigurerade."
+                },
+                "pin": {
+                    "name": "PIN-kod",
+                    "description": "Ny fyrsiffrig PIN-kod för gräsklipparen"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Ställ in SmartMowing-tidsfönster",
+            "description": "Tidsfönstret då gräsklipparen får klippa i SmartMowing-läge.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Gräsklipparens serienummer. Krävs endast om flera gräsklippare är konfigurerade."
+                },
+                "earliest_start": {
+                    "name": "Tidigaste start",
+                    "description": "Den tidigaste tiden gräsklipparen ska börja."
+                },
+                "latest_end": {
+                    "name": "Senaste slut",
+                    "description": "Den senaste tiden gräsklipparen ska sluta."
+                }
+            }
         }
     },
     "selector": {
@@ -685,16 +758,23 @@
                 "returnToDock": "Återvänd till laddstationen",
                 "pause": "Paus"
             }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Halkigt",
+                "uneven": "Ojämnt"
+            }
         }
     },
     "issues": {
         "auth_failure": {
-            "title": "Bosch Indego authentication expired",
-            "description": "Your authentication with Bosch Indego has expired. Please go to Settings > Devices & Services > Indego > Re-authenticate to restore access to your mower."
+            "title": "Bosch Indego-autentisering har upphört att gälla",
+            "description": "Din autentisering med Bosch Indego har upphört att gälla. Gå till Inställningar > Enheter och tjänster > Indego > Autentisera igen för att återställa åtkomsten till din gräsklippare."
         },
         "connection_failure": {
-            "title": "Bosch Indego connection problems",
-            "description": "Your mower has not responded to API requests for an extended period. This may indicate network issues, the Bosch service is experiencing problems, or your mower is offline. Please check your internet connection and mower status."
+            "title": "Bosch Indego-anslutningsproblem",
+            "description": "Din gräsklippare har inte svarat på API-förfrågningar under en längre tid. Detta kan bero på nätverksproblem, problem med Bosch-tjänsten eller att gräsklipparen är offline. Kontrollera internetanslutningen och gräsklipparens status."
         }
     }
 }
