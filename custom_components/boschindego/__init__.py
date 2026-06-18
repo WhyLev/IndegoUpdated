@@ -58,6 +58,7 @@ from .error_codes import (
 )
 from .button import IndegoAlertButton
 from .switch import IndegoSwitch
+from .weather import IndegoWeather
 from . import diagnostics, repairs
 
 _LOGGER = logging.getLogger(__name__)
@@ -516,6 +517,11 @@ ENTITY_DEFINITIONS = {
             "exclusion_sunday_weather",
         ],
         CONF_TRANSLATION_KEY: "predictive_schedule",
+    },
+    ENTITY_PREDICTIVE_WEATHER: {
+        CONF_TYPE: WEATHER_TYPE,
+        CONF_ICON: "mdi:weather-partly-cloudy",
+        CONF_TRANSLATION_KEY: "predictive_weather",
     },
 }
 
@@ -1600,6 +1606,16 @@ class IndegoHub:
                     entity_category=entity[CONF_ENTITY_CATEGORY] if CONF_ENTITY_CATEGORY in entity else None,
                 )
 
+            elif entity[CONF_TYPE] == WEATHER_TYPE:
+                self.entities[entity_key] = IndegoWeather(
+                    entity_id=f"indego_{self._serial}_{entity_key}",
+                    name=None,
+                    device_info=device_info,
+                    indego_hub=self,
+                    translation_key=entity[CONF_TRANSLATION_KEY] if CONF_TRANSLATION_KEY in entity else None,
+                    entity_category=entity[CONF_ENTITY_CATEGORY] if CONF_ENTITY_CATEGORY in entity else None,
+                )
+
     async def update_generic_data_and_load_platforms(self, load_platforms):
         """Update the generic mower data, so we can create the HA platforms for the Indego component."""
         _LOGGER.debug("Fetching generic data for device info from Bosch API")
@@ -1801,6 +1817,7 @@ class IndegoHub:
                 self._update_predictive_calendar(),
                 self._update_predictive_schedule(),
                 self._update_calendar(),
+                self._update_predictive_weather()
             ],
             return_exceptions=True,
         )
@@ -2048,6 +2065,18 @@ class IndegoHub:
                 **window,
             }
         )
+
+    async def _update_predictive_weather(self):
+        weather = await self._indego_client.get(
+            f"alms/{self._serial}/predictive/weather"
+        )
+
+        self._predictive_weather = weather
+
+        if ENTITY_PREDICTIVE_WEATHER in self.entities:
+            self.entities[ENTITY_PREDICTIVE_WEATHER].weather_data = weather
+
+        return weather
 
     async def _update_calendar(self):
         """Update calendar data / planned mowing slots."""
