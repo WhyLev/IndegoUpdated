@@ -59,7 +59,8 @@ VACUUM_TYPE: Final = "vacuum"
 LAWN_MOWER_TYPE: Final = "lawn_mower"
 BUTTON_TYPE: Final = "button"
 SWITCH_TYPE: Final = "switch"
-INDEGO_PLATFORMS: Final = [SENSOR_TYPE, BINARY_SENSOR_TYPE, VACUUM_TYPE, LAWN_MOWER_TYPE, CAMERA_TYPE, BUTTON_TYPE, SWITCH_TYPE]
+WEATHER_TYPE: Final = "weather"
+INDEGO_PLATFORMS: Final = [SENSOR_TYPE, BINARY_SENSOR_TYPE, VACUUM_TYPE, LAWN_MOWER_TYPE, CAMERA_TYPE, BUTTON_TYPE, SWITCH_TYPE, WEATHER_TYPE]
 ENTITY_ONLINE: Final = "online"
 ENTITY_UPDATE_AVAILABLE: Final = "update_available"
 ENTITY_ALERT: Final = "alert"
@@ -95,6 +96,7 @@ ENTITY_DELETE_LAST_ALERT_BUTTON: Final = "delete_last_alert"
 ENTITY_READ_ALL_ALERTS_BUTTON: Final = "read_all_alerts"
 ENTITY_READ_LAST_ALERT_BUTTON: Final = "read_last_alert"
 ENTITY_SMARTMOWING_SWITCH: Final = "smartmowing_switch"
+ENTITY_PREDICTIVE_WEATHER: Final = "predictive_weather"
 
 # Smart Mowing Sensors (Phase 1)
 ENTITY_WEATHER: Final = "weather"
