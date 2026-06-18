@@ -186,3 +186,44 @@ set_predictive_mowing_window:
       required: true
       selector:
         time: {}
+
+set_bump_sensitivity:
+  name: Bump sensitivity
+  description: Set the mower bump sensitivity.
+  fields:
+    mower_serial:
+      name: Serial number
+      description: Serial number of the mower. Only required if multiple mowers are configured.
+      required: false
+      selector:
+        text: {}
+
+    bump_sensitivity:
+      name: Bump sensitivity
+      description: Bump sensitivity of the mower.
+      required: true
+      selector:
+        select:
+          translation_key: bump_sensitivity_options
+          options:
+            - "normal"
+            - "slippery"
+            - "uneven"
+
+set_pin:
+  name: Change mower PIN
+  description: Change the mower PIN.
+
+  fields:
+    mower_serial:
+      name: Serial number
+      required: false
+      selector:
+        text: {}
+
+    pin:
+      name: PIN
+      description: New 4-digit mower PIN.
+      required: true
+      selector:
+        text: {}
