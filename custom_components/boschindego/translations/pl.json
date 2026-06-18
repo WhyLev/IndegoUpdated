@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Rozładowanie baterii"
             },
+            "bump_sensitivity": {
+                "name": "Warunki trawnika",
+                "state": {
+                    "normal": "Normalne",
+                    "slippery": "Śliskie",
+                    "uneven": "Nierówne"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktywny",
@@ -546,6 +554,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "Ochrona kodem PIN"
+            },
+            "autolock": {
+                "name": "Blokada klawiatury"
+            },
+            "automatic_update": {
+                "name": "Automatyczne aktualizacje"
             }
         }
     },
@@ -555,7 +572,8 @@
             "description": "Wyślij polecenia do kosiarki. Wybierz polecenie.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 },
                 "command": {
                     "name": "Wyślij polecenie",
@@ -568,10 +586,12 @@
             "description": "Włącz lub wyłącz tryb SmartMowing. Dostępne wartości to true lub false.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 },
                 "enable": {
-                    "description": "Włącz tryb SmartMowing."
+                    "description": "Włącz tryb SmartMowing.",
+                    "name": "Włącz/wyłącz"
                 }
             }
         },
@@ -580,10 +600,12 @@
             "description": "Usuń zaznaczony alert.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 },
                 "alert_index": {
-                    "description": "Usuń zaznaczony alert. 0 dla ostatniego alertu."
+                    "description": "Usuń zaznaczony alert. 0 dla ostatniego alertu.",
+                    "name": "Indeks alertu"
                 }
             }
         },
@@ -592,7 +614,8 @@
             "description": "Usuń wszystkie alerty.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 }
             }
         },
@@ -601,10 +624,12 @@
             "description": "Oznacz alert jako przeczytany.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 },
                 "alert_index": {
-                    "description": "Oznacz wybrany alert jako przeczytany. 0 dla ostatniego alertu."
+                    "description": "Oznacz wybrany alert jako przeczytany. 0 dla ostatniego alertu.",
+                    "name": "Indeks alertu"
                 }
             }
         },
@@ -613,7 +638,8 @@
             "description": "Oznacz wszystkie alerty jako przeczytane.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 }
             }
         },
@@ -622,7 +648,8 @@
             "description": "Pobiera aktualną mapę koszenia z API Bosch Cloud i zapisuje ją lokalnie jako \"www/indego_map_base.svg\". Mapa odzwierciedla ostatnio zapisaną trasę koszenia.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek."
+                    "description": "Numer seryjny kosiarki. Wymagany tylko gdy konfigurujesz wiele kosiarek.",
+                    "name": "Numer seryjny"
                 }
             }
         },
@@ -659,6 +686,52 @@
                     "description": "Godzina zakończenia wybranego przedziału. Wymagana tylko wtedy, gdy przedział ma zostać aktywowany. Używane są tylko godziny i minuty."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Ustaw warunki trawnika kosiarki",
+            "description": "Ustaw warunki trawnika kosiarki",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numer seryjny",
+                    "description": "Numer seryjny kosiarki. Wymagany tylko wtedy, gdy skonfigurowano więcej niż jedną kosiarkę."
+                },
+                "bump_sensitivity": {
+                    "name": "Warunki trawnika",
+                    "description": "Warunki trawnika kosiarki"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "Kod PIN",
+            "description": "Zmień kod PIN kosiarki",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numer seryjny",
+                    "description": "Numer seryjny kosiarki. Wymagany tylko wtedy, gdy skonfigurowano więcej niż jedną kosiarkę."
+                },
+                "pin": {
+                    "name": "Kod PIN",
+                    "description": "Nowy czterocyfrowy kod PIN kosiarki"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Ustaw okno czasowe SmartMowing",
+            "description": "Okno czasowe, w którym kosiarka może kosić w trybie SmartMowing.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numer seryjny",
+                    "description": "Numer seryjny kosiarki. Wymagany tylko wtedy, gdy skonfigurowano więcej niż jedną kosiarkę."
+                },
+                "earliest_start": {
+                    "name": "Najwcześniejszy start",
+                    "description": "Najwcześniejsza godzina rozpoczęcia pracy kosiarki."
+                },
+                "latest_end": {
+                    "name": "Najpóźniejszy koniec",
+                    "description": "Najpóźniejsza godzina zakończenia pracy kosiarki."
+                }
+            }
         }
     },
     "selector": {
@@ -685,16 +758,23 @@
                 "returnToDock": "Powrót do stacji dokującej",
                 "pause": "Pauza"
             }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normalne",
+                "slippery": "Śliskie",
+                "uneven": "Nierówne"
+            }
         }
     },
     "issues": {
         "auth_failure": {
-            "title": "Bosch Indego authentication expired",
-            "description": "Your authentication with Bosch Indego has expired. Please go to Settings > Devices & Services > Indego > Re-authenticate to restore access to your mower."
+            "title": "Uwierzytelnienie Bosch Indego wygasło",
+            "description": "Twoje uwierzytelnienie Bosch Indego wygasło. Przejdź do Ustawienia > Urządzenia i usługi > Indego > Uwierzytelnij ponownie, aby przywrócić dostęp do kosiarki."
         },
         "connection_failure": {
-            "title": "Bosch Indego connection problems",
-            "description": "Your mower has not responded to API requests for an extended period. This may indicate network issues, the Bosch service is experiencing problems, or your mower is offline. Please check your internet connection and mower status."
+            "title": "Problemy z połączeniem Bosch Indego",
+            "description": "Kosiarka przez dłuższy czas nie odpowiadała na żądania API. Może to oznaczać problemy z siecią, problemy z usługą Bosch lub że kosiarka jest offline. Sprawdź połączenie internetowe i stan kosiarki."
         }
     }
 }

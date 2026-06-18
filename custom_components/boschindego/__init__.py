@@ -115,6 +115,22 @@ SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW = vol.Schema({
     vol.Required(CONF_LATEST_END): cv.string,
 })
 
+SERVICE_SCHEMA_SET_BUMP_SENSITIVITY = vol.Schema({
+    vol.Optional(CONF_MOWER_SERIAL): cv.string,
+    vol.Required(CONF_BUMP_SENSITIVITY): vol.In([
+        "normal",
+        "slippery",
+        "uneven",
+    ]),
+})
+
+SERVICE_SCHEMA_SET_PIN = vol.Schema({
+    vol.Optional(CONF_MOWER_SERIAL): cv.string,
+    vol.Required(CONF_PIN): vol.All(
+        cv.string,
+        vol.Length(min=4, max=4),
+    ),
+})
 
 def FUNC_ICON_MOWER_ALERT(state):
     if state:
@@ -516,6 +532,40 @@ ENTITY_DEFINITIONS = {
             "exclusion_sunday_weather",
         ],
         CONF_TRANSLATION_KEY: "predictive_schedule",
+    },
+    ENTITY_BUMP_SENSITIVITY: {
+        CONF_TYPE: SENSOR_TYPE,
+        CONF_ICON: "mdi:alert-circle-outline",
+        CONF_DEVICE_CLASS: None,
+        CONF_UNIT_OF_MEASUREMENT: None,
+        CONF_ATTR: [
+            "last_updated",
+        ],
+        CONF_TRANSLATION_KEY: "bump_sensitivity",
+    },
+    ENTITY_SECURITY_ENABLED: {
+        CONF_TYPE: SWITCH_TYPE,
+        CONF_ICON: "mdi:shield-lock",
+        CONF_DEVICE_CLASS: None,
+        CONF_TRANSLATION_KEY: "security_enabled",
+        CONF_ATTR: [],
+        CONF_ENTITY_CATEGORY: EntityCategory.CONFIG,
+    },
+    ENTITY_AUTOLOCK: {
+        CONF_TYPE: SWITCH_TYPE,
+        CONF_ICON: "mdi:lock-clock",
+        CONF_DEVICE_CLASS: None,
+        CONF_TRANSLATION_KEY: "autolock",
+        CONF_ATTR: [],
+        CONF_ENTITY_CATEGORY: EntityCategory.CONFIG,
+    },
+    ENTITY_AUTOMATIC_UPDATE: {
+        CONF_TYPE: SWITCH_TYPE,
+        CONF_ICON: "mdi:update",
+        CONF_DEVICE_CLASS: None,
+        CONF_TRANSLATION_KEY: "automatic_update",
+        CONF_ATTR: [],
+        CONF_ENTITY_CATEGORY: EntityCategory.CONFIG,
     },
 }
 
@@ -1002,6 +1052,64 @@ def _localized_text(hass, key: str) -> str:
         LOCALIZED_TEXTS["en"],
     ).get(key, key)
 
+def _config_to_payload(config) -> dict:
+    """Convert pyIndego config object to API payload."""
+    if isinstance(config, dict):
+        return dict(config)
+
+    if hasattr(config, "model_dump"):
+        return config.model_dump(exclude_none=True)
+
+    if hasattr(config, "dict"):
+        return config.dict(exclude_none=True)
+
+    if hasattr(config, "__dict__"):
+        return {
+            key: value
+            for key, value in vars(config).items()
+            if not key.startswith("_")
+        }
+
+    raise ValueError(f"Unsupported config type: {type(config)}")
+
+def _get_config_value(config, *keys):
+    """Get config value from dict or object using multiple possible field names."""
+    if config is None:
+        return None
+
+    if isinstance(config, dict):
+        for key in keys:
+            if key in config:
+                return config[key]
+        return None
+
+    for key in keys:
+        if hasattr(config, key):
+            return getattr(config, key)
+
+    return None
+
+def _bump_sensitivity_state(value) -> str:
+    mapping = {
+        0: "normal",
+        1: "slippery",
+        2: "uneven",
+    }
+
+    try:
+        return mapping.get(int(value), str(value))
+    except (TypeError, ValueError):
+        return STATE_UNKNOWN
+
+def _bump_sensitivity_value(value) -> int:
+    mapping = {
+        "normal": 0,
+        "slippery": 1,
+        "uneven": 2,
+    }
+
+    return mapping[str(value).lower()]
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Load a config entry."""
     hass.data.setdefault(DOMAIN, {})
@@ -1023,7 +1131,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass,
         entry.options.get(CONF_USER_AGENT)
     )
-    
+
     async def load_platforms():
         _LOGGER.debug("Loading Home Assistant platforms: %s", INDEGO_PLATFORMS)
         await hass.config_entries.async_forward_entry_setups(entry, INDEGO_PLATFORMS)
@@ -1216,6 +1324,30 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             latest_end=call.data[CONF_LATEST_END],
         )
 
+    async def async_set_bump_sensitivity(call):
+        """Handle set_bump_sensitivity service call."""
+        instance = find_instance_for_mower_service_call(call)
+
+        await instance.async_set_bump_sensitivity(
+            _bump_sensitivity_value(call.data[CONF_BUMP_SENSITIVITY])
+        )
+
+    async def async_set_pin(call):
+        """Handle set_pin service call."""
+        instance = find_instance_for_mower_service_call(call)
+
+        pin = str(call.data[CONF_PIN])
+
+        if not pin.isdigit() or len(pin) != 4:
+            raise HomeAssistantError(
+                "PIN must consist of exactly 4 digits"
+            )
+
+        await instance.async_set_pin(pin)
+
+
+
+
     # In HASS we can have multiple Indego component instances as long as the mower serial is unique.
     # So the mower services should only need to be registered for the first instance.
     if CONF_SERVICES_REGISTERED not in hass.data[DOMAIN]:
@@ -1278,6 +1410,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             schema=SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW,
         )
 
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_NAME_SET_BUMP_SENSITIVITY,
+            async_set_bump_sensitivity,
+            schema=SERVICE_SCHEMA_SET_BUMP_SENSITIVITY,
+        )
+
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_NAME_SET_PIN,
+            async_set_pin,
+            schema=SERVICE_SCHEMA_SET_PIN,
+        )
+
         hass.data[DOMAIN][CONF_SERVICES_REGISTERED] = entry.entry_id
         _LOGGER.info("Successfully registered all Indego services")
 
@@ -1334,12 +1480,7 @@ class IndegoHub:
         519,  # Idle in lawn (intentional stand-still)
         520,  # Mapping paused
         525,  # Spot mowing complete
-        526,  # Random mowing complete
-        # Additional states that may occur immediately after undocking
-        518,  # (Undefined but observed)
-        521,  # (Undefined but observed)
-        523,  # (Undefined but observed)
-        524,  # (Undefined but observed)
+        526,  # Random mowing complete (Pendant zu 525, fehlte bisher)
     }
 
     # Grace period after mowing session starts (in seconds)
@@ -1509,6 +1650,201 @@ class IndegoHub:
                 **attrs,
             }
         )
+
+    async def _update_config(self):
+        """Update mower config data."""
+        _LOGGER.debug("Fetching config data from Bosch API")
+
+        try:
+            config = await self._indego_client.get(
+                f"alms/{self._serial}/config"
+            )
+        except Exception as exc:
+            _LOGGER.warning("Failed to fetch config data from API: %s", exc)
+            return None
+
+
+        if ENTITY_BUMP_SENSITIVITY in self.entities:
+            value = _get_config_value(
+                config,
+                "bump_sensitivity",
+                "bumpSensitivity",
+                "bump_sens",
+                "bumpSens",
+            )
+
+            self.entities[ENTITY_BUMP_SENSITIVITY].state = (
+                _bump_sensitivity_state(value)
+                if value is not None
+                else STATE_UNKNOWN
+            )
+
+            self.entities[ENTITY_BUMP_SENSITIVITY].set_attributes(
+                {
+                    "last_updated": last_updated_now(),
+                }
+            )
+
+            self.entities[ENTITY_BUMP_SENSITIVITY].async_schedule_update_ha_state()
+
+        return config
+
+    async def async_set_bump_sensitivity(self, bump_sensitivity: int):
+        """Set mower bump sensitivity."""
+        _LOGGER.info(
+            "Setting bump sensitivity to %s for mower %s",
+            bump_sensitivity,
+            self._serial,
+        )
+
+        try:
+            config = await self._indego_client.get(
+                f"alms/{self._serial}/config"
+            )
+        except Exception as exc:
+            raise HomeAssistantError(
+                f"Could not fetch mower config: {exc}"
+            ) from exc
+
+        payload = {
+            "bump_sensitivity": bump_sensitivity,
+        }
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/config",
+            payload,
+        )
+
+        if ENTITY_BUMP_SENSITIVITY in self.entities:
+            self.entities[ENTITY_BUMP_SENSITIVITY].state = (
+                _bump_sensitivity_state(bump_sensitivity)
+            )
+            self.entities[ENTITY_BUMP_SENSITIVITY].set_attributes(
+                {
+                    "last_updated": last_updated_now(),
+                }
+            )
+
+        _LOGGER.debug("Set bump sensitivity result: %r", result)
+
+        await self._update_config()
+
+    async def async_set_pin(self, pin: str):
+        """Set mower PIN."""
+        pin = str(pin)
+
+        if not pin.isdigit() or len(pin) != 4:
+            raise HomeAssistantError(
+                "PIN must consist of exactly 4 digits"
+            )
+
+        if str(getattr(self._indego_client, "state_description", "")).lower() != "docked":
+            raise HomeAssistantError(
+                "PIN can only be changed while the mower is docked"
+            )
+
+        payload = {
+            "new_pin": pin,
+        }
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/security",
+            payload,
+        )
+
+        _LOGGER.debug("Set PIN result: %r", result)
+
+        await self._update_security()
+
+    async def _update_security(self):
+        """Update mower security data."""
+        try:
+            security = await self._indego_client.get(
+                f"alms/{self._serial}/security"
+            )
+
+
+#            _LOGGER.warning(
+#                type(security),
+#            )
+
+            if ENTITY_SECURITY_ENABLED in self.entities:
+                self.entities[ENTITY_SECURITY_ENABLED].is_on = bool(security.get("enabled"))
+
+            if ENTITY_AUTOLOCK in self.entities:
+                self.entities[ENTITY_AUTOLOCK].is_on = bool(security.get("autolock"))
+
+            return security
+
+        except Exception as exc:
+            _LOGGER.warning(
+                "Failed to fetch security data: %s",
+                exc,
+            )
+            return None
+
+    async def async_set_security_enabled(self, enabled: bool):
+        payload = {
+            "enabled": enabled,
+        }
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/security",
+            payload,
+        )
+
+        _LOGGER.debug("Set security enabled result: %r", result)
+
+        await self._update_security()
+
+    async def async_set_autolock(self, enabled: bool):
+        if str(self._indego_client.state_description).lower() != "docked":
+            raise HomeAssistantError(
+                "AutoLock can only be changed while the mower is docked"
+            )
+
+        payload = {
+            "autolock": enabled,
+        }
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/security",
+            payload,
+        )
+
+        _LOGGER.debug("Set AutoLock result: %r", result)
+
+        await self._update_security()
+
+    async def _update_automatic_update(self):
+        automatic_update = await self._indego_client.get(
+            f"alms/{self._serial}/automaticUpdate"
+        )
+
+        if ENTITY_AUTOMATIC_UPDATE in self.entities:
+            self.entities[ENTITY_AUTOMATIC_UPDATE].is_on = bool(
+                automatic_update.get("allow_automatic_update")
+            )
+
+        return automatic_update
+
+    async def async_set_automatic_update(self, enabled: bool):
+        """Set automatic firmware update."""
+        payload = {
+            "allow_automatic_update": enabled,
+        }
+
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/automaticUpdate",
+            payload,
+        )
+
+        _LOGGER.debug("Set automatic update result: %r", result)
+
+        if ENTITY_AUTOMATIC_UPDATE in self.entities:
+            self.entities[ENTITY_AUTOMATIC_UPDATE].is_on = enabled
+
+        await self._update_automatic_update()
 
     async def async_send_command_to_client(self, command: str):
         """Send a mower command to the Indego client."""
@@ -1801,6 +2137,9 @@ class IndegoHub:
                 self._update_predictive_calendar(),
                 self._update_predictive_schedule(),
                 self._update_calendar(),
+                self._update_config(),
+                self._update_security(),
+                self._update_automatic_update()
             ],
             return_exceptions=True,
         )
@@ -1906,7 +2245,7 @@ class IndegoHub:
                             await entity.refresh_map(mower_state)
         except Exception as e:
             _LOGGER.error("Unexpected error processing position update: %s", str(e))
-    
+
     async def _update_operating_data(self):
         try:
             await self._indego_client.update_operating_data()
@@ -2172,8 +2511,6 @@ class IndegoHub:
 
             self._update_alert_state()
 
-            await self._update_alerts()
-
             # Check for offline error codes (WiFi lost, API error, No connection to server)
             state_code = getattr(self._indego_client.state, 'state', None)
             if state_code in (802, 803, 804):
@@ -2269,7 +2606,7 @@ class IndegoHub:
                 _LOGGER.error("Failed to update runtime data: %s", str(exc))
                 self.entities[ENTITY_RUNTIME].state = STATE_UNKNOWN
 
-            
+
             # Update battery charging state - use separate binary sensor only
             try:
                 is_charging = (self._indego_client.state_description_detail == "Charging")
@@ -2465,7 +2802,7 @@ class IndegoHub:
                     self._indego_client.generic_data,
                     "mowing_mode_description",
                     STATE_UNKNOWN,
-                    
+
                 )
 
                 effective_mowing_mode = self._forced_mowing_mode or mowing_mode
@@ -2510,34 +2847,38 @@ class IndegoHub:
         return self._indego_client.generic_data
 
     async def _update_alerts(self):
+
         await self._indego_client.update_alerts()
 
-        alerts = self._indego_client.alerts or []
-
+        # Show "Problem" only if there are unread alerts
         unread_count = sum(
-            1 for alert in alerts
+            1 for alert in self._indego_client.alerts
             if str(alert.read_status).strip().lower() == "unread"
         )
-
-        # Explicitly always set state - never rely on restored state
         self.entities[ENTITY_ALERT].state = unread_count > 0
 
-        if alerts:
+        if self._indego_client.alerts:
+            # Build complete alert attributes with enhanced error descriptions
             alert_attributes = {
                 "alerts_count": self._indego_client.alerts_count,
-                "last_alert_error_code": alerts[0].error_code,
-                "last_alert_message": alerts[0].message,
-                "last_alert_date": format_indego_date(alerts[0].date),
-                "last_alert_read": alerts[0].read_status,
+                "last_alert_error_code": self._indego_client.alerts[0].error_code,
+                "last_alert_message": self._indego_client.alerts[0].message,
+                "last_alert_date": format_indego_date(self._indego_client.alerts[0].date),
+                "last_alert_read": self._indego_client.alerts[0].read_status,
             }
 
-            for index, alert in enumerate(alerts):
+            # Always store all alerts as individual attributes for easy extraction in automations
+            for index, alert in enumerate(self._indego_client.alerts):
                 error_code = str(alert.error_code)
+                # Use new comprehensive error description
                 error_desc = get_error_description(error_code)
                 error_severity = get_error_severity(error_code)
                 alert_time = format_indego_date(alert.date)
 
+                # Format: "ERROR_CODE: Error Description - 2024-01-01 12:34:56 [SEVERITY]"
                 alert_attributes[f"error_{index}"] = f"{error_code}: {error_desc} - {alert_time} [{error_severity.name}]"
+
+                # Also store individual components for advanced use cases
                 alert_attributes[f"error_{index}_code"] = error_code
                 alert_attributes[f"error_{index}_description"] = error_desc
                 alert_attributes[f"error_{index}_severity"] = error_severity.name
@@ -2547,11 +2888,13 @@ class IndegoHub:
 
             self.entities[ENTITY_ALERT].add_attributes(alert_attributes, False)
 
-            alert_index = len(alerts)
+            # Clear any other alerts that no longer exist
+            alert_index = len(self._indego_client.alerts)
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{alert_index}", False):
                 alert_index += 1
 
-            error_index = len(alerts)
+            # Also clear individual components if alerts were removed
+            error_index = len(self._indego_client.alerts)
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}_code", False):
                 error_index += 1
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}_severity", False):
@@ -2560,11 +2903,13 @@ class IndegoHub:
             self.entities[ENTITY_ALERT].async_schedule_update_ha_state()
 
         else:
-            # No alerts - explicitly clear everything
-            self.entities[ENTITY_ALERT].set_attributes({
-                "alerts_count": self._indego_client.alerts_count or 0,
-            })
+            self.entities[ENTITY_ALERT].set_attributes(
+                {
+                    "alerts_count": self._indego_client.alerts_count
+                }
+            )
 
+            # Clear all error attributes when no alerts
             error_index = 0
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}", False):
                 error_index += 1
@@ -2573,24 +2918,26 @@ class IndegoHub:
             while self.entities[ENTITY_ALERT].clear_attribute(f"error_{error_index}_code", False):
                 error_index += 1
 
+        self._update_alert_state()
+
     def _update_alert_state(self):
-        """Set alert sensor state based on active alerts and current error."""
+        """Set alert sensor state based on current active error code, not just unread status."""
         if ENTITY_ALERT not in self.entities:
             return
 
-        alerts = self._indego_client.alerts or []
-        unread_count = sum(
-            1 for a in alerts
-            if str(a.read_status).strip().lower() == "unread"
-        )
+        # Check if state is available and has 'error' attribute, otherwise default to 0 (no error)
         current_error = getattr(self._indego_client.state, "error", 0)
 
-        # If there are no alerts at all, the problem is considered resolved.
-        if self._indego_client.alerts_count == 0:
-            self.entities[ENTITY_ALERT].state = False
+        # If there are no active errors (current_error == 0) but the mower state is None, check for unread alerts to determine if we should show a problem state
+        if current_error == 0 and self._indego_client.state is None:
+            unread_count = sum(
+                1 for alert in self._indego_client.alerts
+                if str(alert.read_status).strip().lower() == "unread"
+            )
+            self.entities[ENTITY_ALERT].state = unread_count > 0
         else:
-            # Problem exists if there are unread alerts OR an active error code.
-            self.entities[ENTITY_ALERT].state = (unread_count > 0) or (current_error != 0)
+            # Show "Problem" if there is an active error code, otherwise "OK"
+            self.entities[ENTITY_ALERT].state = current_error != 0
 
     async def _update_updates_available(self):
         await self._indego_client.update_updates_available()

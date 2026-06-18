@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Battery Discharge"
             },
+            "bump_sensitivity": {
+                "name": "Lawn conditions",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Slippery",
+                    "uneven": "Uneven"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing active",
@@ -546,6 +554,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "PIN protection"
+            },
+            "autolock": {
+                "name": "Keypad lock"
+            },
+            "automatic_update": {
+                "name": "Automatic updates"
             }
         }
     },
@@ -670,6 +687,52 @@
                     "description": "Set End Time of the selected slot and day. Only needed if you want to enable a slot."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Set mower lawn conditions",
+            "description": "Set the mower lawn conditions",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serial number",
+                    "description": "Serial number of the mower. Only required if multiple mowers are configured."
+                },
+                "bump_sensitivity": {
+                    "name": "Lawn conditions",
+                    "description": "Lawn conditions of the mower"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "PIN Code",
+            "description": "Change the mower PIN code",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serial number",
+                    "description": "Serial number of the mower. Only required if multiple mowers are configured."
+                },
+                "pin": {
+                    "name": "PIN Code",
+                    "description": "New four-digit mower PIN code"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Set SmartMowing mowing window",
+            "description": "Set the time window in which the mower may mow in SmartMowing mode.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serial number",
+                    "description": "Serial number of the mower. Only required if multiple mowers are configured."
+                },
+                "earliest_start": {
+                    "name": "Earliest start",
+                    "description": "The earliest time the mower should start."
+                },
+                "latest_end": {
+                    "name": "Latest end",
+                    "description": "The latest time the mower should finish."
+                }
+            }
         }
     },
     "selector": {
@@ -695,6 +758,13 @@
                 "mow": "Mow",
                 "return_to_dock": "Return to dock",
                 "pause": "Pause"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Slippery",
+                "uneven": "Uneven"
             }
         }
     },

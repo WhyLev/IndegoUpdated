@@ -95,6 +95,7 @@ ENTITY_DELETE_LAST_ALERT_BUTTON: Final = "delete_last_alert"
 ENTITY_READ_ALL_ALERTS_BUTTON: Final = "read_all_alerts"
 ENTITY_READ_LAST_ALERT_BUTTON: Final = "read_last_alert"
 ENTITY_SMARTMOWING_SWITCH: Final = "smartmowing_switch"
+ENTITY_AUTOMATIC_UPDATE: Final = "automatic_update"
 
 # Smart Mowing Sensors (Phase 1)
 ENTITY_WEATHER: Final = "weather"
@@ -122,6 +123,19 @@ ENTITY_CALENDAR_SLOTS: Final = "calendar_slots"
 SERVICE_NAME_SET_CALENDAR_SLOT: Final = "set_calendar_slot"
 SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW: Final = "set_predictive_mowing_window"
 
+# Bump Sensitivity
+ENTITY_BUMP_SENSITIVITY: Final = "bump_sensitivity"
+SERVICE_NAME_SET_BUMP_SENSITIVITY: Final = "set_bump_sensitivity"
+CONF_BUMP_SENSITIVITY: Final = "bump_sensitivity"
+CONF_BUMP_SENSITIVITY_NORMAL: Final = "normal"
+CONF_BUMP_SENSITIVITY_SLIPPERY: Final = "slippery"
+CONF_BUMP_SENSITIVITY_UNEVEN: Final = "uneven"
+
+# Security
+ENTITY_SECURITY_ENABLED: Final = "security_enabled"
+ENTITY_AUTOLOCK: Final = "autolock"
+SERVICE_NAME_SET_PIN: Final = "set_pin"
+CONF_PIN: Final = "pin"
 
 DELETE_ALERTS_BATCH_DELAY_SECONDS: Final = 10
 DELETE_ALERTS_BATCH_MAX_ROUNDS: Final = 20

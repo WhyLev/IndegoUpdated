@@ -85,6 +85,13 @@ class IndegoSwitch(IndegoEntity, SwitchEntity):
     @property
     def is_on(self) -> bool:
         """Return true if switch is on."""
+        if self._attr_translation_key in (
+            "security_enabled",
+            "autolock",
+            "automatic_update",
+        ):
+            return self._is_on
+
         try:
             mowing_mode = getattr(
                 self._indego_hub._indego_client.generic_data,
@@ -111,6 +118,21 @@ class IndegoSwitch(IndegoEntity, SwitchEntity):
         """Turn the switch on."""
         _LOGGER.debug("Turning on SmartMowing for mower %s", self._indego_hub.serial)
 
+        if self._attr_translation_key == "security_enabled":
+            await self._indego_hub.async_set_security_enabled(True)
+            self.is_on = True
+            return
+
+        if self._attr_translation_key == "autolock":
+            await self._indego_hub.async_set_autolock(True)
+            self.is_on = True
+            return
+
+        if self._attr_translation_key == "automatic_update":
+            await self._indego_hub.async_set_automatic_update(True)
+            self.is_on = True
+            return
+
         self._indego_hub._forced_mowing_mode = "SmartMowing"
 
         await self._indego_hub._indego_client.put_mow_mode(True)
@@ -125,6 +147,21 @@ class IndegoSwitch(IndegoEntity, SwitchEntity):
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the switch off."""
         _LOGGER.debug("Turning off SmartMowing for mower %s", self._indego_hub.serial)
+
+        if self._attr_translation_key == "security_enabled":
+            await self._indego_hub.async_set_security_enabled(False)
+            self.is_on = False
+            return
+
+        if self._attr_translation_key == "autolock":
+            await self._indego_hub.async_set_autolock(False)
+            self.is_on = False
+            return
+
+        if self._attr_translation_key == "automatic_update":
+            await self._indego_hub.async_set_automatic_update(False)
+            self.is_on = False
+            return
 
         self._indego_hub._forced_mowing_mode = "Calendar"
 
