@@ -115,6 +115,14 @@ SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW = vol.Schema({
     vol.Required(CONF_LATEST_END): cv.string,
 })
 
+SERVICE_SCHEMA_SET_PIN = vol.Schema({
+    vol.Optional(CONF_MOWER_SERIAL): cv.string,
+    vol.Required(CONF_PIN): vol.All(
+        cv.string,
+        vol.Length(min=4, max=4),
+    ),
+})
+
 
 def FUNC_ICON_MOWER_ALERT(state):
     if state:
@@ -1216,6 +1224,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             latest_end=call.data[CONF_LATEST_END],
         )
 
+    async def async_set_pin(call):
+    """Handle set_pin service call."""
+    instance = find_instance_for_mower_service_call(call)
+
+    pin = str(call.data[CONF_PIN])
+
+    if not pin.isdigit() or len(pin) != 4:
+        raise HomeAssistantError(
+            "PIN must consist of exactly 4 digits"
+        )
+
+    await instance.async_set_pin(pin)
+
     # In HASS we can have multiple Indego component instances as long as the mower serial is unique.
     # So the mower services should only need to be registered for the first instance.
     if CONF_SERVICES_REGISTERED not in hass.data[DOMAIN]:
@@ -1276,6 +1297,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW,
             async_set_predictive_mowing_window,
             schema=SERVICE_SCHEMA_SET_PREDICTIVE_MOWING_WINDOW,
+        )
+
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_NAME_SET_PIN,
+            async_set_pin,
+            schema=SERVICE_SCHEMA_SET_PIN,
         )
 
         hass.data[DOMAIN][CONF_SERVICES_REGISTERED] = entry.entry_id
@@ -1509,6 +1537,33 @@ class IndegoHub:
                 **attrs,
             }
         )
+
+    async def async_set_pin(self, pin: str):
+        """Set mower PIN."""
+        pin = str(pin)
+    
+        if not pin.isdigit() or len(pin) != 4:
+            raise HomeAssistantError(
+                "PIN must consist of exactly 4 digits"
+            )
+    
+        if str(getattr(self._indego_client, "state_description", "")).lower() != "docked":
+            raise HomeAssistantError(
+                "PIN can only be changed while the mower is docked"
+            )
+    
+        payload = {
+            "new_pin": pin,
+        }
+    
+        result = await self._indego_client.put(
+            f"alms/{self._serial}/security",
+            payload,
+        )
+    
+        _LOGGER.debug("Set PIN result: %r", result)
+    
+        await self._update_security()
 
     async def async_send_command_to_client(self, command: str):
         """Send a mower command to the Indego client."""
