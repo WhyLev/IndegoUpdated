@@ -757,8 +757,7 @@
             "options": {
                 "mow": "Mow",
                 "return_to_dock": "Return to dock",
-                "pause": "Pause",
-                "returnToDock": "Return to dock"
+                "pause": "Pause"
             }
         },
         "bump_sensitivity_options": {
