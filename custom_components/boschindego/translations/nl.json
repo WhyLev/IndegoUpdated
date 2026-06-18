@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Batterijontlading"
             },
+            "bump_sensitivity": {
+                "name": "Gazonomstandigheden",
+                "state": {
+                    "normal": "Normaal",
+                    "slippery": "Glad",
+                    "uneven": "Oneffen"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing actief",
@@ -546,6 +554,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "PIN-beveiliging"
+            },
+            "autolock": {
+                "name": "Toetsenblokvergrendeling"
+            },
+            "automatic_update": {
+                "name": "Automatische updates"
             }
         }
     },
@@ -555,7 +572,8 @@
             "description": "Stuur commando's naar de grasmaaier. Selecteer een commando.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 },
                 "command": {
                     "name": "Stuur commando",
@@ -568,10 +586,12 @@
             "description": "Schakel SmartMowing in of uit. Ondersteunde waardes zijn: true of false.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 },
                 "enable": {
-                    "description": "Schakel SmartMowing in of uit."
+                    "description": "Schakel SmartMowing in of uit.",
+                    "name": "Inschakelen/uitschakelen"
                 }
             }
         },
@@ -580,10 +600,12 @@
             "description": "Verwijder een specifieke melding.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 },
                 "alert_index": {
-                    "description": "De index van de melding. 0 is het nieuwste bericht."
+                    "description": "De index van de melding. 0 is het nieuwste bericht.",
+                    "name": "Meldingsindex"
                 }
             }
         },
@@ -592,7 +614,8 @@
             "description": "Verwijder alle meldingen.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 }
             }
         },
@@ -601,10 +624,12 @@
             "description": "Markeer een specifieke melding als gelezen.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 },
                 "alert_index": {
-                    "description": "De index van de melding. 0 is het nieuwste bericht."
+                    "description": "De index van de melding. 0 is het nieuwste bericht.",
+                    "name": "Meldingsindex"
                 }
             }
         },
@@ -613,7 +638,8 @@
             "description": "Markeer alle meldingen als gelezen.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 }
             }
         },
@@ -622,7 +648,8 @@
             "description": "Downloaded de huidge maaikaart van de Bosch Cloud API en slaat deze lokaal op als \"www/indego_map_base.svg\". De kaart weerspiegelt de laatst opgenomen maairoute.",
             "fields": {
                 "mower_serial": {
-                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd."
+                    "description": "Grasmaaier serienummer. Alleen nodig wanneer je meerdere grasmaaiers hebt geconfigureerd.",
+                    "name": "Serienummer"
                 }
             }
         },
@@ -659,6 +686,52 @@
                     "description": "Eindtijd van het geselecteerde tijdslot. Alleen nodig als het tijdslot geactiveerd moet worden. Alleen uren en minuten worden gebruikt."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Gazonomstandigheden van de maaier instellen",
+            "description": "De gazonomstandigheden van de maaier instellen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Serienummer van de maaier. Alleen vereist als meerdere maaiers zijn geconfigureerd."
+                },
+                "bump_sensitivity": {
+                    "name": "Gazonomstandigheden",
+                    "description": "Gazonomstandigheden van de maaier"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "PIN-code",
+            "description": "PIN-code van de maaier wijzigen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Serienummer van de maaier. Alleen nodig als meerdere maaiers zijn geconfigureerd."
+                },
+                "pin": {
+                    "name": "PIN-code",
+                    "description": "Nieuwe viercijferige PIN-code van de maaier"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "SmartMowing-tijdvenster instellen",
+            "description": "Het tijdvenster waarin de maaier in SmartMowing-modus mag maaien.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Serienummer van de maaier. Alleen nodig als meerdere maaiers zijn geconfigureerd."
+                },
+                "earliest_start": {
+                    "name": "Vroegste start",
+                    "description": "De vroegste tijd waarop de maaier moet beginnen."
+                },
+                "latest_end": {
+                    "name": "Laatste einde",
+                    "description": "De laatste tijd waarop de maaier moet stoppen."
+                }
+            }
         }
     },
     "selector": {
@@ -685,16 +758,23 @@
                 "returnToDock": "Terug naar het laadstation",
                 "pause": "Pauze"
             }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normaal",
+                "slippery": "Glad",
+                "uneven": "Oneffen"
+            }
         }
     },
     "issues": {
         "auth_failure": {
-            "title": "Bosch Indego authentication expired",
-            "description": "Your authentication with Bosch Indego has expired. Please go to Settings > Devices & Services > Indego > Re-authenticate to restore access to your mower."
+            "title": "Bosch Indego-authenticatie verlopen",
+            "description": "Je authenticatie met Bosch Indego is verlopen. Ga naar Instellingen > Apparaten en diensten > Indego > Opnieuw authenticeren om de toegang tot je maaier te herstellen."
         },
         "connection_failure": {
-            "title": "Bosch Indego connection problems",
-            "description": "Your mower has not responded to API requests for an extended period. This may indicate network issues, the Bosch service is experiencing problems, or your mower is offline. Please check your internet connection and mower status."
+            "title": "Bosch Indego-verbindingsproblemen",
+            "description": "Je maaier heeft gedurende langere tijd niet gereageerd op API-verzoeken. Dit kan wijzen op netwerkproblemen, problemen met de Bosch-service of een offline maaier. Controleer je internetverbinding en de status van de maaier."
         }
     }
 }

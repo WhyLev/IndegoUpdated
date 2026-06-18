@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Scarica batteria"
             },
+            "bump_sensitivity": {
+                "name": "Condizioni del prato",
+                "state": {
+                    "normal": "Normale",
+                    "slippery": "Scivoloso",
+                    "uneven": "Irregolare"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing attivo",
@@ -546,6 +554,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "Protezione PIN"
+            },
+            "autolock": {
+                "name": "Blocco tastiera"
+            },
+            "automatic_update": {
+                "name": "Aggiornamenti automatici"
             }
         }
     },
@@ -555,7 +572,8 @@
             "description": "Invia comandi al robot. Seleziona un comando.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 },
                 "command": {
                     "name": "Invia comando",
@@ -568,10 +586,12 @@
             "description": "Abilita o disabilita SmartMowing. I valori consentiti sono true o false.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 },
                 "enable": {
-                    "description": "Abilita SmartMowing."
+                    "description": "Abilita SmartMowing.",
+                    "name": "Attiva/disattiva"
                 }
             }
         },
@@ -580,10 +600,12 @@
             "description": "Elimina l'avviso selezionato.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 },
                 "alert_index": {
-                    "description": "Elimina l'avviso selezionato. 0 per l'avviso più recente."
+                    "description": "Elimina l'avviso selezionato. 0 per l'avviso più recente.",
+                    "name": "Indice avviso"
                 }
             }
         },
@@ -592,7 +614,8 @@
             "description": "Elimina tutti gli avvisi.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 }
             }
         },
@@ -601,10 +624,12 @@
             "description": "Segna l'avviso selezionato come letto.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 },
                 "alert_index": {
-                    "description": "Segna l'avviso selezionato come letto. 0 per l'avviso più recente."
+                    "description": "Segna l'avviso selezionato come letto. 0 per l'avviso più recente.",
+                    "name": "Indice avviso"
                 }
             }
         },
@@ -613,7 +638,8 @@
             "description": "Segna tutti gli avvisi come letti.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 }
             }
         },
@@ -622,7 +648,8 @@
             "description": "Scarica la mappa di taglio attuale dall'API Bosch Cloud e la salva localmente come \"www/indego_map_base.svg\". La mappa riflette il percorso di taglio registrato più di recente.",
             "fields": {
                 "mower_serial": {
-                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba."
+                    "description": "Numero di serie del rasaerba. Necessario solo quando hai configurato più rasaerba.",
+                    "name": "Numero di serie"
                 }
             }
         },
@@ -659,6 +686,52 @@
                     "description": "Ora di fine della fascia selezionata. Necessaria solo se la fascia deve essere attivata. Vengono utilizzate solo ore e minuti."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Imposta le condizioni del prato del tosaerba",
+            "description": "Imposta le condizioni del prato del tosaerba",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numero di serie",
+                    "description": "Numero di serie del tosaerba. Richiesto solo se sono configurati più tosaerba."
+                },
+                "bump_sensitivity": {
+                    "name": "Condizioni del prato",
+                    "description": "Condizioni del prato del tosaerba"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "Codice PIN",
+            "description": "Modifica il codice PIN del rasaerba",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numero di serie",
+                    "description": "Numero di serie del rasaerba. Necessario solo se sono configurati più rasaerba."
+                },
+                "pin": {
+                    "name": "Codice PIN",
+                    "description": "Nuovo codice PIN a quattro cifre del rasaerba"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Imposta finestra oraria SmartMowing",
+            "description": "La finestra oraria in cui il rasaerba può tagliare in modalità SmartMowing.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Numero di serie",
+                    "description": "Numero di serie del rasaerba. Necessario solo se sono configurati più rasaerba."
+                },
+                "earliest_start": {
+                    "name": "Inizio più anticipato",
+                    "description": "L'orario più anticipato in cui il rasaerba deve iniziare."
+                },
+                "latest_end": {
+                    "name": "Fine più tardiva",
+                    "description": "L'orario più tardivo in cui il rasaerba deve terminare."
+                }
+            }
         }
     },
     "selector": {
@@ -685,16 +758,23 @@
                 "returnToDock": "Ritorna alla stazione di ricarica",
                 "pause": "Pausa"
             }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normale",
+                "slippery": "Scivoloso",
+                "uneven": "Irregolare"
+            }
         }
     },
     "issues": {
         "auth_failure": {
-            "title": "Bosch Indego authentication expired",
-            "description": "Your authentication with Bosch Indego has expired. Please go to Settings > Devices & Services > Indego > Re-authenticate to restore access to your mower."
+            "title": "Autenticazione Bosch Indego scaduta",
+            "description": "La tua autenticazione con Bosch Indego è scaduta. Vai in Impostazioni > Dispositivi e servizi > Indego > Esegui nuovamente l'autenticazione per ripristinare l'accesso al rasaerba."
         },
         "connection_failure": {
-            "title": "Bosch Indego connection problems",
-            "description": "Your mower has not responded to API requests for an extended period. This may indicate network issues, the Bosch service is experiencing problems, or your mower is offline. Please check your internet connection and mower status."
+            "title": "Problemi di connessione Bosch Indego",
+            "description": "Il rasaerba non ha risposto alle richieste API per un periodo prolungato. Ciò può indicare problemi di rete, problemi con il servizio Bosch o un rasaerba offline. Controlla la connessione Internet e lo stato del rasaerba."
         }
     }
 }

@@ -96,7 +96,11 @@
                     "mowing": "Slåning",
                     "docked": "Docket",
                     "sleeping": "Sover",
-                    "paused": "Sat på pause"
+                    "paused": "Sat på pause",
+                    "Mowing": "Slår græs",
+                    "Docked": "I ladestation",
+                    "Sleeping": "Sover",
+                    "Paused": "Sat på pause"
                 }
             },
             "mower_state_detail": {
@@ -133,7 +137,39 @@
                     "returning_to_dock_battery_temp_range": "Vender tilbage til dockingstationen - Batteritemperaturinterval",
                     "returning_to_dock_lawn_complete": "Vender tilbage til dockingstationen - Græsplæne fuldstændig slået",
                     "returning_to_dock_relocalising": "Vender tilbage til dockingstationen - Genpositionering",
-                    "returning_to_dock_requested_by_user_app": "Vender tilbage til dockingstationen - Anmodet af bruger/app"
+                    "returning_to_dock_requested_by_user_app": "Vender tilbage til dockingstationen - Anmodet af bruger/app",
+                    "Reading status": "Læser status",
+                    "Charging": "Oplader",
+                    "Docked": "I ladestation",
+                    "Sleeping": "Sover",
+                    "Docked - Software update": "I ladestation - Softwareopdatering",
+                    "Docked - Loading map": "I ladestation - Indlæser kort",
+                    "Docked - Saving map": "I ladestation - Gemmer kort",
+                    "Docked - Leaving dock": "I ladestation - Forlader ladestation",
+                    "Mowing": "Slår græs",
+                    "Mowing - Relocalising": "Slår græs - Genlokaliserer",
+                    "Mowing - Learning Lawn": "Slår græs - Lærer græsplænen",
+                    "Mowing - Learning Lawn paused": "Slår græs - Læring af græsplæne sat på pause",
+                    "SpotMow": "SpotMow",
+                    "Mowing randomly": "Slår tilfældigt",
+                    "Diagnostic mode": "Diagnosetilstand",
+                    "End of life": "Levetidsslut",
+                    "Software update": "Softwareopdatering",
+                    "Energy save mode": "Energisparetilstand",
+                    "Relocalising": "Genlokaliserer",
+                    "Loading map": "Indlæser kort",
+                    "Learning lawn": "Lærer græsplænen",
+                    "Paused": "Sat på pause",
+                    "Border cut": "Kantklip",
+                    "Idle in lawn": "Inaktiv på græsplænen",
+                    "Stuck on lawn, help needed": "Sidder fast på græsplænen, hjælp nødvendig",
+                    "Returning to dock": "Vender tilbage til ladestation",
+                    "Returning to dock - Battery low": "Vender tilbage til ladestation - Lavt batteri",
+                    "Returning to dock - Calendar timeslot ended": "Vender tilbage til ladestation - Kalender-tidsslot sluttede",
+                    "Returning to dock - Battery temp range": "Vender tilbage til ladestation - Batteritemperaturinterval",
+                    "Returning to dock - Lawn complete": "Vender tilbage til ladestation - Græsplæne færdig",
+                    "Returning to dock - Relocalising": "Vender tilbage til ladestation - Genlokaliserer",
+                    "Returning to dock - requested by user/app": "Vender tilbage til ladestation - Anmodet af bruger/app"
                 }
             },
             "battery_percentage": {
@@ -195,6 +231,14 @@
             },
             "battery_discharge": {
                 "name": "Batteriudladning"
+            },
+            "bump_sensitivity": {
+                "name": "Plæneforhold",
+                "state": {
+                    "normal": "Normal",
+                    "slippery": "Glat",
+                    "uneven": "Ujævn"
+                }
             },
             "calendar_slots": {
                 "state": {
@@ -546,6 +590,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "PIN-beskyttelse"
+            },
+            "autolock": {
+                "name": "Tastelås"
+            },
+            "automatic_update": {
+                "name": "Automatiske opdateringer"
             }
         }
     },
@@ -669,6 +722,52 @@
                     "description": "Sluttidspunkt for den valgte slot. Kun nødvendigt hvis slotten skal aktiveres. Kun timer og minutter anvendes."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Indstil plæneforhold for plæneklipperen",
+            "description": "Indstil plæneforholdene for plæneklipperen",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Plæneklipperens serienummer. Kun påkrævet hvis flere plæneklippere er konfigureret."
+                },
+                "bump_sensitivity": {
+                    "name": "Plæneforhold",
+                    "description": "Plæneforhold for plæneklipperen"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "PIN-kode",
+            "description": "Skift plæneklipperens PIN-kode",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Plæneklipperens serienummer. Kun nødvendigt hvis flere plæneklippere er konfigureret."
+                },
+                "pin": {
+                    "name": "PIN-kode",
+                    "description": "Ny firecifret PIN-kode til plæneklipperen"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Indstil tidsvindue for SmartMowing",
+            "description": "Tidsvinduet, hvor plæneklipperen må klippe i SmartMowing-tilstand.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Serienummer",
+                    "description": "Plæneklipperens serienummer. Kun nødvendigt, hvis flere plæneklippere er konfigureret."
+                },
+                "earliest_start": {
+                    "name": "Tidligste start",
+                    "description": "Det tidligste tidspunkt, hvor plæneklipperen skal starte."
+                },
+                "latest_end": {
+                    "name": "Seneste slut",
+                    "description": "Det seneste tidspunkt, hvor plæneklipperen skal være færdig."
+                }
+            }
         }
     },
     "selector": {
@@ -693,18 +792,26 @@
             "options": {
                 "mow": "Klip græs",
                 "return_to_dock": "Tilbage til ladestationen",
-                "pause": "Pause"
+                "pause": "Pause",
+                "returnToDock": "Tilbage til ladestationen"
+            }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normal",
+                "slippery": "Glat",
+                "uneven": "Ujævn"
             }
         }
     },
     "issues": {
         "auth_failure": {
-            "title": "Bosch Indego authentication expired",
-            "description": "Your authentication with Bosch Indego has expired. Please go to Settings > Devices & Services > Indego > Re-authenticate to restore access to your mower."
+            "title": "Bosch Indego-godkendelse udløbet",
+            "description": "Din godkendelse til Bosch Indego er udløbet. Gå til Indstillinger > Enheder og tjenester > Indego > Godkend igen for at gendanne adgangen til din plæneklipper."
         },
         "connection_failure": {
-            "title": "Bosch Indego connection problems",
-            "description": "Your mower has not responded to API requests for an extended period. This may indicate network issues, the Bosch service is experiencing problems, or your mower is offline. Please check your internet connection and mower status."
+            "title": "Bosch Indego-forbindelsesproblemer",
+            "description": "Din plæneklipper har ikke svaret på API-anmodninger i længere tid. Dette kan skyldes netværksproblemer, problemer med Bosch-tjenesten eller at plæneklipperen er offline. Kontrollér din internetforbindelse og plæneklipperens status."
         }
     }
 }

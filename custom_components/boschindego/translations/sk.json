@@ -196,6 +196,14 @@
             "battery_discharge": {
                 "name": "Vybíjanie batérie"
             },
+            "bump_sensitivity": {
+                "name": "Podmienky trávnika",
+                "state": {
+                    "normal": "Normálne",
+                    "slippery": "Šmykľavé",
+                    "uneven": "Nerovné"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktívny",
@@ -546,6 +554,15 @@
         "switch": {
             "indego_smartmowing": {
                 "name": "SmartMowing"
+            },
+            "security_enabled": {
+                "name": "Ochrana PIN kódom"
+            },
+            "autolock": {
+                "name": "Zámok klávesnice"
+            },
+            "automatic_update": {
+                "name": "Automatické aktualizácie"
             }
         }
     },
@@ -555,7 +572,8 @@
             "description": "Poslať príkazy kosačke. Vyberte príkaz.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 },
                 "command": {
                     "name": "Poslať príkaz",
@@ -568,10 +586,12 @@
             "description": "Povoliť alebo zakázať funkciu SmartMowing. Povolené hodnoty sú true alebo false.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 },
                 "enable": {
-                    "description": "Povoliť SmartMowing."
+                    "description": "Povoliť SmartMowing.",
+                    "name": "Aktivovať/deaktivovať"
                 }
             }
         },
@@ -580,10 +600,12 @@
             "description": "Odstrániť vybraté upozornenie.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 },
                 "alert_index": {
-                    "description": "Odstrániť vybraté upozornenie. 0 pre najnovšie upozornenie."
+                    "description": "Odstrániť vybraté upozornenie. 0 pre najnovšie upozornenie.",
+                    "name": "Index upozornenia"
                 }
             }
         },
@@ -592,7 +614,8 @@
             "description": "Odstráňte všetky upozornenia.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 }
             }
         },
@@ -601,10 +624,12 @@
             "description": "Označte vybrané upozornenie ako prečítané.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 },
                 "alert_index": {
-                    "description": "Označte vybrané upozornenie ako prečítané. 0 pre najnovšie upozornenie."
+                    "description": "Označte vybrané upozornenie ako prečítané. 0 pre najnovšie upozornenie.",
+                    "name": "Index upozornenia"
                 }
             }
         },
@@ -613,7 +638,8 @@
             "description": "Označte všetky upozornenia ako prečítané.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 }
             }
         },
@@ -622,7 +648,8 @@
             "description": "Stiahne aktuálnu mapu kosenia z Bosch Cloud API a uloží ju lokálne ako \"www/indego_map_base.svg\". Mapa odráža naposledy zaznamenú trasu kosenia.",
             "fields": {
                 "mower_serial": {
-                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek."
+                    "description": "Sériové číslo kosačky. Potrebné iba vtedy, keď máte nakonfigurovaných viacero kosačiek.",
+                    "name": "Sériové číslo"
                 }
             }
         },
@@ -659,6 +686,52 @@
                     "description": "Čas ukončenia vybraného slotu. Vyžaduje sa iba v prípade, že sa má slot aktivovať. Použijú sa iba hodiny a minúty."
                 }
             }
+        },
+        "set_bump_sensitivity": {
+            "name": "Nastaviť podmienky trávnika kosačky",
+            "description": "Nastaviť podmienky trávnika kosačky",
+            "fields": {
+                "mower_serial": {
+                    "name": "Sériové číslo",
+                    "description": "Sériové číslo kosačky. Vyžaduje sa iba v prípade, že je nakonfigurovaných viac kosačiek."
+                },
+                "bump_sensitivity": {
+                    "name": "Podmienky trávnika",
+                    "description": "Podmienky trávnika kosačky"
+                }
+            }
+        },
+        "set_pin": {
+            "name": "PIN kód",
+            "description": "Zmeniť PIN kód kosačky",
+            "fields": {
+                "mower_serial": {
+                    "name": "Sériové číslo",
+                    "description": "Sériové číslo kosačky. Vyžaduje sa iba v prípade, že je nakonfigurovaných viac kosačiek."
+                },
+                "pin": {
+                    "name": "PIN kód",
+                    "description": "Nový štvorciferný PIN kód kosačky"
+                }
+            }
+        },
+        "set_predictive_mowing_window": {
+            "name": "Nastaviť časové okno SmartMowing",
+            "description": "Časové okno, počas ktorého môže kosačka kosiť v režime SmartMowing.",
+            "fields": {
+                "mower_serial": {
+                    "name": "Sériové číslo",
+                    "description": "Sériové číslo kosačky. Vyžaduje sa iba v prípade, že je nakonfigurovaných viac kosačiek."
+                },
+                "earliest_start": {
+                    "name": "Najskorší štart",
+                    "description": "Najskorší čas, kedy má kosačka začať."
+                },
+                "latest_end": {
+                    "name": "Najneskorší koniec",
+                    "description": "Najneskorší čas, kedy má kosačka skončiť."
+                }
+            }
         }
     },
     "selector": {
@@ -685,16 +758,23 @@
                 "returnToDock": "Návrat do dokovacej stanice",
                 "pause": "Pauza"
             }
+        },
+        "bump_sensitivity_options": {
+            "options": {
+                "normal": "Normálne",
+                "slippery": "Šmykľavé",
+                "uneven": "Nerovné"
+            }
         }
     },
     "issues": {
         "auth_failure": {
-            "title": "Bosch Indego authentication expired",
-            "description": "Your authentication with Bosch Indego has expired. Please go to Settings > Devices & Services > Indego > Re-authenticate to restore access to your mower."
+            "title": "Overenie Bosch Indego vypršalo",
+            "description": "Vaše overenie Bosch Indego vypršalo. Prejdite do Nastavenia > Zariadenia a služby > Indego > Znova overiť, aby ste obnovili prístup ku kosačke."
         },
         "connection_failure": {
-            "title": "Bosch Indego connection problems",
-            "description": "Your mower has not responded to API requests for an extended period. This may indicate network issues, the Bosch service is experiencing problems, or your mower is offline. Please check your internet connection and mower status."
+            "title": "Problémy s pripojením Bosch Indego",
+            "description": "Kosačka dlhší čas nereagovala na požiadavky API. Môže to znamenať problémy so sieťou, problém so službou Bosch alebo že kosačka je offline. Skontrolujte internetové pripojenie a stav kosačky."
         }
     }
 }
