@@ -95,6 +95,7 @@ ENTITY_DELETE_LAST_ALERT_BUTTON: Final = "delete_last_alert"
 ENTITY_READ_ALL_ALERTS_BUTTON: Final = "read_all_alerts"
 ENTITY_READ_LAST_ALERT_BUTTON: Final = "read_last_alert"
 ENTITY_SMARTMOWING_SWITCH: Final = "smartmowing_switch"
+ENTITY_PREDICTIVE_WEATHER: Final = "predictive_weather"
 
 # Smart Mowing Sensors (Phase 1)
 ENTITY_WEATHER: Final = "weather"
