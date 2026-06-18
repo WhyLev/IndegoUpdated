@@ -94,7 +94,10 @@ def _parse_datetime(value):
 class IndegoWeather(IndegoEntity, WeatherEntity):
     """Indego predictive weather entity."""
 
-    _attr_supported_features = WeatherEntityFeature.FORECAST_HOURLY
+    _attr_supported_features = (
+        WeatherEntityFeature.FORECAST_HOURLY
+        | WeatherEntityFeature.FORECAST_DAILY
+    )
 
     def __init__(
         self,
@@ -215,6 +218,52 @@ class IndegoWeather(IndegoEntity, WeatherEntity):
                     "native_temperature": interval.get("tt"),
                     "precipitation_probability": interval.get("prrr"),
                     "native_precipitation": interval.get("rrr"),
+                }
+            )
+
+        return forecast
+
+    async def async_forecast_daily(self) -> list[Forecast]:
+        """Return daily forecast."""
+        intervals = _forecast_intervals(self._weather_data)
+
+        daily = {}
+
+        for interval in intervals:
+            dt = _parse_datetime(interval.get("dateTime"))
+
+            if dt is None:
+                continue
+
+            day = dt.date().isoformat()
+
+            daily.setdefault(
+                day,
+                {
+                    "temps": [],
+                    "rain": [],
+                    "prob": [],
+                    "condition": interval.get("wwsymbol_mg2008"),
+                },
+            )
+
+            daily[day]["temps"].append(interval.get("tt"))
+            daily[day]["rain"].append(interval.get("rrr"))
+            daily[day]["prob"].append(interval.get("prrr"))
+
+        forecast = []
+
+        for day, values in daily.items():
+            forecast.append(
+                {
+                    "datetime": day,
+                    "condition": _weather_condition(
+                        values["condition"]
+                    ),
+                    "native_temperature": max(values["temps"]),
+                    "templow": min(values["temps"]),
+                    "native_precipitation": sum(values["rain"]),
+                    "precipitation_probability": max(values["prob"]),
                 }
             )
 
