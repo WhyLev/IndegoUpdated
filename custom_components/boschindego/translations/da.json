@@ -196,6 +196,15 @@
             "battery_discharge": {
                 "name": "Batteriudladning"
             },
+            "network_mode": {
+                "name": "Netværkstilstand"
+            },
+            "network_operator": {
+                "name": "Mobiloperatør"
+            },
+            "network_signal": {
+                "name": "Signalstyrke"
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktiv",

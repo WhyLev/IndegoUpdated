@@ -122,6 +122,14 @@ ENTITY_CALENDAR_SLOTS: Final = "calendar_slots"
 SERVICE_NAME_SET_CALENDAR_SLOT: Final = "set_calendar_slot"
 SERVICE_NAME_SET_PREDICTIVE_MOWING_WINDOW: Final = "set_predictive_mowing_window"
 
+# Network
+ENTITY_NETWORK_SIGNAL: Final = "network_signal"
+ENTITY_NETWORK_OPERATOR: Final = "network_operator"
+ENTITY_NETWORK_MODE: Final = "network_mode"
+ENTITY_NETWORK_SIGNAL: Final = "network_signal"
+ENTITY_NETWORK_OPERATOR: Final = "network_operator"
+ENTITY_NETWORK_MODE: Final = "network_mode"
+
 
 DELETE_ALERTS_BATCH_DELAY_SECONDS: Final = 10
 DELETE_ALERTS_BATCH_MAX_ROUNDS: Final = 20

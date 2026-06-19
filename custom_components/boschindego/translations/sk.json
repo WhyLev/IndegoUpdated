@@ -196,6 +196,15 @@
             "battery_discharge": {
                 "name": "Vybíjanie batérie"
             },
+            "network_mode": {
+                "name": "Režim siete"
+            },
+            "network_operator": {
+                "name": "Mobilný operátor"
+            },
+            "network_signal": {
+                "name": "Sila signálu"
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktívny",
