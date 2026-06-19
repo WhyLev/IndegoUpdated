@@ -196,6 +196,12 @@
             "battery_discharge": {
                 "name": "Descarga de batería"
             },
+            "predictive_setup": {
+                "name": "Configuración de SmartMowing",
+                "state": {
+                    "configured": "Configurado"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing activo",
