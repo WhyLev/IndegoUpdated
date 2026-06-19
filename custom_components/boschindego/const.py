@@ -107,6 +107,7 @@ ENTITY_GARDEN_LOCATION: Final = "garden_location"
 ENTITY_SMARTMOW_ENABLED: Final = "smartmow_enabled"
 ENTITY_SMARTMOW_SETUP: Final = "smartmow_setup"
 ENTITY_SMARTMOW_SCHEDULE: Final = "smartmow_schedule"
+ENTITY_PREDICTIVE_SETUP: Final = "predictive_setup"
 
 # Smart Mowing Services (Phase 2)
 SERVICE_NAME_SET_LOCATION: Final = "set_smart_mowing_location"
