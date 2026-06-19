@@ -196,6 +196,15 @@
             "battery_discharge": {
                 "name": "Battery Discharge"
             },
+            "network_mode": {
+                "name": "Network mode"
+            },
+            "network_operator": {
+                "name": "Mobile network operator"
+            },
+            "network_signal": {
+                "name": "Signal strength"
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing active",
