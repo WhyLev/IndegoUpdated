@@ -196,6 +196,15 @@
             "battery_discharge": {
                 "name": "Batterieentladung"
             },
+            "network_mode": {
+                "name": "Netzwerkmodus"
+            },
+            "network_operator": {
+                "name": "Mobilfunkanbieter"
+            },
+            "network_signal": {
+                "name": "Signal"
+            },
             "predictive_calendar_slots": {
                 "name": "SmartMowing Sperrzeiten",
                 "state": {
