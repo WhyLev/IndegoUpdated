@@ -196,6 +196,9 @@
             "battery_discharge": {
                 "name": "Batterieentladung"
             },
+            "predictive_setup": {
+                "name": "SmartMowing Konfiguration"
+            },
             "predictive_calendar_slots": {
                 "name": "SmartMowing Sperrzeiten",
                 "state": {
