@@ -517,6 +517,29 @@ ENTITY_DEFINITIONS = {
         ],
         CONF_TRANSLATION_KEY: "predictive_schedule",
     },
+    ENTITY_PREDICTIVE_SETUP: {
+        CONF_TYPE: SENSOR_TYPE,
+        CONF_ICON: "mdi:cog-outline",
+        CONF_DEVICE_CLASS: None,
+        CONF_UNIT_OF_MEASUREMENT: None,
+        CONF_ATTR: [
+            "last_updated",
+            "mowing_duration",
+            "full_cuts",
+            "avoid_rain",
+            "avoid_temperature",
+            "use_grass_growth",
+            "rain_factor",
+            "temperature_factor",
+            "garden_latitude",
+            "garden_longitude",
+            "garden_timezone",
+            "garden_name",
+            "garden_country",
+        ],
+        CONF_TRANSLATION_KEY: "predictive_setup",
+        CONF_ENTITY_CATEGORY: EntityCategory.DIAGNOSTIC,
+    },
 }
 
 
@@ -1510,6 +1533,40 @@ class IndegoHub:
             }
         )
 
+    async def _update_predictive_setup(self):
+        """Update SmartMowing setup data."""
+        try:
+            setup = await self._indego_client.get(
+                f"alms/{self._serial}/predictive/setup"
+            )
+        except Exception as exc:
+            _LOGGER.warning("Failed to fetch predictive setup data: %s", exc)
+            return None
+
+        garden_location = setup.get("garden_location", {}) or {}
+
+        if ENTITY_PREDICTIVE_SETUP in self.entities:
+            self.entities[ENTITY_PREDICTIVE_SETUP].state = "configured"
+            self.entities[ENTITY_PREDICTIVE_SETUP].set_attributes(
+                {
+                    "last_updated": last_updated_now(),
+                    "mowing_duration": setup.get("mowing_duration"),
+                    "full_cuts": setup.get("full_cuts"),
+                    "avoid_rain": setup.get("avoid_rain"),
+                    "avoid_temperature": setup.get("avoid_temperature"),
+                    "use_grass_growth": setup.get("use_grass_growth"),
+                    "rain_factor": setup.get("rain_factor"),
+                    "temperature_factor": setup.get("temperature_factor"),
+                    "garden_latitude": garden_location.get("latitude"),
+                    "garden_longitude": garden_location.get("longitude"),
+                    "garden_timezone": garden_location.get("timezone"),
+                    "garden_name": garden_location.get("name"),
+                    "garden_country": garden_location.get("country"),
+                }
+            )
+
+        return setup
+
     async def async_send_command_to_client(self, command: str):
         """Send a mower command to the Indego client."""
         _LOGGER.debug("Sending command to mower (%s): '%s'", self._serial, command)
@@ -1801,6 +1858,7 @@ class IndegoHub:
                 self._update_predictive_calendar(),
                 self._update_predictive_schedule(),
                 self._update_calendar(),
+                self._update_predictive_setup()
             ],
             return_exceptions=True,
         )
