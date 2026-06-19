@@ -197,7 +197,10 @@
                 "name": "Batteriudladning"
             },
             "predictive_setup": {
-                "name": "SmartMowing-konfiguration"
+                "name": "SmartMowing-konfiguration",
+                "state": {
+                    "configured": "Konfigureret"
+                }
             },
             "calendar_slots": {
                 "state": {
