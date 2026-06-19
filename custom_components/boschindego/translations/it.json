@@ -196,6 +196,15 @@
             "battery_discharge": {
                 "name": "Scarica batteria"
             },
+            "network_mode": {
+                "name": "Modalità di rete"
+            },
+            "network_operator": {
+                "name": "Operatore mobile"
+            },
+            "network_signal": {
+                "name": "Potenza del segnale"
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing attivo",
