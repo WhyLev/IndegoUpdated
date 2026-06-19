@@ -196,6 +196,12 @@
             "battery_discharge": {
                 "name": "Vybíjanie batérie"
             },
+            "predictive_setup": {
+                "name": "Konfigurácia SmartMowing",
+                "state": {
+                    "configured": "Nakonfigurované"
+                }
+            },
             "calendar_slots": {
                 "state": {
                     "smartmowing_active": "SmartMowing aktívny",
