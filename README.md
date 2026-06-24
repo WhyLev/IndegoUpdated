@@ -1,3 +1,15 @@
+> ### ⚠️ PROJECT STATUS: MERGED & DEPRECATED
+> 
+> **This repository is currently on hold and will no longer receive regular updates.** 
+> 
+> All features from this repository have been officially merged into the original repository by **sander1988**, and I have joined the project as a contributor! The original repo now includes everything this version had, plus ongoing improvements and future features.
+> 
+> * **Active Repository:** [github.com/sander1988/indego](https://github.com/sander1988/indego)
+> * **HACS Support:** The official repository is available directly via HACS for easy installation and updates.
+> 
+> *Note: This version of the integration will continue to work as-is for the time being, but for all future updates, bug fixes, and new features, please migrate to the main repository.*
+
+
 [![GitHub Release](https://img.shields.io/github/v/release/whylev/Indego?style=for-the-badge&logo=github&color=41BDF5)](https://github.com/whylev/Indego/releases)
 [![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5?style=for-the-badge&logo=homeassistant)](https://github.com/custom-components/hacs)
 
